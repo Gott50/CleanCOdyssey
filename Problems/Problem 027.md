@@ -17,3 +17,7 @@ Considering quadratics of the form:
     e.g. |11| = 11 and |−4| = 4
 
 Find the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n = 0.
+
+
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P027_Quadratic_primes.java)
+---

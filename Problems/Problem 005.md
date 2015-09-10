@@ -5,3 +5,5 @@
 
 What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
 
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P005_Smallest_multiple.java)
+---

@@ -25,3 +25,7 @@ The four adjacent digits in the 1000-digit number that have the greatest product
 	71636269561882670428252483600823257530420752963450
 
 Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?
+
+
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P008_Largest_product_in_a_series.java)
+---
