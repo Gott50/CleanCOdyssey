@@ -2,6 +2,7 @@ package Problems;
 
 import java.math.BigInteger;
 
+@SuppressWarnings("unused")
 public class P021_Amicable_numbers {
 
     /**

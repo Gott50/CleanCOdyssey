@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class P032_Pandigital_products {
 
-    private int i;
     /**
      * @param args
      */

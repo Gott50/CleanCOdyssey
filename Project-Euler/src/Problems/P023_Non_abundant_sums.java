@@ -1,6 +1,5 @@
 package Problems;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class P023_Non_abundant_sums {

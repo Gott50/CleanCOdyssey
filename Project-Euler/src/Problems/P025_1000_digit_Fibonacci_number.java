@@ -9,7 +9,7 @@ public class P025_1000_digit_Fibonacci_number {
      */
     public static void main(String[] args) {
 	String fib = null;
-	int i = 2, sum = 0;
+	int i = 2;
 	BigInteger[] num = new BigInteger [10000];
 	num [0]= new BigInteger ("1");
 	num [1]= new BigInteger ("2");
