@@ -1,8 +1,26 @@
-# ProjectEuler-Odyssey
-My shot at ProjectEuler in Java. Don't look at the solutions, if you didn't solve it yourself.
+#A Kata a day keeps the mud away
+therefor this is my <b>Clean Code Odyssey</b> to become better programmer.
 
-## My Goal
-Solve at least one [Problem](http://github.com/Gott50/ProjectEuler-Odyssey/tree/master/Problems) every week.
+###My Goal
+Spend everyday 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean Code Pinciples.
 
-## My Progress
-![image](https://projecteuler.net/profile/Gott50.png)
+
+<hr>	
+
+<table border="0" style="width:100%;">
+  <tr>
+    <th>Repeat</th>
+    <th>Kata</th>
+     <th>Started</th>
+    <th>Solved</th>
+  </tr>
+  
+  <tr>
+    <td>0</td>
+    <td><a href="Katas/src/gildedrose/README.md">
+    GildedRose-Refactoring-Kata</a></td>
+    <td>2016-07-01</td>
+    <td>?</td>
+  </tr>
+    
+</table>
