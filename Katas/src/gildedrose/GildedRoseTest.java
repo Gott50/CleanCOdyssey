@@ -1,42 +1,11 @@
 package gildedrose;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class GildedRoseTest {
-    private class ItemBuilder {
-        private String name;
-        private int quality;
-        private int sellIn;
-
-        ItemBuilder() {
-            name = "+5 Dexterity Vest";
-            sellIn = 15;
-            quality = 20;
-        }
-
-        ItemBuilder withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        ItemBuilder withQuality(int quality) {
-            this.quality = quality;
-            return this;
-        }
-
-
-        ItemBuilder withSellIn(int sellIn) {
-            this.sellIn = sellIn;
-            return this;
-        }
-
-        Item build() {
-            return new Item(name, sellIn, quality);
-        }
-    }
-
     @Test
     public void testItemName() {
         Item[] items = new Item[]{new ItemBuilder().withName("foo").build()};
@@ -44,6 +13,7 @@ public class GildedRoseTest {
         app.updateQuality();
         assertEquals("foo", app.items[0].name);
     }
+
     @Test
     public void testItemToString() {
         Item[] items = new Item[]{new ItemBuilder().withName("+5 Dexterity Vest").withSellIn(10).withQuality(20).build()};
@@ -146,6 +116,46 @@ public class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertEquals(0, app.items[0].quality);
+    }
+
+    @Test
+    public void testConjuredItemUpdateQuality() {
+        Item[] items = new Item[]{new ItemBuilder().withName("Conjured").withQuality(20).build()};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(18, app.items[0].quality);
+    }
+
+    private class ItemBuilder {
+        private String name;
+        private int quality;
+        private int sellIn;
+
+        ItemBuilder() {
+            name = "+5 Dexterity Vest";
+            sellIn = 15;
+            quality = 20;
+        }
+
+        ItemBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        ItemBuilder withQuality(int quality) {
+            this.quality = quality;
+            return this;
+        }
+
+
+        ItemBuilder withSellIn(int sellIn) {
+            this.sellIn = sellIn;
+            return this;
+        }
+
+        Item build() {
+            return new Item(name, sellIn, quality);
+        }
     }
 
 }
