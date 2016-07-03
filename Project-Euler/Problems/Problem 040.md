@@ -11,5 +11,5 @@ If dn represents the nth digit of the fractional part, find the value of the fol
 
 d_1 × d_10 × d_100 × d_1000 × d_10000 × d_100000 × d_1000000
 
-[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P040_Pandigital_multiples.java)
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/problems/P040_Pandigital_multiples.java)
 ---

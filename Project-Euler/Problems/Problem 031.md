@@ -11,5 +11,5 @@ It is possible to make £2 in the following way:
 
 How many different ways can £2 be made using any number of coins?
 
-[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P031_Coin_sums.java)
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/problems/P031_Coin_sums.java)
 ---

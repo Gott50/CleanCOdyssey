@@ -34,5 +34,5 @@ NOTE: As there are only 16384 routes, it is possible to solve this problem by tr
 
 
 
-[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P018_Maximum_path_sum_I.java)
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/problems/P018_Maximum_path_sum_I.java)
 ---
