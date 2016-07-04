@@ -5,5 +5,5 @@ We shall say that an n-digit number is pandigital if it makes use of all the dig
 
 What is the largest n-digit pandigital prime that exists?
 
-[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P041_Pandigital_multiples.java)
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/problems/P041_Pandigital_multiples.java)
 ---

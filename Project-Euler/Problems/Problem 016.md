@@ -5,5 +5,5 @@
 
 What is the sum of the digits of the number 2^1000?
 
-[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/Problems/P016_Power_digit_sum.java)
+[Solution](https://github.com/Gott50/ProjectEuler-Odyssey/blob/master/Project%20Euler/src/problems/P016_Power_digit_sum.java)
 ---
