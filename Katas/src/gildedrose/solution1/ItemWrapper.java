@@ -1,36 +1,45 @@
 package gildedrose.solution1;
 
 import gildedrose.problem.Item;
+import gildedrose.solution1.ItemTypeStrategyImplementations.*;
 
-class ItemWrapper {
-    private Item item;
 
-    private ItemWrapper(Item item) {
+public class ItemWrapper {
+
+    private final Item item;
+    private final ItemTypeStrategy typeStrategy;
+
+    ItemWrapper(Item item) {
         this.item = item;
+        this.typeStrategy = generateItemTypeStrategy(item);
     }
 
-    static ItemWrapper[] generateArray(Item[] items) {
-        ItemWrapper[] out = new ItemWrapper[items.length];
-        for (int i = 0; i < items.length; i++) {
-            out[i] = new ItemWrapper(items[i]);
-        }
-        return out;
+    private ItemTypeStrategy generateItemTypeStrategy(Item item) {
+        if (item.name.equals("Aged Brie")) return new AgedBrieStrategy();
+        else if (item.name.equals("Sulfuras, Hand of Ragnaros")) return new SulfurasStrategy();
+        else if (item.name.contains("Backstage pass")) return new BackstagePassStrategy();
+        else if (item.name.contains("Conjured")) return new ConjuredItemStrategy();
+        return new NormalItemStrategy();
     }
 
-    String getName() {
+    public String getName() {
         return item.name;
     }
 
-    int getSellIn() {
+    public int getSellIn() {
         return item.sellIn;
     }
 
-    int getQuality() {
+    public int getQuality() {
         return item.quality;
     }
 
     @Override
     public String toString() {
         return item.toString();
+    }
+
+    void update() {
+        typeStrategy.update(item);
     }
 }

@@ -1,4 +1,4 @@
-package gildedrose.solution1;
+package gildedrose.solution1.tests;
 
 import gildedrose.problem.Item;
 

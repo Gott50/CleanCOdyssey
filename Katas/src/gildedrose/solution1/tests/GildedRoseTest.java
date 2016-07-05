@@ -1,6 +1,7 @@
-package gildedrose.solution1;
+package gildedrose.solution1.tests;
 
 import gildedrose.problem.Item;
+import gildedrose.solution1.GildedRose;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -109,7 +110,7 @@ public class GildedRoseTest {
 
     @Test
     public void testConjuredItemUpdateQuality() {
-        GildedRose gildedRose = new GildedRose(new Item[]{new ItemBuilder().withName("Conjured").withQuality(20).build()});
+        GildedRose gildedRose = new GildedRose(new Item[]{new ItemBuilder().withName("Conjured Mana Cake").withQuality(20).build()});
         gildedRose.updateQuality();
         assertEquals(18, gildedRose.getItems()[0].getQuality());
     }
