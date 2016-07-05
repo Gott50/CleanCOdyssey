@@ -9,18 +9,18 @@ Spend everyday 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean C
 
 <table border="0" style="width:100%;">
   <tr>
-    <th>Repeat</th>
+    <th>Cycles</th>
     <th>Kata</th>
      <th>Started</th>
     <th>Solved</th>
   </tr>
   
   <tr>
-    <td>0</td>
+    <td>1</td>
     <td><a href="Katas/src/gildedrose/problem/README.md">
     GildedRose-Refactoring-Kata</a></td>
     <td>2016-07-01</td>
-    <td>?</td>
+    <td>2016-07-05</td>
   </tr>
     
 </table>
