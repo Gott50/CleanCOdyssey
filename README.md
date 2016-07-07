@@ -25,10 +25,18 @@ Spend everyday 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean C
   
   <tr>
     <td>1</td>
-    <td><a href="Katas/src/CSV_tabellieren/">
-    CSV_tabellieren</a></td>
+    <td><a href="Katas/src/CSV_Tableizer/">
+    CSV_Table-izer</a></td>
     <td>2016-07-06</td>
     <td>2016-07-06</td>
+  </tr>
+  
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/FizzBuzz/">
+    FizzBuzz</a></td>
+    <td>2016-07-07</td>
+    <td>2016-07-07</td>
   </tr>
     
 </table>
