@@ -1,12 +1,13 @@
-package CSV_tabellieren.solution1;
+package CSV_Tableizer.solution1;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class CSV_tabellieren {
+public class CSV_Tableizer {
 
-    public static ArrayList<String> tabelliere(ArrayList<String> list) {
+    public static Iterable<String> toTable(Iterable<String> list) {
         ArrayList<String> outs = new ArrayList<>();
         String[][] table = generateTable(list);
         for (int i = 0; i < table.length; i++) {
@@ -16,8 +17,10 @@ public class CSV_tabellieren {
         return outs;
     }
 
-    private static String[][] generateTable(ArrayList<String> list) {
-        String[][] out = new String[list.size()][getNumberOfCoulums(list.get(0))];
+    private static String[][] generateTable(Iterable<String> list1) {
+        ArrayList<String> list = new ArrayList<>((Collection<? extends String>) list1);
+
+        String[][] out = new String[list.size()][getNumberOfColumns(list.get(0))];
         for (int x = 0; x < out.length; x++)
             out[x] = list.get(x).split(";");
         return out;
@@ -32,7 +35,7 @@ public class CSV_tabellieren {
         return out;
     }
 
-    private static int getNumberOfCoulums(String string) {
+    private static int getNumberOfColumns(String string) {
         return string.split(";").length;
     }
 
