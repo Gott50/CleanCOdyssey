@@ -1,23 +1,35 @@
-#[Function Kata „LOC“](http://ccd-school.de/en/coding-dojo/function-katas/loc/)
+#[Function Kata „Mail Followup“](http://ccd-school.de/en/coding-dojo/function-katas/mail-followup/)
 
 
-Implement a function that counts the Lines of Code (LOC) in a C# source text.
+Implement a function which maps special mail followup email addresses to date and time values. You may also take a look at the [„Mail Followup“](http://ccd-school.de/en/coding-dojo/architecture-katas/mail-followup/) architecture kata.
 
-The source text is given as a string. The function returns the number of executable lines of code. Lines containing only comments or whitespace should be filtered [1].
+The function to be implemented should have the following signature:
 
-Please note:
+    DateTime FollowupPointInTime(DateTime now, string emailaddress);
 
-- C# has no nested comments
-- Comment characters –/*, */, //– don’t open/close comments inside of strings
-- Strings inside comments are not recognized. That means, the comment /\*a“\*/“b… ends in front of „b.
-- Executable code can be placed in the same line as a comment: in front of /* or // or after */.
 
-##Variation #1
+Examples for email addresses:
+- 7days@followup.cc
+In 7 days from now on.
+- 12hours@followup.cc
+In 12 hours from now on.
+- aug15-9am@followup.cc
+At next august the 15. at 9 A.M.
+- 1week3days5hours@followup.cc
+In one week, three days and five hours from now on.
 
-Also return the number of lines that contain only comments or whitespace.
-##Endnotes
+Feel free to add more functionality.
 
-[1] Strings count as executable code. Even if they extend over multiple lines or contain whitespace lines.
+
+
+Here’s an example: if the function is called with the following values
+
+    var t = FollowupPointInTime(new DateTime(2013, 2, 4, 10, 30, 0),
+                            "2weeks1day1hour@followup.cc");
+
+then t has a value of
+
+    DateTime(2013, 2, 19, 11, 30, 0).
 
 
 by [Clean Code Developer School](http://ccd-school.de/)
