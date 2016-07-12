@@ -56,4 +56,23 @@ Spend everyday 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean C
     <td>2016-07-10</td>
   </tr>
     
+  
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/LOC/">
+    LOC</a></td>
+    <td>2016-07-11</td>
+    <td>2016-07-11</td>
+  </tr>
+  
+  
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/Mail_Followup/">
+    Mail Followup</a></td>
+    <td>2016-07-12</td>
+    <td>2016-07-12</td>
+  </tr>
+    
+    
 </table>
