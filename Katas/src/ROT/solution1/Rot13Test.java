@@ -31,11 +31,29 @@ public class Rot13Test {
     }
 
     @Test
+    public void sentence_36() {
+        assertEquals("HELLO, WORLD", Rot13.encrypt("Hello, World", 36));
+    }
+
+    @Test
+    public void sentence_73() {
+        assertEquals("HELLO, WORLD", Rot13.encrypt("Hello, World", 36));
+    }
+
+    @Test
     public void umlaute() {
-        assertEquals("OE", Rot13.encrypt("Ö"));
-        assertEquals("AE", Rot13.encrypt("Ä"));
-        assertEquals("UE", Rot13.encrypt("Ü"));
-        assertEquals("SS", Rot13.encrypt("ß"));
+        assertEquals("OE", Rot13.encrypt("Ö", 0));
+        assertEquals("AE", Rot13.encrypt("Ä", 0));
+        assertEquals("UE", Rot13.encrypt("Ü", 0));
+        assertEquals("SS", Rot13.encrypt("ß", 0));
+    }
+
+    @Test
+    public void umlauteShift1() {
+        assertEquals("PF", Rot13.encrypt("Ö", 1));
+        assertEquals("BF", Rot13.encrypt("Ä", 1));
+        assertEquals("VF", Rot13.encrypt("Ü", 1));
+        assertEquals("TT", Rot13.encrypt("ß", 1));
     }
 
     @Test
