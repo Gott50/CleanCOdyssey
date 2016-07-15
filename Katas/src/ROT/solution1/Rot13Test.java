@@ -35,10 +35,6 @@ public class Rot13Test {
         assertEquals("HELLO, WORLD", Rot13.encrypt("Hello, World", 36));
     }
 
-    @Test
-    public void sentence_73() {
-        assertEquals("HELLO, WORLD", Rot13.encrypt("Hello, World", 36));
-    }
 
     @Test
     public void umlaute() {
