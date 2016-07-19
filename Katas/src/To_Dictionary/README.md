@@ -2,7 +2,7 @@
 
 Implement a function that maps a special formatted string into a dictionary. The function should have the following signature:
 
-    IDictionary<string, string> ToDictionary(string input);
+    Map<String, String> toDictionary(String input);
 
 The following table shows some examples for input strings and the resulting dictionary.
 
