@@ -2,7 +2,7 @@
 therefor this is my <b>Clean Code Odyssey</b> to become better programmer.
 
 ###My Goal
-Spend everyday 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean Code Pinciples.
+Spend everyday at least 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean Code Pinciples.
 
 
 <hr>	
