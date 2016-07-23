@@ -2,7 +2,6 @@ package Bounded_Queue.solution1;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -10,8 +9,7 @@ class BoundedQueue<T> {
     private final int size;
     private final ArrayList<T> queue;
     private final ArrayList<T> comingIn;
-    private final Lock readLock;
-    private final Lock writeLock;
+    private final Lock readLock, writeLock;
 
 
     public BoundedQueue(int size) {
@@ -28,6 +26,8 @@ class BoundedQueue<T> {
     }
 
     void enqueue(T value) {
+        while (count() >= size) ;
+
         comingIn.add(value);
         updateQueue();
     }
@@ -36,8 +36,6 @@ class BoundedQueue<T> {
         if (count() != size)
             if (comingIn.size() > 0) {
                 queue.add(getNextValue());
-                if (!readLock.tryLock())
-                    readLock.unlock();
             }
     }
 
@@ -48,12 +46,16 @@ class BoundedQueue<T> {
 
     T dequeue() {
         T out = null;
-        try {
+
+        while (count() == 0) ;
+
+        out = pullValue();
+
+       /* try {
             if (readLock.tryLock(10, TimeUnit.SECONDS)) {
                 if (count() == 0) readLock.lock();
                 else {
-                    out = queue.get(0);
-                    queue.remove(0);
+                    out = pullValue();
                 }
             }
         } catch (InterruptedException e) {
@@ -62,7 +64,15 @@ class BoundedQueue<T> {
             if (!writeLock.tryLock())
                 writeLock.unlock();
             updateQueue();
-        }
+        }//*/
+
+        return out;
+    }
+
+    private T pullValue() {
+        T out;
+        out = queue.get(0);
+        queue.remove(0);
         return out;
     }
 
