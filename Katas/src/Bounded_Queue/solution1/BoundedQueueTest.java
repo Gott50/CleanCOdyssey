@@ -1,7 +1,6 @@
 package Bounded_Queue.solution1;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,38 +12,14 @@ import static org.junit.Assert.assertEquals;
 public class BoundedQueueTest {
     private final int size = 2;
     private final Integer[] values = new Integer[]{1, 2, 3, 4, 5};
-    private BoundedQueue boundedQueue;
     private WritingThread<Integer> writing;
     private ReadingThread reading;
 
     @Before
     public void setUp() throws Exception {
-        boundedQueue = new BoundedQueue<Integer>(size);
+        BoundedQueue boundedQueue = new BoundedQueue<Integer>(size);
         writing = new WritingThread<>(boundedQueue, values);
         reading = new ReadingThread(boundedQueue);
-    }
-
-    @Test
-    @Ignore
-    public void integration() {
-        writing.run();
-        assertEquals(((List) Arrays.asList(1)).toString(), boundedQueue.values().toString());
-        reading.run();
-        writing.run();
-        assertEquals(((List) Arrays.asList(2)).toString(), boundedQueue.values().toString());
-        writing.run();
-        assertEquals(((List) Arrays.asList(2, 3)).toString(), boundedQueue.values().toString());
-        writing.run();
-        reading.run();
-        assertEquals(((List) Arrays.asList(3, 4)).toString(), boundedQueue.values().toString());
-        reading.run();
-        assertEquals(((List) Arrays.asList(4)).toString(), boundedQueue.values().toString());
-        reading.run();
-        reading.run();
-        writing.run();
-        assertEquals(((List) Arrays.asList(5)).toString(), boundedQueue.values().toString());
-        reading.run();//unnecessary
-        assertEquals(5, reading.lastOutput);
     }
 
     @Test
@@ -105,43 +80,43 @@ public class BoundedQueueTest {
     }
 
     @Test
-    @Ignore
     public void Enqueue_BlockToMuch() {
         writing.setLoop(3);
         writing.start();
-        waitForThread(writing);
+        while (writing.boundedQueue.count() < size) ;
         assertEquals((Arrays.asList(1, 2)).toString(), writing.boundedQueue.values().toString());
     }
 
     @Test
-    @Ignore
     public void Enqueue_ReleaseBlock() {
-        writing.setLoop(2);
+        writing.setLoop(3);
         writing.start();
+        reading.start();
         waitForThread(writing);
 
-        WritingThread writing1 = new WritingThread(writing.boundedQueue);
-        writing1.start();
-
-        reading.start();
-
-        waitForThread(reading);
-        waitForThread(writing1);
         List expected = Arrays.asList(2, 3);
-        assertEquals(expected.toString(), boundedQueue.values().toString());
+        assertEquals(expected.toString(), writing.boundedQueue.values().toString());
     }
 
-    class WritingThread<T> extends Thread {
+    @Test
+    public void Dequeue_EmptyQueue() {
+        reading.start();
+        writing.start();
+        waitForThread(reading);
+        assertEquals(values[0], reading.lastOutput);
+    }
+
+    private class WritingThread<T> extends Thread {
         final ArrayList<T> input;
         private final BoundedQueue boundedQueue;
         private int times = 1;
 
-        public WritingThread(BoundedQueue boundedQueue, T... input) {
+        public WritingThread(BoundedQueue boundedQueue, T[] input) {
             this.boundedQueue = boundedQueue;
             this.input = new ArrayList(Arrays.asList(input));
         }
 
-        public void setLoop(int times) {
+        void setLoop(int times) {
             this.times = times;
         }
 
@@ -158,8 +133,8 @@ public class BoundedQueueTest {
         }
     }
 
-    class ReadingThread extends Thread {
-        final ArrayList output = new ArrayList();
+    private class ReadingThread extends Thread {
+        final ArrayList<Object> output = new ArrayList();
         private final BoundedQueue boundedQueue;
         Object lastOutput;
         private int times = 1;
@@ -168,19 +143,12 @@ public class BoundedQueueTest {
             this.boundedQueue = boundedQueue;
         }
 
-        public void setLoop(int times) {
-            this.times = times;
-        }
-
         @Override
         public void run() {
-            for (int i = 0; i < times; i++) read();
-        }
-
-        private void read() {
             lastOutput = boundedQueue.dequeue();
             output.add(lastOutput);
         }
+
     }
 
 

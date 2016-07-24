@@ -2,20 +2,14 @@ package Bounded_Queue.solution1;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 class BoundedQueue<T> {
     private final int size;
     private final ArrayList<T> queue;
     private final ArrayList<T> comingIn;
-    private final Lock readLock, writeLock;
 
 
     public BoundedQueue(int size) {
-        readLock = new ReentrantLock();
-        readLock.lock();
-        writeLock = new ReentrantLock();
         this.size = size;
         queue = new ArrayList<>();
         comingIn = new ArrayList<>();
@@ -45,26 +39,11 @@ class BoundedQueue<T> {
     }
 
     T dequeue() {
-        T out = null;
+        T out;
 
         while (count() == 0) ;
 
         out = pullValue();
-
-       /* try {
-            if (readLock.tryLock(10, TimeUnit.SECONDS)) {
-                if (count() == 0) readLock.lock();
-                else {
-                    out = pullValue();
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            if (!writeLock.tryLock())
-                writeLock.unlock();
-            updateQueue();
-        }//*/
 
         return out;
     }
