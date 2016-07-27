@@ -78,5 +78,12 @@ public class GameTest {
         rollTimes(22, 5);
     }
 
+    @Test
+    public void TotalScore_rollStrikeAnd5And3() throws Exception {
+        rollTimes(1, 10);
+        rollTimes(1, 5);
+        rollTimes(1, 3);
+        assertEquals(18 + 8, bowlingGame.totalScore());
+    }
 
 }
