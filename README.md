@@ -121,6 +121,22 @@ Spend everyday at least 25 min (1 Pomodoro) to work on a Kata using TDD and othe
     <td>2016-07-19</td>
     <td>2016-07-19</td>
   </tr>
+  
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/Bounded_Queue">
+    Bounded Queue</a></td>
+    <td>2016-07-20</td>
+    <td>2016-07-24</td>
+  </tr>
+  
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/Bowling">
+    Bowling</a></td>
+    <td>2016-07-25</td>
+    <td>?</td>
+  </tr>
     
     
 </table>
