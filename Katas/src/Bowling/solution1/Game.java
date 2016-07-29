@@ -4,6 +4,7 @@ class Game {
     private final Frame[] frames = new Frame[10];
     private int rollIndex = 0;
 
+
     int totalScore() {
         int score = 0;
         for (Frame frame : frames) if (frame != null) score += frame.score;
@@ -12,7 +13,7 @@ class Game {
 
     boolean isOver() {
         if (frames[9] != null) {
-            if (rollIndex > 20) return true;
+
             if (isSpare(frames[9])) return false;
             if (rollIndex >= 20) return true;
 
@@ -21,11 +22,11 @@ class Game {
     }
 
     private boolean isSpare(Frame frame) {
-        return !isStrike(frame) && frame.pinsRolled[0] + frame.pinsRolled[1] == 10;
+        return !isStrike(frame) && frame.pinsRolled[1] != null && frame.pinsRolled[0] + frame.pinsRolled[1] == 10;
     }
 
     private boolean isStrike(Frame frame) {
-        return frame.pinsRolled[0] == 10;
+        return frame.pinsRolled[0] != null && frame.pinsRolled[0] == 10;
     }
 
     void addRoll(int pins) throws Exception {
@@ -39,7 +40,7 @@ class Game {
         int index;
         if (rollIndex < 20) {
             index = rollIndex / 2;
-            if (isSecondRoll(rollIndex % 2))
+            if (0 == (rollIndex % 2))
                 frames[index] = new Frame();
         } else index = 9;
         return index;
@@ -59,26 +60,42 @@ class Game {
     }
 
     private void roll(int pins, Frame[] frames, int index) {
-        if (isFirstRollInFrame(frames[index])) {
-            if (index != 0 && isSpare(this.frames[index - 1])) this.frames[index - 1].score += pins;
-            frames[index].pinsRolled[0] = pins;
-        } else if (isSecondRoll(frames[index].pinsRolled[1])) {
-            frames[index].pinsRolled[1] = pins;
-            if (index != 0 && isStrike(this.frames[index - 1])) this.frames[index - 1].score += pins;
-        } else frames[index].pinsRolled[2] = pins;
+        int rollOfFrameIndex = getRollOfFrameIndex(pins, frames[index], index);
+        switch (rollOfFrameIndex) {
+            case 0:
+            case 1:
+                if (index != 0 && isStrike(this.frames[index - 1])) this.frames[index - 1].score += pins;
+                break;
+            case 2:
+
+            default:
+                frames[index].pinsRolled[rollOfFrameIndex] = pins;
+        }
+
+
         frames[index].score += pins;
     }
 
-    private boolean isSecondRoll(int i) {
-        return i == 0;
+    private int getRollOfFrameIndex(int pins, Frame frame, int index) {
+        if (isFirstRollInFrame(frame)) {
+
+            return 0;
+        } else if (wasRolled(frame.pinsRolled[1])) {
+            return 1;
+
+        } else return 2;
+    }
+
+    private boolean wasRolled(Integer i) {
+        return i == null;
     }
 
     private boolean isFirstRollInFrame(Frame frame) {
-        return isSecondRoll(frame.score);
+        return frame.score == 0;
     }
 
     private class Frame {
-        final int[] pinsRolled = new int[3];
+        final Integer[] pinsRolled = new Integer[3];
         int score = 0;
     }
 }
