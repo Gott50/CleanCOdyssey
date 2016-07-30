@@ -57,14 +57,12 @@ public class GameTest {
     }
 
     @Test
-    @Ignore
     public void TotalScore_rollSpareAnd5() throws Exception {
         rollTimes(3, 5);
         assertEquals(20, bowlingGame.totalScore());
     }
 
     @Test
-    @Ignore
     public void TotalScore_after18Rolls_given0_And3Rolls_given5() throws Exception {
         rollTimes(18, 0);
         rollTimes(3, 5);

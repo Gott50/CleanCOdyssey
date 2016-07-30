@@ -22,7 +22,8 @@ class Game {
     }
 
     private boolean isSpare(Frame frame) {
-        return !isStrike(frame) && frame.pinsRolled[1] != null && frame.pinsRolled[0] + frame.pinsRolled[1] == 10;
+        return frame.score == 10;
+        //return frame.pinsRolled[1] != null && frame.pinsRolled[0] + frame.pinsRolled[1] == 10;
     }
 
     private boolean isStrike(Frame frame) {
@@ -64,26 +65,25 @@ class Game {
         switch (rollOfFrameIndex) {
             case 0:
             case 1:
-                if (index != 0 && isStrike(this.frames[index - 1])) this.frames[index - 1].score += pins;
+                if (index > 0 && (isStrike(frames[index - 1]) || isSpare(frames[index - 1])))
+                    frames[index - 1].score += pins;
                 break;
             case 2:
 
             default:
                 frames[index].pinsRolled[rollOfFrameIndex] = pins;
         }
-
-
         frames[index].score += pins;
     }
 
     private int getRollOfFrameIndex(int pins, Frame frame, int index) {
         if (isFirstRollInFrame(frame)) {
-
             return 0;
         } else if (wasRolled(frame.pinsRolled[1])) {
             return 1;
 
-        } else return 2;
+        } else
+            return 2;
     }
 
     private boolean wasRolled(Integer i) {
@@ -95,7 +95,7 @@ class Game {
     }
 
     private class Frame {
-        final Integer[] pinsRolled = new Integer[3];
+        Integer[] pinsRolled = new Integer[3];
         int score = 0;
     }
 }
