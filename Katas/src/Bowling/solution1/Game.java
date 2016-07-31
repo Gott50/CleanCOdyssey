@@ -33,24 +33,15 @@ class Game {
     void addRoll(int pins) throws Exception {
         if (isOver()) throw new Exception();
 
-        roll(pins, frames, getIndex());
+        roll(pins, frames, getFrameIndex());
         rollIndex++;
-    }
-
-    private int getIndex() {
-        int index;
-        if (rollIndex < 20) {
-            index = rollIndex / 2;
-            if (0 == (rollIndex % 2))
-                frames[index] = new Frame();
-        } else index = 9;
-        return index;
+        if (pins == 10) rollIndex++;
     }
 
     private int getFrameIndex() {
-        for (int i = 0; i < frames.length; i++) {
+        for (int i = rollIndex / 2; i < frames.length; i++) {
             if (frames[i] != null) {
-                if ((frames[i].pinsRolled[1] == -1 && !isStrike(frames[i])) || (i == 9 && frames[i].score == 10))
+                if ((wasRolled(frames[i].pinsRolled[1]) && !isStrike(frames[i])))
                     return i;
             } else {
                 frames[i] = new Frame();
@@ -61,7 +52,7 @@ class Game {
     }
 
     private void roll(int pins, Frame[] frames, int index) {
-        int rollOfFrameIndex = getRollOfFrameIndex(pins, frames[index], index);
+        int rollOfFrameIndex = getRollOfFrameIndex(frames[index]);
         switch (rollOfFrameIndex) {
             case 0:
             case 1:
@@ -69,14 +60,12 @@ class Game {
                     frames[index - 1].score += pins;
                 break;
             case 2:
-
-            default:
-                frames[index].pinsRolled[rollOfFrameIndex] = pins;
         }
+        frames[index].pinsRolled[rollOfFrameIndex] = (pins);
         frames[index].score += pins;
     }
 
-    private int getRollOfFrameIndex(int pins, Frame frame, int index) {
+    private int getRollOfFrameIndex(Frame frame) {
         if (isFirstRollInFrame(frame)) {
             return 0;
         } else if (wasRolled(frame.pinsRolled[1])) {

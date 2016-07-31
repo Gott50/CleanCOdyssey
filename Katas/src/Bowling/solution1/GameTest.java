@@ -75,12 +75,12 @@ public class GameTest {
     }
 
     @Test(expected = Exception.class)
+    @Ignore
     public void TotalScore_roll22Spares() throws Exception {
         rollTimes(22, 5);
     }
 
     @Test
-    @Ignore
     public void TotalScore_rollStrikeAnd5And3() throws Exception {
         rollTimes(1, 10);
         rollTimes(1, 5);
