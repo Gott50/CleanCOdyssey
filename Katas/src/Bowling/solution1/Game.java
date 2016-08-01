@@ -1,7 +1,7 @@
 package Bowling.solution1;
 
 class Game {
-    private final Frame[] frames = new Frame[10];
+    final Frame[] frames = new Frame[10];
     private int rollIndex = 0;
 
 
@@ -12,9 +12,13 @@ class Game {
     }
 
     boolean isOver() {
-        if (frames[9] != null) {
+        Frame lastFrame = frames[9];
+        if (lastFrame != null) {
 
-            if (isSpare(frames[9])) return false;
+            if (lastFrame.pinsRolled[1] != null) {
+                return !(isSpare(lastFrame) && lastFrame.pinsRolled[2] == null);
+            }
+
             if (rollIndex >= 20) return true;
 
         }
@@ -48,7 +52,7 @@ class Game {
                 return i;
             }
         }
-        return 0;
+        return 9;
     }
 
     private void roll(int pins, Frame[] frames, int index) {
@@ -83,8 +87,17 @@ class Game {
         return frame.score == 0;
     }
 
-    private class Frame {
-        Integer[] pinsRolled = new Integer[3];
-        int score = 0;
+    class Frame {
+        Integer[] pinsRolled;
+        int score;
+
+        public Frame(int score, Integer... pinsRolled) {
+            this.pinsRolled = pinsRolled;
+            this.score = score;
+        }
+
+        public Frame() {
+            this(0, new Integer[3]);
+        }
     }
 }

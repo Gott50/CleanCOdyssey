@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class GameTest {
-
     private Game bowlingGame;
 
     @Before
@@ -75,7 +74,6 @@ public class GameTest {
     }
 
     @Test(expected = Exception.class)
-    @Ignore
     public void TotalScore_roll22Spares() throws Exception {
         rollTimes(22, 5);
     }
@@ -86,6 +84,17 @@ public class GameTest {
         rollTimes(1, 5);
         rollTimes(1, 3);
         assertEquals(18 + 8, bowlingGame.totalScore());
+    }
+
+    @Test
+    @Ignore
+    public void AddRoll_givenSequence() throws Exception {
+        int[] rollSequence = {1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6};
+        for (int pins : rollSequence) {
+            bowlingGame.addRoll(pins);
+        }
+        Game.Frame[] expectedFrames = new Game.Frame[]{};
+        assertEquals(expectedFrames, bowlingGame.frames);
     }
 
 }
