@@ -48,7 +48,7 @@ class Game {
                 if ((wasRolled(frames[i].pinsRolled[1]) && !isStrike(frames[i])))
                     return i;
             } else {
-                frames[i] = new Frame();
+                frames[i] = new Frame(i == 9 ? 3 : 2);
                 return i;
             }
         }
@@ -85,19 +85,5 @@ class Game {
 
     private boolean isFirstRollInFrame(Frame frame) {
         return frame.score == 0;
-    }
-
-    class Frame {
-        Integer[] pinsRolled;
-        int score;
-
-        public Frame(int score, Integer... pinsRolled) {
-            this.pinsRolled = pinsRolled;
-            this.score = score;
-        }
-
-        public Frame() {
-            this(0, new Integer[3]);
-        }
     }
 }

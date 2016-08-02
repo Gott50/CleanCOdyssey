@@ -26,13 +26,13 @@ public class GameTest {
     }
 
     @Test
-    public void TotalScore_after1Roll_given0() throws Exception {
+    public void totalScore_after1Roll_given0() throws Exception {
         rollTimes(1, 0);
         assertEquals(0, bowlingGame.totalScore());
     }
 
     @Test
-    public void TotalScore_after20Roll_given0() throws Exception {
+    public void totalScore_after20Roll_given0() throws Exception {
         rollTimes(20, 0);
         assertEquals(0, bowlingGame.totalScore());
     }
@@ -50,36 +50,36 @@ public class GameTest {
     }
 
     @Test
-    public void TotalScore_after20Roll_given1() throws Exception {
+    public void totalScore_after20Roll_given1() throws Exception {
         rollTimes(20, 1);
         assertEquals(20, bowlingGame.totalScore());
     }
 
     @Test
-    public void TotalScore_rollSpareAnd5() throws Exception {
+    public void totalScore_rollSpareAnd5() throws Exception {
         rollTimes(3, 5);
         assertEquals(20, bowlingGame.totalScore());
     }
 
     @Test
-    public void TotalScore_after18Rolls_given0_And3Rolls_given5() throws Exception {
+    public void totalScore_after18Rolls_given0_And3Rolls_given5() throws Exception {
         rollTimes(18, 0);
         rollTimes(3, 5);
         assertEquals(15, bowlingGame.totalScore());
     }
 
     @Test(expected = Exception.class)
-    public void TotalScore_rollAfterGameOver() throws Exception {
+    public void totalScore_rollAfterGameOver() throws Exception {
         rollTimes(21, 0);
     }
 
     @Test(expected = Exception.class)
-    public void TotalScore_roll22Spares() throws Exception {
+    public void totalScore_roll22Spares() throws Exception {
         rollTimes(22, 5);
     }
 
     @Test
-    public void TotalScore_rollStrikeAnd5And3() throws Exception {
+    public void totalScore_rollStrikeAnd5And3() throws Exception {
         rollTimes(1, 10);
         rollTimes(1, 5);
         rollTimes(1, 3);
@@ -88,13 +88,34 @@ public class GameTest {
 
     @Test
     @Ignore
-    public void AddRoll_givenSequence() throws Exception {
-        int[] rollSequence = {1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6};
+    public void integration() throws Exception {
+        rollSequence(new int[]{1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6});
+        Frame[] expectedFrames = new Frame[]{
+                new Frame(5, 1, 4),
+                new Frame(9, 4, 5),
+                new Frame(15, 6, 4),
+                new Frame(20, 5, 5),
+                new Frame(11, 10),
+                new Frame(1, 0, 1),
+                new Frame(16, 7, 3),
+                new Frame(20, 6, 4),
+                new Frame(20, 10),
+                new Frame(16, 2, 8, 6)};
+        assertEquals(printFrames(expectedFrames), printFrames(bowlingGame.frames));
+    }
+
+    private void rollSequence(int[] rollSequence) throws Exception {
         for (int pins : rollSequence) {
             bowlingGame.addRoll(pins);
         }
-        Game.Frame[] expectedFrames = new Game.Frame[]{};
-        assertEquals(expectedFrames, bowlingGame.frames);
+    }
+
+    private String printFrames(Frame[] frames) {
+        String out = "";
+        for (Frame frame : frames) {
+            out += frame.toString();
+        }
+        return out;
     }
 
 }
