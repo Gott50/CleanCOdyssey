@@ -1,22 +1,40 @@
 package Bowling.solution1;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Frame {
-    Integer[] pinsRolled;
+class Frame {
+    final ArrayList<Integer> pinsRolled;
     int score;
 
     public Frame(int score, Integer... pinsRolled) {
-        this.pinsRolled = pinsRolled;
+        this.pinsRolled = new ArrayList<>(Arrays.asList(pinsRolled));
         this.score = score;
     }
 
-    public Frame(int length) {
-        this(0, new Integer[length]);
+    public Frame() {
+        this(0);
     }
 
     @Override
     public String toString() {
-        return "(" + Arrays.asList(pinsRolled) + "," + score + ")";
+        return "(" + pinsRolled + "," + score + ")";
+    }
+
+    boolean isSpare() {
+        return pinsRolled.size() == 2 && score == 10;
+    }
+
+    boolean isStrike() {
+        return pinsRolled.size() == 1 && pinsRolled.get(0) == 10;
+    }
+
+    void addPinsRolled(int pins) {
+        pinsRolled.add(pins);
+        score += pins;
+    }
+
+    boolean wasNotRolled(Integer index) {
+        return pinsRolled.size() < index + 1;
     }
 }
