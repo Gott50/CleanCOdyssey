@@ -10,6 +10,7 @@ class BoxPlot {
         this.values = new ArrayList<>(Arrays.asList(values));
     }
 
+
     int getMinimum() {
         return values.get(0);
     }
@@ -19,18 +20,24 @@ class BoxPlot {
     }
 
     float getMedian() {
-        return generateMedian(2);
+        return generateMedian(2, 0);
     }
 
-    private float generateMedian(int power) {
+    private float generateMedian(int power, double shiftPower) {
+        int shift = (int) (values.size() * (shiftPower));
+        int index = values.size() / power + shift;
         if (values.size() % power == power / 2)
-            return values.get(values.size() / power);
+            return values.get(index);
         else
-            return ((float) values.get(values.size() / power) +
-                    (float) values.get(values.size() / power - 1)) / 2;
+            return ((float) values.get(index) +
+                    (float) values.get(index - 1)) / 2;
     }
 
     float getLowerQuartile() {
-        return generateMedian(4);
+        return generateMedian(4, 0);
+    }
+
+    float getUpperQuartile() {
+        return generateMedian(4, 0.5);
     }
 }
