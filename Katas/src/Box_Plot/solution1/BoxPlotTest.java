@@ -1,7 +1,6 @@
 package Box_Plot.solution1;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -35,36 +34,15 @@ public class BoxPlotTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {new Integer[]{1, 2, 3, 4}, 1, 4, 2.5f, 1.5f, 3.5f},
+                {new Integer[]{2, 4, 1, 3}, 1, 4, 2.5f, 1.5f, 3.5f},
+                {new Integer[]{17, 18, 18, 19, 19, 20, 24, 24, 24, 25}, 17, 25, 19.5f, 18.0f, 24.0f},
                 // {new Integer[]{1, 2, 3}, 1, 3, 2.0f, 1.5f, 2.5f},
         });
     }
 
     @Before
     public void setUp() throws Exception {
-
         boxPlot = new BoxPlot(values);
-
-    }
-
-    @Test
-    @Ignore
-    public void median_unevenList() {
-        BoxPlot boxPlot = new BoxPlot(1, 2, 3);
-        assertEquals(2.0f, boxPlot.getMedian());
-    }
-
-    @Test
-    @Ignore
-    public void lowerQuartile_unevenQuartile() {
-        BoxPlot boxPlot = new BoxPlot(1, 2, 3, 4, 5, 6);
-        assertEquals(2.0f, boxPlot.getLowerQuartile());
-    }
-
-    @Test
-    @Ignore
-    public void upperQuartile_unevenQuartile() {
-        BoxPlot boxPlot = new BoxPlot(1, 2, 3, 4, 5, 6);
-        assertEquals(5.0f, boxPlot.getUpperQuartile());
     }
 
     @Test
@@ -90,6 +68,24 @@ public class BoxPlotTest {
     @Test
     public void upperQuartile() {
         assertEquals(upperQuartile, boxPlot.getUpperQuartile());
+    }
+
+    @Test
+    public void median_unevenList() {
+        BoxPlot boxPlot = new BoxPlot(1, 2, 3);
+        assertEquals(2.0f, boxPlot.getMedian());
+    }
+
+    @Test
+    public void lowerQuartile_unevenQuartile() {
+        BoxPlot boxPlot = new BoxPlot(1, 2, 3, 4, 5, 6);
+        assertEquals(2.0f, boxPlot.getLowerQuartile());
+    }
+
+    @Test
+    public void upperQuartile_unevenQuartile() {
+        BoxPlot boxPlot = new BoxPlot(1, 2, 3, 4, 5, 6);
+        assertEquals(5.0f, boxPlot.getUpperQuartile());
     }
 
 

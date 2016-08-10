@@ -2,12 +2,15 @@ package Box_Plot.solution1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 class BoxPlot {
     private ArrayList<Integer> values;
 
     BoxPlot(Integer... values) {
         this.values = new ArrayList<>(Arrays.asList(values));
+        Collections.sort(this.values);
+
     }
 
 
@@ -20,24 +23,24 @@ class BoxPlot {
     }
 
     float getMedian() {
-        return generateMedian(2, 0);
+        return generateQuartile(0.5);
     }
 
-    private float generateMedian(int power, double shiftPower) {
-        int shift = (int) (values.size() * (shiftPower));
-        int index = values.size() / power + shift;
-        if (values.size() % power == power / 2)
-            return values.get(index);
+    private float generateQuartile(double order) {
+        double index = values.size() * order;
+        if (index % 1 != 0)
+            return values.get((int) index);
         else
-            return ((float) values.get(index) +
-                    (float) values.get(index - 1)) / 2;
+            return ((float) values.get((int) index) +
+                    (float) values.get((int) (index - 1))) / 2;
     }
 
     float getLowerQuartile() {
-        return generateMedian(4, 0);
+        return generateQuartile(0.25);
     }
 
     float getUpperQuartile() {
-        return generateMedian(4, 0.5);
+        return generateQuartile(0.75);
     }
+
 }
