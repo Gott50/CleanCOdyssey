@@ -36,7 +36,6 @@ public class BoxPlotTest {
                 {new Integer[]{1, 2, 3, 4}, 1, 4, 2.5f, 1.5f, 3.5f},
                 {new Integer[]{2, 4, 1, 3}, 1, 4, 2.5f, 1.5f, 3.5f},
                 {new Integer[]{17, 18, 18, 19, 19, 20, 24, 24, 24, 25}, 17, 25, 19.5f, 18.0f, 24.0f},
-                // {new Integer[]{1, 2, 3}, 1, 3, 2.0f, 1.5f, 2.5f},
         });
     }
 
