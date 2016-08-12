@@ -11,8 +11,19 @@ class GraphicalControl {
         String out = "";
         for (int number = boxPlot.getMinimum();
              number <= boxPlot.getMaximum(); number++) {
-            if (!out.isEmpty()) out += "   ";
+            if (!out.isEmpty()) {
+                out += "  ";
+                out += getCharTimesMaxLength(' ');
+            }
             out += number + "";
+        }
+        return out;
+    }
+
+    private String getCharTimesMaxLength(char c) {
+        String out = "";
+        for (int i = 0; i < String.valueOf(boxPlot.getMaximum()).length(); i++) {
+            out += c;
         }
         return out;
     }
@@ -23,7 +34,10 @@ class GraphicalControl {
              number <= boxPlot.getMaximum(); number++) {
             if (number == boxPlot.getMaximum()) out += "|";
             else
-                out += "|-|-";
+                out += "|" +
+                        getCharTimesMaxLength('-') +
+                        "|" +
+                        getCharTimesMaxLength('-');
         }
         return out;
     }
@@ -42,7 +56,7 @@ class GraphicalControl {
         String out = String.valueOf(pauseChar);
         for (float number = start;
              number <= end; number += 0.5f) {
-            out += pauseChar;
+            out += getCharTimesMaxLength(pauseChar);
         }
         return out;
     }

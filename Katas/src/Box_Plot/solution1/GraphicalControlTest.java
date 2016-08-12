@@ -61,11 +61,11 @@ public class GraphicalControlTest {
     public void integration() {
         GraphicalControl graph = new GraphicalControl(new BoxPlot(17, 18, 18, 19, 19, 20, 24, 24, 24, 25));
         String expected;
-        expected = "1   2   3   4" + "\n"
-                + "|-|-|-|-|-|-|" + "\n"
-                + "   _______" + "\n"
-                + "|-|   |   |-|" + "\n"
-                + "   ‾‾‾‾‾‾‾";
+        expected = "17    18    19    20    21    22    23    24    25" + "\n"
+                + "|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|" + "\n"
+                + "       ___________________________________" + "\n"
+                + "|-----|        |                          |-----|" + "\n"
+                + "       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾";
 
         assertEquals(expected, graph.printBoxPlot());
     }
