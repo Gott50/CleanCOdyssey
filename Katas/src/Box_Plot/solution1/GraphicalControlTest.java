@@ -56,6 +56,7 @@ public class GraphicalControlTest {
         assertEquals(expected, graph.printBoxPlot());
     }
 
+
     @Test
     @Ignore
     public void integration() {
