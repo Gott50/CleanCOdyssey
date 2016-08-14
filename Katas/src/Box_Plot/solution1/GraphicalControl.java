@@ -1,5 +1,7 @@
 package Box_Plot.solution1;
 
+import org.jetbrains.annotations.NotNull;
+
 class GraphicalControl {
     private final BoxPlot boxPlot;
 
@@ -29,25 +31,30 @@ class GraphicalControl {
     }
 
     String printNumberLine() {
-        char filler = '-';
-        char mark = '|';
+        return generateMarks('-', '|', boxPlot.getMinimum(), boxPlot.getMaximum());
+    }
 
-
-        String markStr = String.valueOf(mark);
-
+    @NotNull
+    private String generateMarks(char filler, char mark, float start, float end) {
         String out = "";
-        for (int number = boxPlot.getMinimum();
-             number <= boxPlot.getMaximum(); number++) {
-            if (number == boxPlot.getMaximum())
-                out += markStr;
+        for (float number = start;
+             number <= end; number += 0.5f) {
+            if (number == end)
+                out += String.valueOf(mark);
             else {
-                out += markStr +
-                        getCharTimesMaxLength(filler) +
-                        markStr +
+                out +=
+                        String.valueOf(mark) +
                         getCharTimesMaxLength(filler);
             }
         }
         return out;
+    }
+
+    private String generatePause(char startChar, char pauseChar, float start, float end, char endChar) {
+        String out = generateMarks(pauseChar, pauseChar, start, end);
+        if (out.length() >= 2)
+            return startChar + out.substring(1, out.length() - 1) + endChar;
+        else return out;
     }
 
     private String generatePause(char pauseChar, float start, float end) {
@@ -63,37 +70,26 @@ class GraphicalControl {
     }
 
     private String generateBoxPlotEdge(char character) {
-        String out = generatePause(' ', boxPlot.getMinimum(), boxPlot.getLowerQuartile());
-        for (float number = boxPlot.getLowerQuartile();
-             number < boxPlot.getUpperQuartile() - 0.5f; number += 0.5f) {
-            out += character + "" + character;
-        }
-        out += character;
-        return out;
+        String out = generatePause(' ', boxPlot.getMinimum(), boxPlot.getLowerQuartile())
+                + generatePause(character, boxPlot.getLowerQuartile(), boxPlot.getUpperQuartile());
+        return out.substring(0, out.length() - 2);
     }
 
-    String generateBoxPlotBody() {
+    String printBoxPlotBody() {
+        String lowerQToMedian = generatePause(' ', boxPlot.getLowerQuartile(), boxPlot.getMedian());
+        String medianToUpperQ = generatePause(' ', boxPlot.getMedian(), boxPlot.getUpperQuartile());
         return generatePause('|', '-', boxPlot.getMinimum(), boxPlot.getLowerQuartile(), '|')
-                + generatePause(' ', boxPlot.getLowerQuartile(), boxPlot.getMedian() - 0.5f) + "|"
-                + generatePause(' ', boxPlot.getMedian(), boxPlot.getUpperQuartile() - 0.5f) + "|"
-                + generatePause('-', boxPlot.getUpperQuartile(), boxPlot.getMaximum() - 1) + "|";
-    }
-
-    private String generatePause(char startChar, char pauseChar, float start, float end, char endChar) {
-        String out =
-                String.valueOf(startChar) + getCharTimesMaxLength(pauseChar).substring(1);
-        for (float number = start;
-             number < end; number += 0.5f) {
-            out += pauseChar + getCharTimesMaxLength(pauseChar);
-        }
-        return out.substring(0, out.length() - 1) + endChar;
+                + lowerQToMedian.substring(0, lowerQToMedian.length() - 2)
+                + '|'
+                + medianToUpperQ.substring(0, medianToUpperQ.length() - 2)
+                + generatePause('|', '-', boxPlot.getUpperQuartile(), boxPlot.getMaximum(), '|');
     }
 
     String printBoxPlot() {
         return printNumbers() + "\n"
                 + printNumberLine() + "\n"
                 + printUpperEdge() + "\n"
-                + generateBoxPlotBody() + "\n"
+                + printBoxPlotBody() + "\n"
                 + printLowerEdge();
     }
 }
