@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 class GraphicalControl {
     private final BoxPlot boxPlot;
 
-    GraphicalControl(BoxPlot boxPlot) {
+    @NotNull GraphicalControl(BoxPlot boxPlot) {
         this.boxPlot = boxPlot;
     }
 
@@ -13,13 +13,15 @@ class GraphicalControl {
         String out = "";
         for (int number = boxPlot.getMinimum();
              number <= boxPlot.getMaximum(); number++) {
-            if (!out.isEmpty()) {
-                out += "  ";
-                out += getCharTimesMaxLength(' ');
-            }
-            out += number + "";
+            if (!out.isEmpty()) out += getMarkAndFiller("  ", ' ');
+            out += number;
         }
         return out;
+    }
+
+    @NotNull
+    private String getMarkAndFiller(String mark, char filler) {
+        return mark + getCharTimesMaxLength(filler);
     }
 
     private String getCharTimesMaxLength(char c) {
@@ -37,16 +39,10 @@ class GraphicalControl {
     @NotNull
     private String generateMarks(char filler, char mark, float start, float end) {
         String out = "";
-        for (float number = start;
-             number <= end; number += 0.5f) {
+        for (float number = start; number <= end; number += 0.5f)
             if (number == end)
                 out += String.valueOf(mark);
-            else {
-                out +=
-                        String.valueOf(mark) +
-                        getCharTimesMaxLength(filler);
-            }
-        }
+            else out += getMarkAndFiller(String.valueOf(mark), filler);
         return out;
     }
 
