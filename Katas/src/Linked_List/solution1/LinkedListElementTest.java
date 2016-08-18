@@ -6,9 +6,10 @@ import java.util.Arrays;
 
 import static org.testng.AssertJUnit.assertEquals;
 
+@SuppressWarnings("unchecked")
 public class LinkedListElementTest {
 
-    private final LinkedListElement<Integer> list = new LinkedListElement(1);
+    private final LinkedListElement<Integer> list = new LinkedListElement((Integer) 1);
 
 
     @Test

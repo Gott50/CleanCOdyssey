@@ -14,9 +14,8 @@ class LinkedListElement<T> {
         return item;
     }
 
-    public LinkedListElement<T> setItem(T item) {
+    public void setItem(T item) {
         this.item = item;
-        return this;
     }
 
     LinkedListElement<T> getNext() {
