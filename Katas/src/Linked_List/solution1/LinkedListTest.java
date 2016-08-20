@@ -27,9 +27,14 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
-    public void isEmpty() throws Exception {
+    public void isEmpty_givenEmpty() throws Exception {
+        assertEquals(true, list.isEmpty());
+    }
 
+    @Test
+    public void isEmpty_givenNotEmpty() throws Exception {
+        list.add(1);
+        assertEquals(false, list.isEmpty());
     }
 
     @Test
@@ -51,16 +56,27 @@ public class LinkedListTest {
     }
 
     @Test
-    public void add() throws Exception {
+    public void add2() throws Exception {
         list.add(1);
         list.add(2);
-        assertEquals(2, list.size());
+        list.add(3);
+        assertEquals(3, list.size());
+    }
+
+    @Test
+    public void add1() throws Exception {
+        list.add(1);
+        assertEquals(1, list.get(0));
     }
 
     @Test
     @Ignore
     public void remove() throws Exception {
-
+        list.add(1);
+        list.add(2);
+        list.remove(0);
+        assertEquals(2, list.get(0));
+        assertEquals(1, list.size());
     }
 
     @Test
@@ -82,20 +98,18 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void get() throws Exception {
-
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(1, list.get(0));
+        assertEquals(2, list.get(1));
+        assertEquals(3, list.get(2));
     }
 
     @Test
     @Ignore
     public void set() throws Exception {
-
-    }
-
-    @Test
-    @Ignore
-    public void add1() throws Exception {
 
     }
 

@@ -15,7 +15,7 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return elements == null;
     }
 
     @Override
@@ -38,7 +38,7 @@ class LinkedList<T> implements List {
     public boolean add(@Flow(targetIsContainer = true) Object o) {
         try {
             if (elements == null) elements = new LinkedListElement<T>((T) o);
-            else elements.setNext((T) o);
+            else elements.getLast().setNext(o);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -68,7 +68,7 @@ class LinkedList<T> implements List {
 
     @Override
     public Object get(int index) {
-        return null;
+        return elements.toArray().get(index);
     }
 
     @Override

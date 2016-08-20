@@ -58,4 +58,20 @@ class LinkedListElement<T> {
 
         return first;
     }
+
+    LinkedListElement getLast() {
+        LinkedListElement<T> last = this;
+        while (last.next != null)
+            last = last.getNext();
+
+        return last;
+    }
+
+    private LinkedListElement get(int index) {
+        LinkedListElement current = getFirst();
+        for (int i = 0; i < index; i++) {
+            current = current.getNext();
+        }
+        return current;
+    }
 }
