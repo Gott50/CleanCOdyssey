@@ -22,14 +22,14 @@ class LinkedListElement<T> {
         return next;
     }
 
-    LinkedListElement<T> setNext(T item) {
-        this.next = new LinkedListElement<>(item);
-        return this.next;
-    }
-
     void setNext(LinkedListElement<T> next) {
         this.next = next;
         this.next.prev = this;
+    }
+
+    LinkedListElement<T> setNext(T item) {
+        this.next = new LinkedListElement<>(item);
+        return this.next;
     }
 
     ArrayList<T> toArray() {
@@ -51,7 +51,7 @@ class LinkedListElement<T> {
         this.prev.next = this;
     }
 
-    LinkedListElement getFirst() {
+    LinkedListElement<T> getFirst() {
         LinkedListElement<T> first = this;
         while (first.prev != null)
             first = first.getPrev();
@@ -67,11 +67,16 @@ class LinkedListElement<T> {
         return last;
     }
 
-    private LinkedListElement get(int index) {
-        LinkedListElement current = getFirst();
+    private LinkedListElement<T> get(int index) {
+        LinkedListElement<T> current = getFirst();
         for (int i = 0; i < index; i++) {
             current = current.getNext();
         }
         return current;
+    }
+
+
+    void addLast(T o) {
+        this.getLast().setNext(o);
     }
 }

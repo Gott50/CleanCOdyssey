@@ -3,7 +3,10 @@ package Linked_List.solution1;
 import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 class LinkedList<T> implements List {
     private LinkedListElement<T> elements;
@@ -20,29 +23,35 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        return elements.toArray().contains(o);
     }
 
     @Override
     public @NotNull Iterator iterator() {
-        return null;
+        return elements.toArray().iterator();
     }
 
     @NotNull
     @Override
     public Object[] toArray() {
-        return Arrays.asList(elements).toArray();
+        Object[] out = new Object[this.size()];
+        for (int i = 0; i < this.size(); i++) {
+            out[i] = this.get(i);
+        }
+        return out;
     }
 
     @Override
     public boolean add(@Flow(targetIsContainer = true) Object o) {
+        T addition;
         try {
-            if (elements == null) elements = new LinkedListElement<T>((T) o);
-            else elements.getLast().setNext(o);
+            addition = (T) o;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        if (elements == null) elements = new LinkedListElement<>(addition);
+        else elements.addLast(addition);
         return true;
     }
 
@@ -83,7 +92,7 @@ class LinkedList<T> implements List {
 
     @Override
     public Object remove(int index) {
-        return null;
+        return get(index);
     }
 
     @Override

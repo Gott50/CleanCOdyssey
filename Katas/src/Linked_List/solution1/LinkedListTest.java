@@ -4,7 +4,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 public class LinkedListTest {
     private LinkedList<Integer> list;
@@ -15,14 +18,13 @@ public class LinkedListTest {
     }
 
     @Test
-    public void size_emty() throws Exception {
+    public void size_empty() throws Exception {
         assertEquals(0, list.size());
     }
 
     @Test
-    public void size_notEmty() throws Exception {
-        list.add(1);
-        list.add(2);
+    public void size_notEmpty() throws Exception {
+        addNumbers(2);
         assertEquals(2, list.size());
     }
 
@@ -38,28 +40,32 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void contains() throws Exception {
+        addNumbers(3);
+        assertEquals(true, list.contains(2));
+        assertEquals(false, list.contains(0));
+    }
 
+    private void addNumbers(int to) {
+        for (int i = 1; i <= to; i++)
+            list.add(i);
     }
 
     @Test
-    @Ignore
     public void iterator() throws Exception {
-
+        addNumbers(5);
+        assertEquals(true, list.iterator() instanceof Iterator);
     }
 
     @Test
-    @Ignore
     public void toArray() throws Exception {
-
+        addNumbers(5);
+        assertArrayEquals(new Object[]{1, 2, 3, 4, 5}, list.toArray());
     }
 
     @Test
     public void add2() throws Exception {
-        list.add(1);
-        list.add(2);
-        list.add(3);
+        addNumbers(3);
         assertEquals(3, list.size());
     }
 
@@ -72,11 +78,13 @@ public class LinkedListTest {
     @Test
     @Ignore
     public void remove() throws Exception {
-        list.add(1);
-        list.add(2);
-        list.remove(0);
-        assertEquals(2, list.get(0));
-        assertEquals(1, list.size());
+        addNumbers(5);
+
+        assertEquals(2, list.remove(1));
+
+        assertEquals(1, list.get(0));
+        assertEquals(3, list.get(1));
+        assertEquals(4, list.size());
     }
 
     @Test
@@ -99,9 +107,7 @@ public class LinkedListTest {
 
     @Test
     public void get() throws Exception {
-        list.add(1);
-        list.add(2);
-        list.add(3);
+        addNumbers(3);
         assertEquals(1, list.get(0));
         assertEquals(2, list.get(1));
         assertEquals(3, list.get(2));
