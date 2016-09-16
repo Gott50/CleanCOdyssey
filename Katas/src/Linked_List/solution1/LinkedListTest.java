@@ -4,9 +4,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 public class LinkedListTest {
@@ -54,7 +56,7 @@ public class LinkedListTest {
     @Test
     public void iterator() throws Exception {
         addNumbers(5);
-        assertEquals(true, list.iterator() instanceof Iterator);
+        assertEquals(true, list.iterator() instanceof Iterator); //TODO returns always true
     }
 
     @Test
@@ -76,8 +78,7 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
-    public void remove() throws Exception {
+    public void remove_Index() throws Exception {
         addNumbers(5);
 
         assertEquals(2, list.remove(1));
@@ -88,9 +89,24 @@ public class LinkedListTest {
     }
 
     @Test
+
+    public void remove_Object() throws Exception {
+        addNumbers(5);
+
+        assertEquals(true, list.remove((Object) 2));
+
+        assertEquals(1, list.get(0));
+        assertEquals(3, list.get(1));
+        assertEquals(4, list.size());
+    }
+
+    @Test
     @Ignore
     public void addAll() throws Exception {
+        Object[] expecteds = {1, 2, 3, 4, 5};
 
+        assertTrue(list.addAll(Arrays.asList(expecteds)));
+        assertArrayEquals(expecteds, list.toArray());
     }
 
     @Test

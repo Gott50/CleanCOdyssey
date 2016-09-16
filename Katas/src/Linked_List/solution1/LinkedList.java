@@ -57,12 +57,24 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        boolean contains = contains(o);
+        remove(elements.toArray().indexOf(o));
+
+        return contains;
     }
 
     @Override
     public boolean addAll(@Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
-        return false;
+        //TODO
+        try {
+            for (Object element : c.toArray()) {
+                elements.addLast((T) element);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+
     }
 
     @Override
@@ -92,7 +104,11 @@ class LinkedList<T> implements List {
 
     @Override
     public Object remove(int index) {
-        return get(index);
+        Object out = get(index);
+
+        elements.get(index - 1).setNext(elements.get(index + 1));
+
+        return out;
     }
 
     @Override
