@@ -101,12 +101,11 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void addAll() throws Exception {
-        Object[] expecteds = {1, 2, 3, 4, 5};
+        Object[] expects = {1, 2, 3, 4, 5};
 
-        assertTrue(list.addAll(Arrays.asList(expecteds)));
-        assertArrayEquals(expecteds, list.toArray());
+        assertTrue(list.addAll(Arrays.asList(expects)));
+        assertArrayEquals(expects, list.toArray());
     }
 
     @Test
@@ -116,9 +115,10 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void clear() throws Exception {
-
+        addNumbers(5);
+        list.clear();
+        assertTrue(list.isEmpty());
     }
 
     @Test
@@ -130,27 +130,30 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void set() throws Exception {
+        addNumbers(5);
 
+        assertEquals(2, list.set(1, 5));
+
+        assertEquals(5, list.get(1));
+        assertEquals(5, list.size());
     }
 
-    @Test
-    @Ignore
-    public void remove1() throws Exception {
-
-    }
 
     @Test
-    @Ignore
     public void indexOf() throws Exception {
+        addNumbers(5);
+        list.add(2);
 
+        assertEquals(1, list.indexOf(2));
     }
 
     @Test
-    @Ignore
     public void lastIndexOf() throws Exception {
+        addNumbers(5);
+        list.add(2);
 
+        assertEquals(5, list.lastIndexOf(2));
     }
 
     @Test
@@ -166,9 +169,9 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void subList() throws Exception {
-
+        addNumbers(6);
+        assertArrayEquals(new Object[]{3, 4}, list.subList(2, 4).toArray());
     }
 
     @Test
@@ -181,12 +184,16 @@ public class LinkedListTest {
     @Ignore
     public void removeAll() throws Exception {
 
+        assertTrue(list.removeAll(Arrays.asList(3, 4)));
+
     }
 
     @Test
     @Ignore
     public void containsAll() throws Exception {
+        addNumbers(5);
 
+        assertTrue(list.containsAll(Arrays.asList(3, 4)));
     }
 
     @Test

@@ -65,10 +65,9 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean addAll(@Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
-        //TODO
         try {
             for (Object element : c.toArray()) {
-                elements.addLast((T) element);
+                add(element);
             }
         } catch (Exception e) {
             return false;
@@ -84,7 +83,7 @@ class LinkedList<T> implements List {
 
     @Override
     public void clear() {
-
+        elements = null;
     }
 
     @Override
@@ -94,7 +93,11 @@ class LinkedList<T> implements List {
 
     @Override
     public Object set(int index, @Flow(targetIsContainer = true) Object element) {
-        return null;
+        Object out = get(index);
+
+        elements.get(index).setItem((T) element);
+
+        return out;
     }
 
     @Override
@@ -113,12 +116,12 @@ class LinkedList<T> implements List {
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        return elements.toArray().indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        return elements.toArray().lastIndexOf(o);
     }
 
     @Override
@@ -135,7 +138,11 @@ class LinkedList<T> implements List {
     @NotNull
     @Override
     public List subList(int fromIndex, int toIndex) {
-        return null;
+        @NotNull List out = new LinkedList<T>();
+
+        out.addAll(elements.toArray().subList(fromIndex, toIndex));
+
+        return out;
     }
 
     @Override
@@ -150,6 +157,9 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean containsAll(Collection c) {
+        for (Object o : c) {
+
+        }
         return false;
     }
 
