@@ -32,19 +32,19 @@ public class LinkedListElementTest {
     @Test
     public void toArray() throws Exception {
         list.setNext(2).setNext(3).setNext(4).setNext(5);
-        assertEquals(Arrays.asList(1, 2, 3, 4, 5), list.toArray());
+        assertEquals(Arrays.asList(1, 2, 3, 4, 5), list.toArrayList());
     }
 
     @Test
     public void setPrev() throws Exception {
         list.setPrev(new LinkedListElement(11));
-        assertEquals(Arrays.asList(11, 1), list.getPrev().toArray());
+        assertEquals(Arrays.asList(11, 1), list.getPrev().toArrayList());
     }
 
     @Test
     public void getFist() throws Exception {
         list.setPrev(new LinkedListElement(11));
         list.setNext(2);
-        assertEquals(Arrays.asList(11, 1, 2), list.getFirst().toArray());
+        assertEquals(Arrays.asList(11, 1, 2), list.getFirst().toArrayList());
     }
 }

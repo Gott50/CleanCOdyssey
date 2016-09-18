@@ -32,7 +32,7 @@ class LinkedListElement<T> {
         return this.next;
     }
 
-    ArrayList<T> toArray() {
+    ArrayList<T> toArrayList() {
         ArrayList<T> out = new ArrayList<>();
         LinkedListElement<T> list = this;
         while (list != null) {

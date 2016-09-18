@@ -66,6 +66,22 @@ public class LinkedListTest {
     }
 
     @Test
+    public void toArray_ObjectArray_givenBigEnoughArray() throws Exception {
+        addNumbers(5);
+
+        Integer[] bigEnough = new Integer[5];
+        assertArrayEquals(new Integer[]{1, 2, 3, 4, 5}, list.toArray(bigEnough));
+    }
+
+    @Test
+    @Ignore
+    public void toArray_ObjectArray_givenToSmallArray() throws Exception {
+        addNumbers(5);
+
+        assertArrayEquals(new Integer[]{1, 2, 3, 4, 5}, list.toArray(new Integer[0]));
+    }
+
+    @Test
     public void add2() throws Exception {
         addNumbers(3);
         assertEquals(3, list.size());
@@ -175,32 +191,26 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void retainAll() throws Exception {
+        addNumbers(5);
 
+        assertTrue(list.retainAll(Arrays.asList(1, 2, 5)));
+        assertArrayEquals(new Object[]{1, 2, 5}, list.toArray());
     }
 
     @Test
-    @Ignore
     public void removeAll() throws Exception {
+        addNumbers(5);
 
         assertTrue(list.removeAll(Arrays.asList(3, 4)));
-
+        assertArrayEquals(new Object[]{1, 2, 5}, list.toArray());
     }
 
     @Test
-    @Ignore
     public void containsAll() throws Exception {
         addNumbers(5);
 
         assertTrue(list.containsAll(Arrays.asList(3, 4)));
     }
-
-    @Test
-    @Ignore
-    public void toArray1() throws Exception {
-
-    }
-
 
 }

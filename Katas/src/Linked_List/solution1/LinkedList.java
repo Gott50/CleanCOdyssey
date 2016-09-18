@@ -3,17 +3,14 @@ package Linked_List.solution1;
 import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 class LinkedList<T> implements List {
     private LinkedListElement<T> elements;
 
     @Override
     public int size() {
-        return elements != null ? elements.toArray().size() : 0;
+        return elements != null ? elements.toArrayList().size() : 0;
     }
 
     @Override
@@ -23,12 +20,12 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean contains(Object o) {
-        return elements.toArray().contains(o);
+        return elements.toArrayList().contains(o);
     }
 
     @Override
     public @NotNull Iterator iterator() {
-        return elements.toArray().iterator();
+        return elements.toArrayList().iterator();
     }
 
     @NotNull
@@ -58,7 +55,7 @@ class LinkedList<T> implements List {
     @Override
     public boolean remove(Object o) {
         boolean contains = contains(o);
-        remove(elements.toArray().indexOf(o));
+        remove(elements.toArrayList().indexOf(o));
 
         return contains;
     }
@@ -88,7 +85,7 @@ class LinkedList<T> implements List {
 
     @Override
     public Object get(int index) {
-        return elements.toArray().get(index);
+        return elements.toArrayList().get(index);
     }
 
     @Override
@@ -116,12 +113,12 @@ class LinkedList<T> implements List {
 
     @Override
     public int indexOf(Object o) {
-        return elements.toArray().indexOf(o);
+        return elements.toArrayList().indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return elements.toArray().lastIndexOf(o);
+        return elements.toArrayList().lastIndexOf(o);
     }
 
     @Override
@@ -140,32 +137,54 @@ class LinkedList<T> implements List {
     public List subList(int fromIndex, int toIndex) {
         @NotNull List out = new LinkedList<T>();
 
-        out.addAll(elements.toArray().subList(fromIndex, toIndex));
+        out.addAll(elements.toArrayList().subList(fromIndex, toIndex));
 
         return out;
     }
 
     @Override
     public boolean retainAll(Collection c) {
-        return false;
+        try {
+            ArrayList<T> toRemove = elements.toArrayList();
+            toRemove.removeAll(c);
+            this.removeAll(toRemove);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection c) {
-        return false;
+        try {
+            for (Object o : c) {
+                remove(o);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean containsAll(Collection c) {
         for (Object o : c) {
-
+            if (!contains(o)) return false;
         }
-        return false;
+        return true;
     }
 
     @NotNull
     @Override
     public Object[] toArray(Object[] a) {
-        return new Object[0];
+        try {
+            @NotNull Object[] listArray = this.toArray();
+            for (int i = 0; i < listArray.length; i++) {
+                a[i] = listArray[i];
+            }
+            return a;
+        } catch (Exception e) {
+            return a;
+        }
     }
 }
