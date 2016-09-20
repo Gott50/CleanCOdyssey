@@ -75,7 +75,8 @@ class LinkedList<T> implements List {
 
     @Override
     public boolean addAll(int index, @Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
-        return false;
+        List collectionList = new ArrayList(Arrays.asList(c.toArray()));
+        return addAll(collectionList.subList(index, collectionList.size()));
     }
 
     @Override
@@ -99,7 +100,8 @@ class LinkedList<T> implements List {
 
     @Override
     public void add(int index, @Flow(targetIsContainer = true) Object element) {
-
+        LinkedListElement out = elements.get(index);
+        elements.get(index - 1).setNext((T) element).setNext(out);
     }
 
     @Override
@@ -123,13 +125,13 @@ class LinkedList<T> implements List {
 
     @Override
     public @NotNull ListIterator listIterator() {
-        return null;
+        return elements.toArrayList().listIterator();
     }
 
     @NotNull
     @Override
     public ListIterator listIterator(int index) {
-        return null;
+        return elements.toArrayList().subList(index, size()).listIterator();
     }
 
     @NotNull
@@ -177,14 +179,13 @@ class LinkedList<T> implements List {
     @NotNull
     @Override
     public Object[] toArray(Object[] a) {
-        try {
-            @NotNull Object[] listArray = this.toArray();
-            for (int i = 0; i < listArray.length; i++) {
-                a[i] = listArray[i];
-            }
-            return a;
-        } catch (Exception e) {
-            return a;
+        if (a.length < this.size())
+            a = new Object[size()];
+
+        @NotNull Object[] listArray = this.toArray();
+        for (int i = 0; i < listArray.length; i++) {
+            a[i] = listArray[i];
         }
+        return a;
     }
 }

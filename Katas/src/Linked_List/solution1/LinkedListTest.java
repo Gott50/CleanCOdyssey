@@ -1,14 +1,13 @@
 package Linked_List.solution1;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.ListIterator;
 
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.AssertJUnit.*;
 import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 public class LinkedListTest {
@@ -44,8 +43,8 @@ public class LinkedListTest {
     @Test
     public void contains() throws Exception {
         addNumbers(3);
-        assertEquals(true, list.contains(2));
-        assertEquals(false, list.contains(0));
+        assertTrue(list.contains(2));
+        assertFalse(list.contains(0));
     }
 
     private void addNumbers(int to) {
@@ -56,7 +55,7 @@ public class LinkedListTest {
     @Test
     public void iterator() throws Exception {
         addNumbers(5);
-        assertEquals(true, list.iterator() instanceof Iterator); //TODO returns always true
+        assertIterator(list.iterator(), 1, 2, 3, 4, 5);
     }
 
     @Test
@@ -74,7 +73,6 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void toArray_ObjectArray_givenToSmallArray() throws Exception {
         addNumbers(5);
 
@@ -82,15 +80,16 @@ public class LinkedListTest {
     }
 
     @Test
-    public void add2() throws Exception {
+    public void add() throws Exception {
         addNumbers(3);
         assertEquals(3, list.size());
     }
 
     @Test
-    public void add1() throws Exception {
-        list.add(1);
-        assertEquals(1, list.get(0));
+    public void add_index() throws Exception {
+        addNumbers(5);
+        list.add(3, 6);
+        assertArrayEquals(new Object[]{1, 2, 3, 6, 4, 5}, list.toArray());
     }
 
     @Test
@@ -99,9 +98,7 @@ public class LinkedListTest {
 
         assertEquals(2, list.remove(1));
 
-        assertEquals(1, list.get(0));
-        assertEquals(3, list.get(1));
-        assertEquals(4, list.size());
+        assertRemove();
     }
 
     @Test
@@ -111,13 +108,17 @@ public class LinkedListTest {
 
         assertEquals(true, list.remove((Object) 2));
 
+        assertRemove();
+    }
+
+    private void assertRemove() {
         assertEquals(1, list.get(0));
         assertEquals(3, list.get(1));
         assertEquals(4, list.size());
     }
 
     @Test
-    public void addAll() throws Exception {
+    public void addAll_withoutIndex() throws Exception {
         Object[] expects = {1, 2, 3, 4, 5};
 
         assertTrue(list.addAll(Arrays.asList(expects)));
@@ -125,9 +126,10 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
-    public void addAll1() throws Exception {
+    public void addAll_withIndex() throws Exception {
 
+        assertTrue(list.addAll(2, Arrays.asList(1, 2, 3, 4, 5)));
+        assertArrayEquals(new Object[]{3, 4, 5}, list.toArray());
     }
 
     @Test
@@ -173,15 +175,23 @@ public class LinkedListTest {
     }
 
     @Test
-    @Ignore
     public void listIterator() throws Exception {
+        addNumbers(5);
+        ListIterator listIterator = list.listIterator();
+        assertIterator(listIterator, 1, 2, 3, 4, 5);
+    }
 
+    private void assertIterator(Iterator listIterator, Object... expectedElements) {
+        for (Object element : expectedElements) {
+            assertEquals(element, listIterator.next());
+        }
     }
 
     @Test
-    @Ignore
-    public void listIterator1() throws Exception {
-
+    public void listIterator_withIndex() throws Exception {
+        addNumbers(5);
+        ListIterator listIterator = list.listIterator(2);
+        assertIterator(listIterator, 3, 4, 5);
     }
 
     @Test
