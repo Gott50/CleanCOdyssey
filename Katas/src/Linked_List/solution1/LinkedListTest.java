@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import static org.testng.AssertJUnit.*;
-import static org.testng.internal.junit.ArrayAsserts.assertArrayEquals;
 
 public class LinkedListTest {
     private LinkedList<Integer> list;

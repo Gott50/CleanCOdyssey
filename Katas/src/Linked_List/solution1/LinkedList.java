@@ -61,7 +61,7 @@ class LinkedList<T> implements List {
     }
 
     @Override
-    public boolean addAll(@Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
+    public boolean addAll(@NotNull @Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
         try {
             for (Object element : c.toArray()) {
                 add(element);
@@ -74,8 +74,8 @@ class LinkedList<T> implements List {
     }
 
     @Override
-    public boolean addAll(int index, @Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
-        List collectionList = new ArrayList(Arrays.asList(c.toArray()));
+    public boolean addAll(int index, @NotNull @Flow(sourceIsContainer = true, targetIsContainer = true) Collection c) {
+        List<Object> collectionList = new ArrayList<>(Arrays.asList(c.toArray()));
         return addAll(collectionList.subList(index, collectionList.size()));
     }
 
@@ -100,7 +100,7 @@ class LinkedList<T> implements List {
 
     @Override
     public void add(int index, @Flow(targetIsContainer = true) Object element) {
-        LinkedListElement out = elements.get(index);
+        LinkedListElement<T> out = elements.get(index);
         elements.get(index - 1).setNext((T) element).setNext(out);
     }
 
@@ -145,7 +145,7 @@ class LinkedList<T> implements List {
     }
 
     @Override
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(@NotNull Collection c) {
         try {
             ArrayList<T> toRemove = elements.toArrayList();
             toRemove.removeAll(c);
@@ -157,11 +157,9 @@ class LinkedList<T> implements List {
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(@NotNull Collection c) {
         try {
-            for (Object o : c) {
-                remove(o);
-            }
+            c.forEach(this::remove);
         } catch (Exception e) {
             return false;
         }
@@ -169,7 +167,7 @@ class LinkedList<T> implements List {
     }
 
     @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(@NotNull Collection c) {
         for (Object o : c) {
             if (!contains(o)) return false;
         }
@@ -178,14 +176,12 @@ class LinkedList<T> implements List {
 
     @NotNull
     @Override
-    public Object[] toArray(Object[] a) {
+    public Object[] toArray(@NotNull Object[] a) {
         if (a.length < this.size())
             a = new Object[size()];
 
         @NotNull Object[] listArray = this.toArray();
-        for (int i = 0; i < listArray.length; i++) {
-            a[i] = listArray[i];
-        }
+        System.arraycopy(listArray, 0, a, 0, listArray.length);
         return a;
     }
 }
