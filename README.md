@@ -148,9 +148,16 @@ Spend everyday at least 25 min (1 Pomodoro) to work on a Kata using TDD and othe
   <tr>
     <td>1</td>
     <td><a href="Katas/src/Linked_List">
-    BoxPlot</a></td>
+    LinkedList</a></td>
     <td>2016-08-16</td>
-    <td>?</td>
+    <td>2016-09-21</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/Ordered_Jobs">
+    Ordered Jobs</a></td>
+    <td>2016-09-22</td>
+    <td>2016-09-?</td>
   </tr>
     
     
