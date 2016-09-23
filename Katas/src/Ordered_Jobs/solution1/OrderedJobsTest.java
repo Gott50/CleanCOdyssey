@@ -1,5 +1,6 @@
 package Ordered_Jobs.solution1;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,27 +51,72 @@ public class OrderedJobsTest {
 
 
     private class OrderedJobsImpl implements OrderedJobs {
-        final ArrayList<Character> jobs = new ArrayList<>();
+        final ArrayList<Job> jobs = new ArrayList<>();
 
         @Override
         public void register(char dependentJob, char independentJob) {
-            register(independentJob);
             register(dependentJob);
+            addDependency(dependentJob, independentJob);
         }
 
+        private void addDependency(char dependentJob, char independentJob) {
+            register(independentJob);
+            Job dependency = this.getJob(independentJob);
+            jobs.get(getIndex(dependentJob)).addDependency(dependency);
+        }
+
+        private Job getJob(char jobID) {
+            return jobs.get(getIndex(jobID));
+        }
+
+
         @Override
-        public void register(char dependentJob) {
-            if (!jobs.contains(dependentJob))
-                jobs.add(dependentJob);
+        public void register(char jobID) {
+            Job job = new Job(jobID);
+            if (!isIDRegenerated(jobID)) {
+                jobs.add(job);
+            }
+        }
+
+
+        private boolean isIDRegenerated(char jobID) {
+            return getIndex(jobID) >= 0;
+        }
+
+        private int getIndex(char jobID) {
+            for (int i = 0; i < jobs.size(); i++) {
+                if (jobs.get(i).jobID == jobID) return i;
+            }
+            return -1;
         }
 
         @Override
         public String sort() {
+            jobs.sort((o1, o2) -> o1.dependencies.size() - o2.dependencies.size());
+
+            return jobsToString();
+        }
+
+        @NotNull
+        private String jobsToString() {
             String out = "";
-            for (Character job : jobs) {
-                out += job;
+            for (Job job : jobs) {
+                out += job.jobID;
             }
             return out;
+        }
+
+        private class Job {
+            private ArrayList<Job> dependencies = new ArrayList<>();
+            private char jobID;
+
+            private Job(char jobID) {
+                this.jobID = jobID;
+            }
+
+            void addDependency(Job dependency) {
+                this.dependencies.add(dependency);
+            }
         }
     }
 }
