@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -51,49 +52,43 @@ public class OrderedJobsTest {
 
 
     private class OrderedJobsImpl implements OrderedJobs {
-        final ArrayList<Job> jobs = new ArrayList<>();
+        final TreeSet<Job> jobs = new TreeSet<>();
 
         @Override
         public void register(char dependentJob, char independentJob) {
-            register(dependentJob);
-            addDependency(dependentJob, independentJob);
+            addDependency(registerJob(dependentJob), independentJob);
         }
 
-        private void addDependency(char dependentJob, char independentJob) {
-            register(independentJob);
-            Job dependency = this.getJob(independentJob);
-            jobs.get(getIndex(dependentJob)).addDependency(dependency);
+        private void addDependency(Job dependentJob, char independentJobID) {
+            Job dependency = registerJob(independentJobID);
+            dependentJob.addDependency(dependency);
         }
 
-        private Job getJob(char jobID) {
-            return jobs.get(getIndex(jobID));
-        }
+// --Commented out by Inspection START (24/09/16 17:45):
+//        private Job getJob(char jobID) {
+//            if (jobs.removeIf(job -> job.jobID == jobID))
+//                return registerJob(jobID);
+//            else
+//                return null;
+//        }
+// --Commented out by Inspection STOP (24/09/16 17:45)
 
 
         @Override
         public void register(char jobID) {
             Job job = new Job(jobID);
-            if (!isIDRegenerated(jobID)) {
-                jobs.add(job);
-            }
+            jobs.add(job);
         }
 
-
-        private boolean isIDRegenerated(char jobID) {
-            return getIndex(jobID) >= 0;
-        }
-
-        private int getIndex(char jobID) {
-            for (int i = 0; i < jobs.size(); i++) {
-                if (jobs.get(i).jobID == jobID) return i;
-            }
-            return -1;
+        private Job registerJob(char jobID) {
+            Job job = new Job(jobID);
+            jobs.add(job);
+            return job;
+            //else return this.getJob(jobID);
         }
 
         @Override
         public String sort() {
-            jobs.sort((o1, o2) -> o1.dependencies.size() - o2.dependencies.size());
-
             return jobsToString();
         }
 
@@ -106,16 +101,33 @@ public class OrderedJobsTest {
             return out;
         }
 
-        private class Job {
-            private ArrayList<Job> dependencies = new ArrayList<>();
-            private char jobID;
+        private class Job implements Comparable {
+            private final ArrayList<Job> dependencies = new ArrayList<>();
+            private final char jobID;
 
             private Job(char jobID) {
                 this.jobID = jobID;
             }
 
-            void addDependency(Job dependency) {
+            private void addDependency(Job dependency) {
                 this.dependencies.add(dependency);
+            }
+
+
+            @Override
+            public int compareTo(@NotNull Object o) {
+                if (((Job) o).jobID == this.jobID) return 0;
+
+                return (this.jobID + getDependencyValue()) - (((Job) o).jobID + ((Job) o).getDependencyValue());
+            }
+
+            private int getDependencyValue() {
+                int out = 0;
+                for (Job dependency : dependencies) {
+                    if (dependency.dependencies.isEmpty()) return 1;
+                    out += dependency.getDependencyValue();
+                }
+                return out;
             }
         }
     }

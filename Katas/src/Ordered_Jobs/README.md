@@ -1,4 +1,4 @@
-#[Function Kata „Ordered Jobs“](http://ccd-school.de/en/coding-dojo/classes-katas/ordered-jobs/)
+#[Class Kata „Ordered Jobs“](http://ccd-school.de/en/coding-dojo/classes-katas/ordered-jobs/)
 
 
 
