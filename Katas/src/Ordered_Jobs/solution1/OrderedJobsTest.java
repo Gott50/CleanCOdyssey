@@ -43,6 +43,14 @@ public class OrderedJobsTest {
     }
 
     @Test
+    public void givenRegisterBDependentOnAAndCAndD_sortReturnsACDB() throws Exception {
+        jobs.register('B', 'A');
+        jobs.register('B', 'C');
+        jobs.register('B', 'D');
+        assertEquals("ACDB", jobs.sort());
+    }
+
+    @Test
     public void integrationABC() throws Exception {
         jobs.register('C');
         jobs.register('B', 'A');
@@ -64,27 +72,31 @@ public class OrderedJobsTest {
             dependentJob.addDependency(dependency);
         }
 
-// --Commented out by Inspection START (24/09/16 17:45):
-//        private Job getJob(char jobID) {
-//            if (jobs.removeIf(job -> job.jobID == jobID))
-//                return registerJob(jobID);
-//            else
-//                return null;
-//        }
-// --Commented out by Inspection STOP (24/09/16 17:45)
+        private Job getJob(char jobID) {
+            for (Job element : jobs) {
+                if (element.jobID == jobID) return element;
+            }
+            return null;
+        }
 
 
         @Override
         public void register(char jobID) {
-            Job job = new Job(jobID);
-            jobs.add(job);
+            registerJob(jobID);
         }
 
         private Job registerJob(char jobID) {
             Job job = new Job(jobID);
-            jobs.add(job);
-            return job;
-            //else return this.getJob(jobID);
+            if (!isRegistered(jobID) && jobs.add(job))
+                return job;
+            else return this.getJob(jobID);
+        }
+
+        private boolean isRegistered(char jobID) {
+            for (Job next : jobs) {
+                if (next.jobID == jobID) return true;
+            }
+            return false;
         }
 
         @Override
@@ -118,13 +130,15 @@ public class OrderedJobsTest {
             public int compareTo(@NotNull Object o) {
                 if (((Job) o).jobID == this.jobID) return 0;
 
-                return (this.jobID + getDependencyValue()) - (((Job) o).jobID + ((Job) o).getDependencyValue());
+                int out = (this.jobID + getDependencyValue()) - (((Job) o).jobID + ((Job) o).getDependencyValue());
+                if (out == 0) out = -1;
+                return out;
             }
 
             private int getDependencyValue() {
                 int out = 0;
                 for (Job dependency : dependencies) {
-                    if (dependency.dependencies.isEmpty()) return 1;
+                    if (dependency.dependencies.isEmpty()) return jobID;
                     out += dependency.getDependencyValue();
                 }
                 return out;
