@@ -37,7 +37,7 @@ Direct or indirect circular dependencies should be flagged by throwing an except
 
 ##Variations #1
 
-Implement an alternative function _string Sort(string registrierungen)_ which accepts job registrations as a multi-line text of this form [1]:
+Implement an alternative function _string Sort(string registrations)_ which accepts job registrations as a multi-line text of this form [1]:
 	
     c =>
     b => a

@@ -7,4 +7,6 @@ interface OrderedJobs {
 
     String sort();
 
+    String sort(String registrations);
+
 }
