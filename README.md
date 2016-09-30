@@ -172,8 +172,24 @@ Spend everyday at least 25 min (1 Pomodoro) to work on a Kata using TDD and othe
     <td>1</td>
     <td><a href="Katas/src/Circular_Buffer">
     Circular Buffer</a></td>
-    <td>2016-09-28</td>
-    <td>2016-09-?</td>
+    <td>2016-09-29</td>
+    <td>2016-09-29</td>
+  </tr>
+   
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/MathProblems">
+    A Maths Problems Solution</a></td>
+    <td>2016-09-29</td>
+    <td>2016-09-29</td>
+  </tr>
+  
+  <tr>
+    <td>1</td>
+    <td><a href="Katas/src/Stack">
+    Stack</a></td>
+    <td>2016-09-30</td>
+    <td>2016-09-30</td>
   </tr>
     
     
