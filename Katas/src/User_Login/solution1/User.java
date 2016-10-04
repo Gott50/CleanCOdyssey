@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 
 class User {
     String Id;
-    String Email;
-    String Nickname;
-    boolean Confirmed;
+    String email;
+    String nickname;
+    boolean confirmed;
     LocalDateTime RegistrationDate;
     LocalDateTime LastLoginDate;
     LocalDateTime LastUpdatedDate;
+
+    String password;
 }

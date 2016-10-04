@@ -1,9 +1,11 @@
 package User_Login.solution1;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
-class UserLogin implements Login, Registration {
-    private final ArrayList<String[]> registrations = new ArrayList<>();
+abstract class UserLogin implements Login, Registration {
+    private final ArrayList<User> users = new ArrayList<>();
 
     @Override
     public String login(String loginName, String password) throws Exception {
@@ -32,7 +34,26 @@ class UserLogin implements Login, Registration {
 
         if (password.isEmpty()) password = generatePassword();
 
-        registrations.add(new String[]{email, password, nickname});
+        @NotNull User newUser = buildUser(email, password, nickname);
+        users.add(newUser);
+
+        sendRegistrationEmail(getRegistrationNumber(newUser));
+    }
+
+    abstract void sendRegistrationEmail(int registrationNumber);
+
+    private int getRegistrationNumber(@NotNull User newUser) {
+        return users.indexOf(newUser);
+    }
+
+    @NotNull
+    private User buildUser(String email, String password, String nickname) {
+        User user = new User();
+        user.email = email;
+        user.nickname = nickname;
+        user.password = password;
+        user.confirmed = false;
+        return user;
     }
 
     private String generatePassword() {
@@ -41,11 +62,13 @@ class UserLogin implements Login, Registration {
 
     @Override
     public void confirm(String registrationNumber) {
+        int index = Integer.parseInt(registrationNumber);
+        users.get(index).confirmed = true;
 
     }
 
-    ArrayList<String[]> getRegistrations() {
-        return registrations;
+    ArrayList<User> getUsers() {
+        return users;
 
     }
 }
