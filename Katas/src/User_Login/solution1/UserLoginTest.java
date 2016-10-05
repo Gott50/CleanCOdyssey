@@ -9,11 +9,17 @@ import java.util.ArrayList;
 public class UserLoginTest {
 
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
+    private final ArrayList<String> passwordResetEmails = new ArrayList<>();
     private UserLogin test;
 
     @Before
     public void setUp() throws Exception {
         test = new UserLogin() {
+            @Override
+            protected void sendPasswordResetEmail(String email) {
+                passwordResetEmails.add(email);
+            }
+
             @Override
             void sendRegistrationEmail(int registrationNumber) {
                 registrationEmails.add(registrationNumber);
@@ -67,9 +73,33 @@ public class UserLoginTest {
 
     @Test
     public void giveConformRegistration_UserConfirmedIsTrue() throws Exception {
-        register(a(user()));
-        test.confirm("0");
+        makeConfirmedUser(a(user()));
         assertUser(a(user().withConform(true)));
+    }
+
+    @Test
+    public void loginWithEmail_givenConfirmedUser_ReturnsToken() throws Exception {
+        User user = a(user());
+        makeConfirmedUser(user);
+        assertLogin("Token", user);
+    }
+
+    private void assertLogin(String expected, User user) throws Exception {
+        Assert.assertEquals(expected, test.login(user.email, user.password));
+        Assert.assertEquals(expected, test.login(user.nickname, user.password));
+    }
+
+    @Test
+    public void requestPasswordReset_ThenSendEmailWithLink() throws Exception {
+        User user = a(user());
+        makeConfirmedUser(user);
+        test.requestPasswordReset(user.email);
+        Assert.assertEquals(user.email, passwordResetEmails.get(0));
+    }
+
+    private void makeConfirmedUser(User user) throws Exception {
+        register(user);
+        test.confirm("0");
     }
 
     private UserBuilder user() {

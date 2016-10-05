@@ -3,13 +3,31 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 abstract class UserLogin implements Login, Registration {
     private final ArrayList<User> users = new ArrayList<>();
 
     @Override
     public String login(String loginName, String password) throws Exception {
+        if (!isUserRegistered(loginName))
         throw new Exception("New users need to register first");
+        return generateToken();
+    }
+
+    @NotNull
+    private String generateToken() {
+        //TODO make opaque to clients
+        //TODO tokens should have an expiration date
+        return "Token";
+    }
+
+    private boolean isUserRegistered(String loginName) {
+        for (User user : users) {
+            if (Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName) && user.confirmed)
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -19,8 +37,10 @@ abstract class UserLogin implements Login, Registration {
 
     @Override
     public void requestPasswordReset(String email) {
-
+        sendPasswordResetEmail(email);
     }
+
+    protected abstract void sendPasswordResetEmail(String email);
 
     @Override
     public void resetPassword(String resetRequestNumber) {
