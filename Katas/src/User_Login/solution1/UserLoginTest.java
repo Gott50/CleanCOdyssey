@@ -10,14 +10,20 @@ public class UserLoginTest {
 
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
     private final ArrayList<String> passwordResetEmails = new ArrayList<>();
+    private final ArrayList<String> newPasswordEmails = new ArrayList<>();
     private UserLogin test;
 
     @Before
     public void setUp() throws Exception {
         test = new UserLogin() {
             @Override
-            protected void sendPasswordResetEmail(String email) {
-                passwordResetEmails.add(email);
+            protected void sendNewPasswordEmail(String email, String password) {
+                newPasswordEmails.add(password);
+            }
+
+            @Override
+            protected void sendPasswordResetEmail(String resetRequestNumber) {
+                passwordResetEmails.add(resetRequestNumber);
             }
 
             @Override
@@ -95,6 +101,17 @@ public class UserLoginTest {
         makeConfirmedUser(user);
         test.requestPasswordReset(user.email);
         Assert.assertEquals(user.email, passwordResetEmails.get(0));
+    }
+
+    @Test
+    public void requestPasswordReset_GivenClickedLink_SendsNewPasswordEmail() throws Exception {
+        User user = a(user());
+        makeConfirmedUser(user);
+        test.requestPasswordReset(user.email);
+        String resetRequestNumer = passwordResetEmails.get(0);
+        test.resetPassword(resetRequestNumer);
+
+        Assert.assertEquals("Password123", newPasswordEmails.get(0));
     }
 
     private void makeConfirmedUser(User user) throws Exception {

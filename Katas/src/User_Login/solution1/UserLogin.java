@@ -3,15 +3,17 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 abstract class UserLogin implements Login, Registration {
     private final ArrayList<User> users = new ArrayList<>();
+    private final HashMap<String, String> resetRequests = new HashMap<>();
 
     @Override
     public String login(String loginName, String password) throws Exception {
         if (!isUserRegistered(loginName))
-        throw new Exception("New users need to register first");
+            throw new Exception("New users need to register first");
         return generateToken();
     }
 
@@ -37,14 +39,29 @@ abstract class UserLogin implements Login, Registration {
 
     @Override
     public void requestPasswordReset(String email) {
-        sendPasswordResetEmail(email);
+        String key = generateResetRequestNumber(email);
+        resetRequests.put(key, email);
+
+        sendPasswordResetEmail(key);
     }
 
-    protected abstract void sendPasswordResetEmail(String email);
+    private String generateResetRequestNumber(String email) {
+        return email;
+    }
+
+
+    protected abstract void sendNewPasswordEmail(String email, String password);
+
+    protected abstract void sendPasswordResetEmail(String resetRequestNumber);
 
     @Override
     public void resetPassword(String resetRequestNumber) {
+        String email = resetRequests.get(resetRequestNumber);
+        int userIndex = getUserIndex(email);
+        User user = users.get(userIndex);
+        user.password = generatePassword();
 
+        sendNewPasswordEmail(user.email, user.password);
     }
 
     @Override
@@ -77,6 +94,8 @@ abstract class UserLogin implements Login, Registration {
     }
 
     private String generatePassword() {
+        //TODO make it stronger
+
         return "Password123";
     }
 
@@ -90,5 +109,12 @@ abstract class UserLogin implements Login, Registration {
     ArrayList<User> getUsers() {
         return users;
 
+    }
+
+    private int getUserIndex(String email) {
+        for (int i = 0; i < users.size(); i++) {
+            if (Objects.equals(users.get(i).email, email)) return i;
+        }
+        return -1;
     }
 }
