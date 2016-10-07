@@ -30,4 +30,5 @@ class UserBuilder {
         user.confirmed = confirmed;
         return this;
     }
+
 }

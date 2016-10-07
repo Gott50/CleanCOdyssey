@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-abstract class UserLogin implements Login, Registration {
+abstract class UserLogin implements Login, Registration, Administration {
     private final ArrayList<User> users = new ArrayList<>();
     private final HashMap<String, String> resetRequests = new HashMap<>();
 
@@ -14,11 +14,11 @@ abstract class UserLogin implements Login, Registration {
     public String login(String loginName, String password) throws Exception {
         if (!isUserRegistered(loginName))
             throw new Exception("New users need to register first");
-        return generateToken();
+        return generateToken(loginName);
     }
 
     @NotNull
-    private String generateToken() {
+    private String generateToken(String loginName) {
         //TODO make opaque to clients
         //TODO tokens should have an expiration date
         return "Token";
@@ -116,5 +116,25 @@ abstract class UserLogin implements Login, Registration {
             if (Objects.equals(users.get(i).email, email)) return i;
         }
         return -1;
+    }
+
+    @Override
+    public User currentUser(String token) {
+        return null;
+    }
+
+    @Override
+    public void rename(String userId, String email, String nickname) {
+
+    }
+
+    @Override
+    public void changePassword(String userId, String password) {
+
+    }
+
+    @Override
+    public void delete(String userId, String password) {
+
     }
 }
