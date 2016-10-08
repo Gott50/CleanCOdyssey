@@ -47,24 +47,32 @@ public class UserLoginTest {
         register(a(user().withEmail("")), "something");
     }
 
-    private void register(User user, String password) throws Exception {
+    private void register(UserBuilder.TestUser user, String password) throws Exception {
         test.register(user.email, password, user.nickname);
     }
 
     @Test
     public void register_GivenAllInformation_SavesRegistration() throws Exception {
-        User user = a(user().withPassword("password4321"));
+        UserBuilder.TestUser user = a(user().withPassword("password4321"));
         register(user);
         assertUser(a(user().withPassword("password4321")), test.getUsers().get(0));
     }
 
-    private void register(User user) throws Exception {
+    @Test(expected = Exception.class)
+    public void register_GivenEmailIsTaken_ThrowException() throws Exception {
+        UserBuilder.TestUser user1 = a(user().withEmail("e@mail.de"));
+        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de"));
+        register(user1);
+        register(user2);
+    }
+
+    private void register(UserBuilder.TestUser user) throws Exception {
         register(user, user.password);
     }
 
-    private void assertUser(User expected, User user) {
+    private void assertUser(UserBuilder.TestUser expected, User user) {
         Assert.assertEquals(expected.email, user.email);
-        Assert.assertEquals(expected.password, user.password);
+        Assert.assertEquals(expected.password, test.getPassword(user));
         Assert.assertEquals(expected.nickname, user.nickname);
         Assert.assertEquals(expected.confirmed, user.confirmed);
     }
@@ -89,19 +97,19 @@ public class UserLoginTest {
 
     @Test
     public void loginWithEmail_givenConfirmedUser_ReturnsToken() throws Exception {
-        User user = a(user());
+        UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
         assertLogin(TOKEN, user);
     }
 
-    private void assertLogin(String expected, User user) throws Exception {
+    private void assertLogin(String expected, UserBuilder.TestUser user) throws Exception {
         Assert.assertEquals(expected, test.login(user.email, user.password));
         Assert.assertEquals(expected, test.login(user.nickname, user.password));
     }
 
     @Test
     public void requestPasswordReset_ThenSendEmailWithLink() throws Exception {
-        User user = a(user());
+        UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
         test.requestPasswordReset(user.email);
         Assert.assertEquals(user.email, passwordResetEmails.get(0));
@@ -109,7 +117,7 @@ public class UserLoginTest {
 
     @Test
     public void requestPasswordReset_GivenClickedLink_SendsNewPasswordEmail() throws Exception {
-        User user = a(user());
+        UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
         test.requestPasswordReset(user.email);
         String resetRequestNumber = passwordResetEmails.get(0);
@@ -118,7 +126,7 @@ public class UserLoginTest {
         Assert.assertEquals("Password123", newPasswordEmails.get(0));
     }
 
-    private User makeConfirmedUser(User user) throws Exception {
+    private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {
         register(user);
         test.confirm("0");
         return user;
@@ -128,14 +136,14 @@ public class UserLoginTest {
         return new UserBuilder();
     }
 
-    private User a(UserBuilder builder) {
+    private UserBuilder.TestUser a(UserBuilder builder) {
         return builder.build();
     }
 
     @Test
     @Ignore
     public void currentUser_GivenToken_ReturnsUser() throws Exception {
-        User user = makeConfirmedUser(a(user()));
+        UserBuilder.TestUser user = makeConfirmedUser(a(user()));
         String token = test.login(user.email, user.password);
 
         assertUser(user, test.currentUser(token));

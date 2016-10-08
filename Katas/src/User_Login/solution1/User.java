@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 
 class User {
-    String Id;
+    String id;
     String email;
     String nickname;
     boolean confirmed;
@@ -12,5 +12,5 @@ class User {
     LocalDateTime LastLoginDate;
     LocalDateTime LastUpdatedDate;
 
-    String password;
+
 }

@@ -2,17 +2,17 @@ package User_Login.solution1;
 
 class UserBuilder {
 
-    private final User user;
+    private final TestUser user;
 
     UserBuilder() {
-        this.user = new User();
+        this.user = new TestUser();
         user.email = "some.one@one.com";
         user.nickname = "someone";
         user.password = "password";
         user.confirmed = false;
     }
 
-    User build() {
+    TestUser build() {
         return user;
     }
 
@@ -31,4 +31,7 @@ class UserBuilder {
         return this;
     }
 
+    class TestUser extends User {
+        String password;
+    }
 }

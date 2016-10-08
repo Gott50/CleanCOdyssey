@@ -9,6 +9,8 @@ import java.util.Objects;
 abstract class UserLogin implements Login, Registration, Administration {
     private final ArrayList<User> users = new ArrayList<>();
     private final HashMap<String, String> resetRequests = new HashMap<>();
+    private final HashMap<String, String> idPasswordMap = new HashMap<>();
+    private final HashMap<String, User> tokenMap = new HashMap<>();
 
     @Override
     public String login(String loginName, String password) throws Exception {
@@ -59,15 +61,22 @@ abstract class UserLogin implements Login, Registration, Administration {
         String email = resetRequests.get(resetRequestNumber);
         int userIndex = getUserIndex(email);
         User user = users.get(userIndex);
-        user.password = generatePassword();
+        String password = generatePassword();
+        savePassword(user, password);
 
-        sendNewPasswordEmail(user.email, user.password);
+        sendNewPasswordEmail(user.email, password);
+    }
+
+    private void savePassword(User user, String password) {
+        idPasswordMap.put(user.id, password);
     }
 
     @Override
     public void register(String email, String password, String nickname) throws Exception {
         if (email.isEmpty())
             throw new Exception("At least you need to give an EmailAddress");
+        else if (isUserRegistered(email))
+            throw new Exception("EmailAddress is already taken");
 
         if (password.isEmpty()) password = generatePassword();
 
@@ -86,9 +95,10 @@ abstract class UserLogin implements Login, Registration, Administration {
     @NotNull
     private User buildUser(String email, String password, String nickname) {
         User user = new User();
+        user.id = email;
         user.email = email;
         user.nickname = nickname;
-        user.password = password;
+        savePassword(user, password);
         user.confirmed = false;
         return user;
     }
@@ -136,5 +146,9 @@ abstract class UserLogin implements Login, Registration, Administration {
     @Override
     public void delete(String userId, String password) {
 
+    }
+
+    String getPassword(User user) {
+        return idPasswordMap.get(user.id);
     }
 }
