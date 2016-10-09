@@ -2,6 +2,7 @@ package User_Login.solution1;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -16,14 +17,25 @@ abstract class UserLogin implements Login, Registration, Administration {
     public String login(String loginName, String password) throws Exception {
         if (!isUserRegistered(loginName))
             throw new Exception("New users need to register first");
+        if (!isPasswordValid(loginName, password))
+            throw new Exception("Password is not Valid!");
+
         return generateToken(loginName);
+    }
+
+    private boolean isPasswordValid(String loginName, String password) {
+        String pw = idPasswordMap.get(getUser(loginName).id);
+        return !(pw == null || !Objects.equals(pw, password));
     }
 
     @NotNull
     private String generateToken(String loginName) {
+        User user = getUser(loginName);
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
+
         //TODO make opaque to clients
         //TODO tokens should have an expiration date
-        return "Token";
+        return user.hashCode() + "!" + expirationDate;
     }
 
     private boolean isUserRegistered(String loginName) {
@@ -59,12 +71,16 @@ abstract class UserLogin implements Login, Registration, Administration {
     @Override
     public void resetPassword(String resetRequestNumber) {
         String email = resetRequests.get(resetRequestNumber);
-        int userIndex = getUserIndex(email);
-        User user = users.get(userIndex);
-        String password = generatePassword();
+        User user = getUser(email);
+        String password = generatePassword(user.email, user.nickname);
         savePassword(user, password);
 
         sendNewPasswordEmail(user.email, password);
+    }
+
+    private User getUser(String loginName) {
+        int userIndex = getUserIndex(loginName);
+        return users.get(userIndex);
     }
 
     private void savePassword(User user, String password) {
@@ -78,7 +94,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         else if (isUserRegistered(email))
             throw new Exception("EmailAddress is already taken");
 
-        if (password.isEmpty()) password = generatePassword();
+        if (password.isEmpty()) password = generatePassword(email, nickname);
 
         @NotNull User newUser = buildUser(email, password, nickname);
         users.add(newUser);
@@ -103,10 +119,8 @@ abstract class UserLogin implements Login, Registration, Administration {
         return user;
     }
 
-    private String generatePassword() {
-        //TODO make it stronger
-
-        return "Password123";
+    private String generatePassword(String email, String nickname) {
+        return email + nickname;
     }
 
     @Override
@@ -121,9 +135,10 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     }
 
-    private int getUserIndex(String email) {
+    private int getUserIndex(String loginName) {
         for (int i = 0; i < users.size(); i++) {
-            if (Objects.equals(users.get(i).email, email)) return i;
+            if (Objects.equals(users.get(i).email, loginName) || Objects.equals(users.get(i).nickname, loginName))
+                return i;
         }
         return -1;
     }

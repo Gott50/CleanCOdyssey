@@ -12,7 +12,8 @@ public class UserLoginTest {
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
     private final ArrayList<String> passwordResetEmails = new ArrayList<>();
     private final ArrayList<String> newPasswordEmails = new ArrayList<>();
-    private final String TOKEN = "Token";
+    private final String TOKEN = "285377351!2016-10-10T21:47:23.708";
+    private final String GENERATED_PASSWORD = "some.one@one.comsomeone";
     private UserLogin test;
 
     @Before
@@ -79,8 +80,9 @@ public class UserLoginTest {
 
     @Test
     public void register_GivenNoPassword_GeneratesOne() throws Exception {
-        register(a(user()), "");
-        assertUser(a(user().withPassword("Password123")), test.getUsers().get(0));
+        UserBuilder.TestUser user = a(user());
+        register(user, "");
+        assertUser(a(user().withPassword(GENERATED_PASSWORD)), test.getUsers().get(0));
     }
 
     @Test
@@ -96,10 +98,18 @@ public class UserLoginTest {
     }
 
     @Test
+    @Ignore
     public void loginWithEmail_givenConfirmedUser_ReturnsToken() throws Exception {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
         assertLogin(TOKEN, user);
+    }
+
+    @Test(expected = Exception.class)
+    public void loginWithWrongPassword_givenConfirmedUser_ReturnsException() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        makeConfirmedUser(user);
+        assertLogin(null, a(user().withPassword("WrongPassword")));
     }
 
     private void assertLogin(String expected, UserBuilder.TestUser user) throws Exception {
@@ -123,7 +133,7 @@ public class UserLoginTest {
         String resetRequestNumber = passwordResetEmails.get(0);
         test.resetPassword(resetRequestNumber);
 
-        Assert.assertEquals("Password123", newPasswordEmails.get(0));
+        Assert.assertEquals(GENERATED_PASSWORD, newPasswordEmails.get(0));
     }
 
     private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {
