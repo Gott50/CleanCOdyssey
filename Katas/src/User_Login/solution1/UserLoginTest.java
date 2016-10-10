@@ -1,10 +1,11 @@
 package User_Login.solution1;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UserLoginTest {
@@ -12,15 +13,15 @@ public class UserLoginTest {
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
     private final ArrayList<String> passwordResetEmails = new ArrayList<>();
     private final ArrayList<String> newPasswordEmails = new ArrayList<>();
-    private final String TOKEN = "285377351!2016-10-10T21:47:23.708";
+    private final String TOKEN = "-1595444187-1595444187-2029640462!";
     private final String GENERATED_PASSWORD = "some.one@one.comsomeone";
+    private final LocalDateTime DATE_TIME = LocalDateTime.of(2016, 10, 9, 9, 17, 10, 0);
+
     private UserLogin test;
 
     @Before
     public void setUp() throws Exception {
         test = new UserLogin() {
-
-
             @Override
             protected void sendNewPasswordEmail(String email, String password) {
                 newPasswordEmails.add(password);
@@ -34,6 +35,11 @@ public class UserLoginTest {
             @Override
             void sendRegistrationEmail(int registrationNumber) {
                 registrationEmails.add(registrationNumber);
+            }
+
+            @Override
+            @NotNull LocalDateTime generateLocalDateTime() {
+                return DATE_TIME;
             }
         };
     }
@@ -98,11 +104,10 @@ public class UserLoginTest {
     }
 
     @Test
-    @Ignore
     public void loginWithEmail_givenConfirmedUser_ReturnsToken() throws Exception {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
-        assertLogin(TOKEN, user);
+        assertLogin(TOKEN + DATE_TIME.plusDays(1), user);
     }
 
     @Test(expected = Exception.class)
@@ -151,11 +156,18 @@ public class UserLoginTest {
     }
 
     @Test
-    @Ignore
     public void currentUser_GivenToken_ReturnsUser() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user()));
         String token = test.login(user.email, user.password);
 
-        assertUser(user, test.currentUser(token));
+        assertUser(a(user().withConform(true)), test.currentUser(token));
+    }
+
+    @Test
+    public void currentUser_GivenExpiredToken_ReturnNull() throws Exception {
+        UserBuilder.TestUser user = makeConfirmedUser(a(user()));
+        String token = test.login(user.email, user.password);
+
+        assertUser(null, test.currentUser(token));
     }
 }

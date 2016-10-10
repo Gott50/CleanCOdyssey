@@ -20,7 +20,11 @@ abstract class UserLogin implements Login, Registration, Administration {
         if (!isPasswordValid(loginName, password))
             throw new Exception("Password is not Valid!");
 
-        return generateToken(loginName);
+
+        @NotNull String token = generateToken(loginName);
+        tokenMap.put(token, getUser(loginName));
+
+        return token;
     }
 
     private boolean isPasswordValid(String loginName, String password) {
@@ -31,11 +35,19 @@ abstract class UserLogin implements Login, Registration, Administration {
     @NotNull
     private String generateToken(String loginName) {
         User user = getUser(loginName);
-        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime expirationDate = generateLocalDateTime().plusDays(1);
 
-        //TODO make opaque to clients
         //TODO tokens should have an expiration date
-        return user.hashCode() + "!" + expirationDate;
+        return
+                user.id.hashCode() + "" +
+                        user.email.hashCode() + "" +
+                        user.nickname.hashCode() + "" +
+                        "!" + expirationDate;
+    }
+
+    @NotNull
+    LocalDateTime generateLocalDateTime() {
+        return LocalDateTime.now();
     }
 
     private boolean isUserRegistered(String loginName) {
@@ -145,7 +157,9 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public User currentUser(String token) {
-        return null;
+        if (!isLoginValid(token)) return null;
+        return tokenMap.get(token);
+
     }
 
     @Override
