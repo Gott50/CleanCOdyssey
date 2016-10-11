@@ -3,6 +3,7 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -15,12 +16,14 @@ public class UserLoginTest {
     private final ArrayList<String> newPasswordEmails = new ArrayList<>();
     private final String TOKEN = "-1595444187-1595444187-2029640462!";
     private final String GENERATED_PASSWORD = "some.one@one.comsomeone";
-    private final LocalDateTime DATE_TIME = LocalDateTime.of(2016, 10, 9, 9, 17, 10, 0);
+    private LocalDateTime dateTime;
 
     private UserLogin test;
 
     @Before
     public void setUp() throws Exception {
+        dateTime = LocalDateTime.of(2016, 10, 9, 9, 17, 10, 0);
+
         test = new UserLogin() {
             @Override
             protected void sendNewPasswordEmail(String email, String password) {
@@ -39,7 +42,7 @@ public class UserLoginTest {
 
             @Override
             @NotNull LocalDateTime generateLocalDateTime() {
-                return DATE_TIME;
+                return dateTime;
             }
         };
     }
@@ -107,7 +110,7 @@ public class UserLoginTest {
     public void loginWithEmail_givenConfirmedUser_ReturnsToken() throws Exception {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
-        assertLogin(TOKEN + DATE_TIME.plusDays(1), user);
+        assertLogin(TOKEN + dateTime.plusDays(1), user);
     }
 
     @Test(expected = Exception.class)
@@ -157,17 +160,26 @@ public class UserLoginTest {
 
     @Test
     public void currentUser_GivenToken_ReturnsUser() throws Exception {
-        UserBuilder.TestUser user = makeConfirmedUser(a(user()));
-        String token = test.login(user.email, user.password);
-
-        assertUser(a(user().withConform(true)), test.currentUser(token));
+        assertUser(a(user().withConform(true)), test.currentUser(makeLoginToken()));
     }
 
     @Test
     public void currentUser_GivenExpiredToken_ReturnNull() throws Exception {
-        UserBuilder.TestUser user = makeConfirmedUser(a(user()));
-        String token = test.login(user.email, user.password);
+        String token = makeLoginToken();
+        dateTime = dateTime.plusDays(2);
 
-        assertUser(null, test.currentUser(token));
+        Assert.assertEquals(null, test.currentUser(token));
+    }
+
+    @Test
+    @Ignore
+    public void rename_GivenValidToken() throws Exception {
+        String token = makeLoginToken();
+        User user = test.currentUser(token);
+    }
+
+    private String makeLoginToken() throws Exception {
+        UserBuilder.TestUser user = makeConfirmedUser(a(user()));
+        return test.login(user.email, user.password);
     }
 }

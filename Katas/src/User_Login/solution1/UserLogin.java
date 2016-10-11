@@ -37,7 +37,6 @@ abstract class UserLogin implements Login, Registration, Administration {
         User user = getUser(loginName);
         LocalDateTime expirationDate = generateLocalDateTime().plusDays(1);
 
-        //TODO tokens should have an expiration date
         return
                 user.id.hashCode() + "" +
                         user.email.hashCode() + "" +
@@ -51,16 +50,26 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private boolean isUserRegistered(String loginName) {
-        for (User user : users) {
+        for (User user : users)
             if (Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName) && user.confirmed)
                 return true;
-        }
+
         return false;
     }
 
     @Override
     public boolean isLoginValid(String token) {
-        return false;
+        LocalDateTime expirationDate = extractDateTime(token);
+        @NotNull LocalDateTime now = generateLocalDateTime();
+        if (now.isAfter(expirationDate)) {
+            tokenMap.remove(token);
+            return false;
+        }
+        return tokenMap.containsKey(token);
+    }
+
+    private LocalDateTime extractDateTime(String token) {
+        return LocalDateTime.parse(token.split("!")[1]);
     }
 
     @Override
@@ -72,6 +81,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private String generateResetRequestNumber(String email) {
+        //TODO
         return email;
     }
 
@@ -159,7 +169,6 @@ abstract class UserLogin implements Login, Registration, Administration {
     public User currentUser(String token) {
         if (!isLoginValid(token)) return null;
         return tokenMap.get(token);
-
     }
 
     @Override
