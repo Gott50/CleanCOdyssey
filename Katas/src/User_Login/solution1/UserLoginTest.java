@@ -3,7 +3,6 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -171,15 +170,41 @@ public class UserLoginTest {
         Assert.assertEquals(null, test.currentUser(token));
     }
 
+    @Test(expected = Exception.class)
+    public void rename_GivenEmptyStrings_ReturnsException() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.rename(user.id, "", "");
+    }
     @Test
-    @Ignore
-    public void rename_GivenValidToken() throws Exception {
-        String token = makeLoginToken();
-        User user = test.currentUser(token);
+    public void rename_GivenNewEmail_ChangesEmailAddress() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.rename(user.id, "newMail@ress.de", "");
+        assertUser(a(user().withConform(true).withEmail("newMail@ress.de")), user);
+    }
+
+    @Test
+    public void rename_GivenNewNickname_ChangesNickname() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.rename(user.id, "", "newNick'sName");
+        assertUser(a(user().withConform(true).withNickname("newNick'sName")), user);
     }
 
     private String makeLoginToken() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user()));
         return test.login(user.email, user.password);
+    }
+
+    @Test(expected = Exception.class)
+    public void changePassword_GivenEmptyString_ReturnsException() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.changePassword(user.id, "");
+    }
+
+    @Test
+    public void changePassword_GivenNewPassword_ChangesPassword() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.changePassword(user.id, "NewPassword123");
+
+        assertUser(a(user().withConform(true).withPassword("NewPassword123")), user);
     }
 }

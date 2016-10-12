@@ -172,13 +172,21 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     @Override
-    public void rename(String userId, String email, String nickname) {
+    public void rename(String userId, String email, String nickname) throws Exception {
+        if (email.isEmpty() && nickname.isEmpty())
+            throw new Exception("The new Name must not be Empty");
+
+        User user = getUser(userId);//TODO
+        if (!email.isEmpty()) user.email = email;
+        if (!nickname.isEmpty()) user.nickname = nickname;
 
     }
 
     @Override
-    public void changePassword(String userId, String password) {
-
+    public void changePassword(String userId, String password) throws Exception {
+        if (password.isEmpty())
+            throw new Exception("The new Password must not be Empty");
+        else savePassword(getUser(userId), password);
     }
 
     @Override

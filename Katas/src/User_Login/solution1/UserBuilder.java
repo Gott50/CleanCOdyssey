@@ -31,6 +31,11 @@ class UserBuilder {
         return this;
     }
 
+    UserBuilder withNickname(String nickname) {
+        user.nickname = nickname;
+        return this;
+    }
+
     class TestUser extends User {
         String password;
     }
