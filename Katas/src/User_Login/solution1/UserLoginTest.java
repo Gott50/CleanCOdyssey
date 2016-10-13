@@ -75,6 +75,14 @@ public class UserLoginTest {
         register(user2);
     }
 
+    @Test(expected = Exception.class)
+    public void register_GivenNicknameIsTaken_ThrowException() throws Exception {
+        UserBuilder.TestUser user1 = a(user().withNickname("e@mail.de"));
+        UserBuilder.TestUser user2 = a(user().withNickname("e@mail.de"));
+        register(user1);
+        register(user2);
+    }
+
     private void register(UserBuilder.TestUser user) throws Exception {
         register(user, user.password);
     }
@@ -84,6 +92,7 @@ public class UserLoginTest {
         Assert.assertEquals(expected.password, test.getPassword(user));
         Assert.assertEquals(expected.nickname, user.nickname);
         Assert.assertEquals(expected.confirmed, user.confirmed);
+        Assert.assertEquals(expected.registrationDate, user.registrationDate);
     }
 
     @Test
@@ -150,7 +159,7 @@ public class UserLoginTest {
     }
 
     private UserBuilder user() {
-        return new UserBuilder();
+        return new UserBuilder(dateTime);
     }
 
     private UserBuilder.TestUser a(UserBuilder builder) {
@@ -175,6 +184,7 @@ public class UserLoginTest {
         User user = test.currentUser(makeLoginToken());
         test.rename(user.id, "", "");
     }
+
     @Test
     public void rename_GivenNewEmail_ChangesEmailAddress() throws Exception {
         User user = test.currentUser(makeLoginToken());
@@ -206,5 +216,25 @@ public class UserLoginTest {
         test.changePassword(user.id, "NewPassword123");
 
         assertUser(a(user().withConform(true).withPassword("NewPassword123")), user);
+    }
+
+    @Test(expected = Exception.class)
+    public void delete_GivenEmptyString_ThrowsException() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.delete(user.id, "");
+    }
+
+    @Test(expected = Exception.class)
+    public void delete_GivenFalsePassword_ThrowsException() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.delete(user.id, "FalsePassword");
+    }
+
+    @Test
+    public void delete_GivenCorrectPassword_deletesUser() throws Exception {
+        User user = test.currentUser(makeLoginToken());
+        test.delete(user.id, a(user()).password);
+
+        Assert.assertEquals(0, test.getUsers().size());
     }
 }

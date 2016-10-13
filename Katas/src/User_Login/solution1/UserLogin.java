@@ -106,7 +106,12 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private void savePassword(User user, String password) {
-        idPasswordMap.put(user.id, password);
+        idPasswordMap.put(user.id, encryptPassword(password));
+    }
+
+    private String encryptPassword(String password) {
+        //TODO No passwords should be stored in their original form. Salted hashes should be used instead.
+        return password;
     }
 
     @Override
@@ -133,11 +138,12 @@ abstract class UserLogin implements Login, Registration, Administration {
     @NotNull
     private User buildUser(String email, String password, String nickname) {
         User user = new User();
-        user.id = email;
+        user.id = email; //TODO should be an individual String
         user.email = email;
         user.nickname = nickname;
         savePassword(user, password);
         user.confirmed = false;
+        user.registrationDate = generateLocalDateTime();
         return user;
     }
 
@@ -190,8 +196,12 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     @Override
-    public void delete(String userId, String password) {
-
+    public void delete(String userId, String password) throws Exception {
+        User user = getUser(userId);
+        if (!isPasswordValid(user.email, password))
+            throw new Exception("If you want to delete your Account you need to tip in the correct Password");
+        else
+            users.remove(user);
     }
 
     String getPassword(User user) {

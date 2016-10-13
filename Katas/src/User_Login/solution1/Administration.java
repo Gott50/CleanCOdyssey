@@ -7,6 +7,6 @@ interface Administration {
 
     void changePassword(String userId, String password) throws Exception;
 
-    void delete(String userId, String password);
+    void delete(String userId, String password) throws Exception;
 
 }

@@ -8,7 +8,7 @@ class User {
     String email;
     String nickname;
     boolean confirmed;
-    LocalDateTime RegistrationDate;
+    LocalDateTime registrationDate;
     LocalDateTime LastLoginDate;
     LocalDateTime LastUpdatedDate;
 
