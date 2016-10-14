@@ -28,8 +28,8 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private boolean isPasswordValid(String loginName, String password) {
-        String pw = idPasswordMap.get(getUser(loginName).id);
-        return !(pw == null || !Objects.equals(pw, password));
+        String pw = getPassword(getUser(loginName).id);
+        return !(pw == null || !Objects.equals(pw, encryptPassword(password)));
     }
 
     @NotNull
@@ -109,9 +109,9 @@ abstract class UserLogin implements Login, Registration, Administration {
         idPasswordMap.put(user.id, encryptPassword(password));
     }
 
-    private String encryptPassword(String password) {
+    String encryptPassword(String password) {
         //TODO No passwords should be stored in their original form. Salted hashes should be used instead.
-        return password;
+        return password + "42";
     }
 
     @Override
@@ -204,7 +204,7 @@ abstract class UserLogin implements Login, Registration, Administration {
             users.remove(user);
     }
 
-    String getPassword(User user) {
-        return idPasswordMap.get(user.id);
+    String getPassword(String id) {
+        return idPasswordMap.get(id);
     }
 }

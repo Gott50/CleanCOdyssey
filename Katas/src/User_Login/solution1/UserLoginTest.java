@@ -3,6 +3,7 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -89,7 +90,7 @@ public class UserLoginTest {
 
     private void assertUser(UserBuilder.TestUser expected, User user) {
         Assert.assertEquals(expected.email, user.email);
-        Assert.assertEquals(expected.password, test.getPassword(user));
+        Assert.assertEquals(test.encryptPassword(expected.password), test.getPassword(user.id));
         Assert.assertEquals(expected.nickname, user.nickname);
         Assert.assertEquals(expected.confirmed, user.confirmed);
         Assert.assertEquals(expected.registrationDate, user.registrationDate);
@@ -181,8 +182,7 @@ public class UserLoginTest {
 
     @Test(expected = Exception.class)
     public void rename_GivenEmptyStrings_ReturnsException() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.rename(user.id, "", "");
+        test.rename("UserID", "", "");
     }
 
     @Test
@@ -206,8 +206,7 @@ public class UserLoginTest {
 
     @Test(expected = Exception.class)
     public void changePassword_GivenEmptyString_ReturnsException() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.changePassword(user.id, "");
+        test.changePassword("UserID", "");
     }
 
     @Test
@@ -236,5 +235,13 @@ public class UserLoginTest {
         test.delete(user.id, a(user()).password);
 
         Assert.assertEquals(0, test.getUsers().size());
+    }
+
+    @Test
+    @Ignore
+    public void register_GivenAllData_PasswordsAreStoredInSaltedHashes() throws Exception {
+        UserBuilder.TestUser user = makeConfirmedUser(a(user().withPassword("PW1234")));
+
+        Assert.assertEquals("PW", test.getPassword(user.email));
     }
 }
