@@ -70,18 +70,29 @@ public class UserLoginTest {
 
     @Test(expected = Exception.class)
     public void register_GivenEmailIsTaken_ThrowException() throws Exception {
-        UserBuilder.TestUser user1 = a(user().withEmail("e@mail.de"));
-        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de"));
+        UserBuilder.TestUser user1 = a(user().withEmail("e@mail.de").withNickname("one"));
+        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de").withNickname("two"));
         register(user1);
         register(user2);
     }
 
+    @Ignore
     @Test(expected = Exception.class)
     public void register_GivenNicknameIsTaken_ThrowException() throws Exception {
-        UserBuilder.TestUser user1 = a(user().withNickname("e@mail.de"));
-        UserBuilder.TestUser user2 = a(user().withNickname("e@mail.de"));
+        UserBuilder.TestUser user1 = a(user().withEmail("one@mail.de").withNickname("one"));
+        UserBuilder.TestUser user2 = a(user().withEmail("two@mail.de").withNickname("one"));
         register(user1);
         register(user2);
+    }
+
+    @Test
+    public void register_GeneratesIndividualId() throws Exception {
+        UserBuilder.TestUser user1 = a(user());
+        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de").withNickname("NName"));
+        register(user1);
+        register(user2);
+
+        Assert.assertNotEquals(test.getUsers().get(0).id, test.getUsers().get(1).id);
     }
 
     private void register(UserBuilder.TestUser user) throws Exception {
@@ -90,7 +101,7 @@ public class UserLoginTest {
 
     private void assertUser(UserBuilder.TestUser expected, User user) {
         Assert.assertEquals(expected.email, user.email);
-        Assert.assertEquals(test.encryptPassword(expected.password), test.getPassword(user.id));
+        Assert.assertArrayEquals(test.encryptPassword(expected.password), test.getPassword(user.id));
         Assert.assertEquals(expected.nickname, user.nickname);
         Assert.assertEquals(expected.confirmed, user.confirmed);
         Assert.assertEquals(expected.registrationDate, user.registrationDate);
@@ -238,10 +249,12 @@ public class UserLoginTest {
     }
 
     @Test
-    @Ignore
     public void register_GivenAllData_PasswordsAreStoredInSaltedHashes() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user().withPassword("PW1234")));
+        byte[] expected = {125, 95, 100, 103, -84, 107, 38, 69, -21, -29, 23, -6, -128, 78, -84, 94, -111, -50, -46, 116, 56, -82, 118, -13, -31, 126, 84, 16, -54, -8, -52, -107};
 
-        Assert.assertEquals("PW", test.getPassword(user.email));
+        //System.out.print(Arrays.toString(test.getPassword(user.email)));
+
+        Assert.assertArrayEquals(expected, test.getPassword(user.email));
     }
 }

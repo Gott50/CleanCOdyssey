@@ -2,15 +2,18 @@ package User_Login.solution1;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
 abstract class UserLogin implements Login, Registration, Administration {
     private final ArrayList<User> users = new ArrayList<>();
     private final HashMap<String, String> resetRequests = new HashMap<>();
-    private final HashMap<String, String> idPasswordMap = new HashMap<>();
+    private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
     private final HashMap<String, User> tokenMap = new HashMap<>();
 
     @Override
@@ -28,8 +31,8 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private boolean isPasswordValid(String loginName, String password) {
-        String pw = getPassword(getUser(loginName).id);
-        return !(pw == null || !Objects.equals(pw, encryptPassword(password)));
+        byte[] pw = getPassword(getUser(loginName).id);
+        return (Arrays.equals(pw, encryptPassword(password)));
     }
 
     @NotNull
@@ -81,7 +84,6 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private String generateResetRequestNumber(String email) {
-        //TODO
         return email;
     }
 
@@ -92,7 +94,7 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public void resetPassword(String resetRequestNumber) {
-        String email = resetRequests.get(resetRequestNumber);
+        String email = resetRequests.remove(resetRequestNumber);
         User user = getUser(email);
         String password = generatePassword(user.email, user.nickname);
         savePassword(user, password);
@@ -109,9 +111,16 @@ abstract class UserLogin implements Login, Registration, Administration {
         idPasswordMap.put(user.id, encryptPassword(password));
     }
 
-    String encryptPassword(String password) {
-        //TODO No passwords should be stored in their original form. Salted hashes should be used instead.
-        return password + "42";
+    byte[] encryptPassword(String password) {
+        String salt = "42";
+        MessageDigest sha256;
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return new byte[0];
+        }
+        return sha256.digest((password + salt).getBytes());
     }
 
     @Override
@@ -120,6 +129,8 @@ abstract class UserLogin implements Login, Registration, Administration {
             throw new Exception("At least you need to give an EmailAddress");
         else if (isUserRegistered(email))
             throw new Exception("EmailAddress is already taken");
+        else if (isUserRegistered(nickname))
+            throw new Exception("Nickname is already taken");
 
         if (password.isEmpty()) password = generatePassword(email, nickname);
 
@@ -204,7 +215,7 @@ abstract class UserLogin implements Login, Registration, Administration {
             users.remove(user);
     }
 
-    String getPassword(String id) {
+    byte[] getPassword(String id) {
         return idPasswordMap.get(id);
     }
 }
