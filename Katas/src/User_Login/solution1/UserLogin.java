@@ -18,16 +18,22 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public String login(String loginName, String password) throws Exception {
+        //TODO throw different Exceptions
         if (!isUserRegistered(loginName))
             throw new Exception("New users need to register first");
+        if (!isConfirmedUser(loginName))
+            throw new UserConformationException("User is not yet confirmed");
         if (!isPasswordValid(loginName, password))
-            throw new Exception("Password is not Valid!");
-
+            throw new PasswordInvalidException("Password is not Valid!");
 
         @NotNull String token = generateToken(loginName);
         tokenMap.put(token, getUser(loginName));
 
         return token;
+    }
+
+    private boolean isConfirmedUser(String loginName) {
+        return getUser(loginName).confirmed;
     }
 
     private boolean isPasswordValid(String loginName, String password) {
@@ -54,7 +60,7 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     private boolean isUserRegistered(String loginName) {
         for (User user : users)
-            if (Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName) && user.confirmed)
+            if ((Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName)))//&& user.confirmed)
                 return true;
 
         return false;

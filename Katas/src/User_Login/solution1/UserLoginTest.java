@@ -3,7 +3,6 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -76,7 +75,6 @@ public class UserLoginTest {
         register(user2);
     }
 
-    @Ignore
     @Test(expected = Exception.class)
     public void register_GivenNicknameIsTaken_ThrowException() throws Exception {
         UserBuilder.TestUser user1 = a(user().withEmail("one@mail.de").withNickname("one"));
@@ -143,6 +141,14 @@ public class UserLoginTest {
     private void assertLogin(String expected, UserBuilder.TestUser user) throws Exception {
         Assert.assertEquals(expected, test.login(user.email, user.password));
         Assert.assertEquals(expected, test.login(user.nickname, user.password));
+    }
+
+    @Test(expected = Exception.class)
+    public void login_GivenUnconfirmedUser_ThrowsException() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        register(user);
+        test.login(user.email, user.password);
+
     }
 
     @Test
