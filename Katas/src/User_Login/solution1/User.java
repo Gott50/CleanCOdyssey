@@ -9,7 +9,7 @@ class User {
     String nickname;
     boolean confirmed;
     LocalDateTime registrationDate;
-    LocalDateTime LastLoginDate;
+    LocalDateTime lastLoginDate;
     LocalDateTime LastUpdatedDate;
 
 

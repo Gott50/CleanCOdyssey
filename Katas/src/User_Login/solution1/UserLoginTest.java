@@ -3,6 +3,7 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -46,7 +47,7 @@ public class UserLoginTest {
         };
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = UnregisteredUserException.class)
     public void login_GivenNewUser_ReturnsException() throws Exception {
         test.login("NewUser", null);
     }
@@ -143,7 +144,7 @@ public class UserLoginTest {
         Assert.assertEquals(expected, test.login(user.nickname, user.password));
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = UnconfirmedUserException.class)
     public void login_GivenUnconfirmedUser_ThrowsException() throws Exception {
         UserBuilder.TestUser user = a(user());
         register(user);
@@ -262,5 +263,12 @@ public class UserLoginTest {
         //System.out.print(Arrays.toString(test.getPassword(user.email)));
 
         Assert.assertArrayEquals(expected, test.getPassword(user.email));
+    }
+
+    @Test
+    @Ignore
+    public void login_GivenSuccessfulLogin_updateLasstLoginDate() throws Exception {
+
+
     }
 }

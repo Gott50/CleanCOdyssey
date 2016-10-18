@@ -18,16 +18,18 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public String login(String loginName, String password) throws Exception {
-        //TODO throw different Exceptions
         if (!isUserRegistered(loginName))
-            throw new Exception("New users need to register first");
+            throw new UnregisteredUserException("New users need to register first");
         if (!isConfirmedUser(loginName))
-            throw new UserConformationException("User is not yet confirmed");
+            throw new UnconfirmedUserException("User is not yet confirmed");
         if (!isPasswordValid(loginName, password))
             throw new PasswordInvalidException("Password is not Valid!");
 
         @NotNull String token = generateToken(loginName);
-        tokenMap.put(token, getUser(loginName));
+        User user = getUser(loginName);
+        tokenMap.put(token, user);
+
+        // user.lastLoginDate = generateLocalDateTime();
 
         return token;
     }
@@ -132,11 +134,11 @@ abstract class UserLogin implements Login, Registration, Administration {
     @Override
     public void register(String email, String password, String nickname) throws Exception {
         if (email.isEmpty())
-            throw new Exception("At least you need to give an EmailAddress");
+            throw new RegistrationException("At least you need to give an EmailAddress");
         else if (isUserRegistered(email))
-            throw new Exception("EmailAddress is already taken");
+            throw new RegistrationException("EmailAddress is already taken");
         else if (isUserRegistered(nickname))
-            throw new Exception("Nickname is already taken");
+            throw new RegistrationException("Nickname is already taken");
 
         if (password.isEmpty()) password = generatePassword(email, nickname);
 
