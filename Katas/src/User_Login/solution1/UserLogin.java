@@ -29,7 +29,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         User user = getUser(loginName);
         tokenMap.put(token, user);
 
-        // user.lastLoginDate = generateLocalDateTime();
+        user.lastLoginDate = generateLocalDateTime();
 
         return token;
     }
@@ -146,6 +146,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         users.add(newUser);
 
         sendRegistrationEmail(getRegistrationNumber(newUser));
+        //TODO Unconfirmed registrations should be deleted automatically after an expiration data
     }
 
     abstract void sendRegistrationEmail(int registrationNumber);
@@ -163,6 +164,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         savePassword(user, password);
         user.confirmed = false;
         user.registrationDate = generateLocalDateTime();
+        user.lastUpdatedDate = user.registrationDate;
         return user;
     }
 

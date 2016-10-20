@@ -266,9 +266,49 @@ public class UserLoginTest {
     }
 
     @Test
+    public void register_GivenSuccessful_LastLoginDateIsNull() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        makeConfirmedUser(user);
+
+        assertLastLoginDate(null);
+    }
+
+    @Test
+    public void login_GivenSuccessful_updateLastLoginDate() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        makeConfirmedUser(user);
+
+        test.login(user.email, user.password);
+
+        assertLastLoginDate(this.dateTime);
+    }
+
+    private void assertLastLoginDate(LocalDateTime expected) {
+        Assert.assertEquals(expected, test.getUsers().get(0).lastLoginDate);
+    }
+
+    @Test
+
+    public void register_GivenSuccessful_lastUpdatedDateIsNull() throws Exception {
+        makeConfirmedUser(a(user()));
+        User user = test.getUsers().get(0);
+
+        assertLastUpdatedDate(user.registrationDate);
+    }
+
+    private void assertLastUpdatedDate(LocalDateTime expected) {
+        Assert.assertEquals(expected, test.getUsers().get(0).lastUpdatedDate);
+    }
+
+    @Test
     @Ignore
-    public void login_GivenSuccessfulLogin_updateLasstLoginDate() throws Exception {
+    public void changePassword_GivenSuccessful_updateLastUpdatedDate() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        makeConfirmedUser(user);
+        dateTime = dateTime.plusDays(7);
 
+        test.changePassword(user.id, "1newPassword!");
 
+        assertLastUpdatedDate(dateTime);
     }
 }

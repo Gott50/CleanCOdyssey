@@ -10,7 +10,7 @@ class User {
     boolean confirmed;
     LocalDateTime registrationDate;
     LocalDateTime lastLoginDate;
-    LocalDateTime LastUpdatedDate;
+    LocalDateTime lastUpdatedDate;
 
 
 }
