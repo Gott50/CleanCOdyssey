@@ -15,6 +15,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     private final HashMap<String, String> resetRequests = new HashMap<>();
     private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
     private final HashMap<String, User> tokenMap = new HashMap<>();
+    private final int daysTillRegistrationExpires = 1;
 
     @Override
     public String login(String loginName, String password) throws Exception {
@@ -116,6 +117,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private void savePassword(User user, String password) {
+
         idPasswordMap.put(user.id, encryptPassword(password));
     }
 
@@ -145,8 +147,9 @@ abstract class UserLogin implements Login, Registration, Administration {
         @NotNull User newUser = buildUser(email, password, nickname);
         users.add(newUser);
 
+        updateRegistrations();
         sendRegistrationEmail(getRegistrationNumber(newUser));
-        //TODO Unconfirmed registrations should be deleted automatically after an expiration data
+
     }
 
     abstract void sendRegistrationEmail(int registrationNumber);
@@ -213,7 +216,10 @@ abstract class UserLogin implements Login, Registration, Administration {
     public void changePassword(String userId, String password) throws Exception {
         if (password.isEmpty())
             throw new Exception("The new Password must not be Empty");
-        else savePassword(getUser(userId), password);
+
+        User user = getUser(userId);
+        user.lastUpdatedDate = generateLocalDateTime();
+        savePassword(user, password);
     }
 
     @Override
@@ -227,5 +233,11 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     byte[] getPassword(String id) {
         return idPasswordMap.get(id);
+    }
+
+    void updateRegistrations() {
+        users.removeIf(user -> !user.confirmed &&
+                generateLocalDateTime().isAfter(
+                        user.registrationDate.plusDays(daysTillRegistrationExpires)));
     }
 }

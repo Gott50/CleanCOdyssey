@@ -3,7 +3,6 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -37,6 +36,7 @@ public class UserLoginTest {
 
             @Override
             void sendRegistrationEmail(int registrationNumber) {
+
                 registrationEmails.add(registrationNumber);
             }
 
@@ -301,14 +301,50 @@ public class UserLoginTest {
     }
 
     @Test
-    @Ignore
     public void changePassword_GivenSuccessful_updateLastUpdatedDate() throws Exception {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
         dateTime = dateTime.plusDays(7);
 
-        test.changePassword(user.id, "1newPassword!");
+        test.changePassword(user.email, "1newPassword!");
 
         assertLastUpdatedDate(dateTime);
     }
+
+    @Test
+    public void updateRegistrations_GivenRegistrationOlderThan1Day_DeleteRegistration() throws Exception {
+        makeConfirmedUser(a(user().withEmail("e@mail.de").withNickname("Nick")));
+        UserBuilder.TestUser user = a(user());
+        register(user);
+
+        dateTime = dateTime.plusDays(7);
+        test.updateRegistrations();
+
+        Assert.assertEquals(1, test.getUsers().size());
+
+    }
+
+    @Test
+    public void updateRegistrations_GivenRegistrationIsExpired_DoNothing() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        register(user);
+
+        test.updateRegistrations();
+
+        Assert.assertEquals(1, test.getUsers().size());
+    }
+
+    @Test
+    public void autoUpdateRegistrations_GivenRegistrationOlderThan1Day_DeleteRegistration() throws Exception {
+        UserBuilder.TestUser user1 = a(user());
+        register(user1);
+        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de").withNickname("Nick"));
+
+        dateTime = dateTime.plusDays(7);
+        register(user2);
+
+        Assert.assertEquals(1, test.getUsers().size());
+
+    }
+
 }
