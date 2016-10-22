@@ -50,7 +50,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         LocalDateTime expirationDate = generateLocalDateTime().plusDays(1);
 
         return
-                user.id.hashCode() + "" +
+                //TODO user.id.hashCode() + "" +
                         user.email.hashCode() + "" +
                         user.nickname.hashCode() + "" +
                         "!" + expirationDate;
@@ -161,13 +161,15 @@ abstract class UserLogin implements Login, Registration, Administration {
     @NotNull
     private User buildUser(String email, String password, String nickname) {
         User user = new User();
-        user.id = email; //TODO should be an individual String
         user.email = email;
         user.nickname = nickname;
-        savePassword(user, password);
         user.confirmed = false;
         user.registrationDate = generateLocalDateTime();
         user.lastUpdatedDate = user.registrationDate;
+        user.id = email + "ID"; //TODO should be an individual String
+
+        savePassword(user, password);
+
         return user;
     }
 
@@ -179,7 +181,6 @@ abstract class UserLogin implements Login, Registration, Administration {
     public void confirm(String registrationNumber) {
         int index = Integer.parseInt(registrationNumber);
         users.get(index).confirmed = true;
-
     }
 
     ArrayList<User> getUsers() {
@@ -189,7 +190,7 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     private int getUserIndex(String loginName) {
         for (int i = 0; i < users.size(); i++) {
-            if (Objects.equals(users.get(i).email, loginName) || Objects.equals(users.get(i).nickname, loginName))
+            if (Objects.equals(users.get(i).id, loginName) || Objects.equals(users.get(i).email, loginName) || Objects.equals(users.get(i).nickname, loginName))
                 return i;
         }
         return -1;
@@ -206,7 +207,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         if (email.isEmpty() && nickname.isEmpty())
             throw new Exception("The new Name must not be Empty");
 
-        User user = getUser(userId);//TODO
+        User user = getUser(userId);
         if (!email.isEmpty()) user.email = email;
         if (!nickname.isEmpty()) user.nickname = nickname;
 

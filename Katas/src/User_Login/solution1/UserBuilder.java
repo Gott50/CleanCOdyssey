@@ -43,5 +43,11 @@ class UserBuilder {
 
     class TestUser extends User {
         String password;
+
+        TestUser cloneAttributes(User user) {
+            this.confirmed = user.confirmed;
+            this.id = user.id;
+            return this;
+        }
     }
 }
