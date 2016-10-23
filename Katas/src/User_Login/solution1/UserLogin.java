@@ -16,6 +16,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
     private final HashMap<String, User> tokenMap = new HashMap<>();
     private final int daysTillRegistrationExpires = 1;
+    private int userCount = 0;
 
     @Override
     public String login(String loginName, String password) throws Exception {
@@ -166,7 +167,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         user.confirmed = false;
         user.registrationDate = generateLocalDateTime();
         user.lastUpdatedDate = user.registrationDate;
-        user.id = email + "ID"; //TODO should be an individual String
+        user.id = String.valueOf(userCount++);
 
         savePassword(user, password);
 
@@ -174,6 +175,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     }
 
     private String generatePassword(String email, String nickname) {
+        //TODO
         return email + nickname;
     }
 

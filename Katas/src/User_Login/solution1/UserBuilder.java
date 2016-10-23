@@ -1,5 +1,7 @@
 package User_Login.solution1;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 
 class UserBuilder {
@@ -7,14 +9,24 @@ class UserBuilder {
     private final TestUser user;
     private final LocalDateTime date;
 
-    UserBuilder(LocalDateTime date) {
+    UserBuilder(LocalDateTime date, int number) {
         this.date = date;
         this.user = new TestUser();
-        user.email = "some.one@one.com";
-        user.nickname = "someone";
-        user.password = "password";
+
+        String[] userData = getUserData(number);
+
+        user.email = userData[0];
+        user.nickname = userData[1];
+        user.password = userData[2];
         user.confirmed = false;
         user.registrationDate = this.date;
+        user.registrationNumber = number;
+    }
+
+    @NotNull
+    private String[] getUserData(int number) {
+        return new String[]{"some.one" + number + "@one.com",
+                "someone" + number, "Password" + number};
     }
 
     TestUser build() {
@@ -42,6 +54,7 @@ class UserBuilder {
     }
 
     class TestUser extends User {
+        int registrationNumber;
         String password;
 
         TestUser cloneAttributes(User user) {

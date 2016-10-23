@@ -8,13 +8,15 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertTrue;
+
 public class UserLoginTest {
 
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
     private final ArrayList<String> passwordResetEmails = new ArrayList<>();
     private final ArrayList<String> newPasswordEmails = new ArrayList<>();
-    private final String TOKEN_WITHOUT_EXPIRATION_DATE = "-1595444187-2029640462!";
-    private final String GENERATED_PASSWORD = "some.one@one.comsomeone";
+    private final String TOKEN_WITHOUT_EXPIRATION_DATE = "145459181505655167!";
+    private final String GENERATED_PASSWORD = "some.one1@one.comsomeone1";
     private LocalDateTime dateTime;
 
     private UserLogin test;
@@ -70,28 +72,24 @@ public class UserLoginTest {
 
     @Test(expected = Exception.class)
     public void register_GivenEmailIsTaken_ThrowException() throws Exception {
-        UserBuilder.TestUser user1 = a(user().withEmail("e@mail.de").withNickname("one"));
-        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de").withNickname("two"));
-        register(user1);
-        register(user2);
+        register(a(user(1).withEmail("e@mail.de")));
+        register(a(user(2).withEmail("e@mail.de")));
     }
 
     @Test(expected = Exception.class)
     public void register_GivenNicknameIsTaken_ThrowException() throws Exception {
-        UserBuilder.TestUser user1 = a(user().withEmail("one@mail.de").withNickname("one"));
-        UserBuilder.TestUser user2 = a(user().withEmail("two@mail.de").withNickname("one"));
-        register(user1);
-        register(user2);
+        register(a(user(1).withNickname("one")));
+        register(a(user(2).withNickname("one")));
     }
 
     @Test
     public void register_GeneratesIndividualId() throws Exception {
-        UserBuilder.TestUser user1 = a(user());
-        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de").withNickname("NName"));
-        register(user1);
-        register(user2);
+        register(a(user(1)));
+        register(a(user(2)));
 
         Assert.assertNotEquals(test.getUsers().get(0).id, test.getUsers().get(1).id);
+        Assert.assertEquals("0", test.getUsers().get(0).id);
+        Assert.assertEquals("1", test.getUsers().get(1).id);
     }
 
     private void register(UserBuilder.TestUser user) throws Exception {
@@ -121,8 +119,9 @@ public class UserLoginTest {
 
     @Test
     public void giveConformRegistration_UserConfirmedIsTrue() throws Exception {
-        makeConfirmedUser(a(user()));
+        UserBuilder.TestUser user = makeConfirmedUser(a(user()));
         assertUser(a(user().withConform(true)), test.getUsers().get(0));
+        assertTrue(user.confirmed);
     }
 
     @Test
@@ -173,12 +172,17 @@ public class UserLoginTest {
 
     private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {
         register(user);
-        test.confirm("0");
-        return user.cloneAttributes(test.getUsers().get(0));
+        int index = user.registrationNumber - 1;
+        test.confirm(index + "");
+        return user.cloneAttributes(test.getUsers().get(index));
     }
 
     private UserBuilder user() {
-        return new UserBuilder(dateTime);
+        return new UserBuilder(dateTime, 1);
+    }
+
+    private UserBuilder user(int number) {
+        return new UserBuilder(dateTime, number);
     }
 
     private UserBuilder.TestUser a(UserBuilder builder) {
@@ -267,7 +271,8 @@ public class UserLoginTest {
     public void register_GivenAllData_UserId() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user()));
 
-        Assert.assertEquals("some.one@one.comID", test.getUsers().get(0).id);
+        Assert.assertEquals("0", test.getUsers().get(0).id);
+        Assert.assertEquals("0", user.id);
     }
 
     @Test
@@ -295,8 +300,7 @@ public class UserLoginTest {
     @Test
 
     public void register_GivenSuccessful_lastUpdatedDateIsNull() throws Exception {
-        makeConfirmedUser(a(user()));
-        User user = test.getUsers().get(0);
+        User user = makeConfirmedUser(a(user()));
 
         assertLastUpdatedDate(user.registrationDate);
     }
@@ -337,12 +341,10 @@ public class UserLoginTest {
     }
     @Test
     public void autoUpdateRegistrations_GivenRegister_DeleteExpiredRegistration() throws Exception {
-        UserBuilder.TestUser user1 = a(user());
-        register(user1);
-        UserBuilder.TestUser user2 = a(user().withEmail("e@mail.de").withNickname("Nick"));
+        register(a(user(1)));
 
         dateTime = dateTime.plusDays(7);
-        register(user2);
+        register(a(user(2)));
 
         Assert.assertEquals(1, test.getUsers().size());
 
