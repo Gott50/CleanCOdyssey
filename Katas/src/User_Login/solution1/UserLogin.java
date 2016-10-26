@@ -27,11 +27,12 @@ abstract class UserLogin implements Login, Registration, Administration {
         if (!isPasswordValid(loginName, password))
             throw new PasswordInvalidException("Password is not Valid!");
 
-        @NotNull String token = generateToken(loginName);
         User user = getUser(loginName);
+        user.lastLoginDate = generateLocalDateTime();
+
+        @NotNull String token = generateToken(loginName);
         tokenMap.put(token, user);
 
-        user.lastLoginDate = generateLocalDateTime();
 
         return token;
     }
@@ -50,10 +51,13 @@ abstract class UserLogin implements Login, Registration, Administration {
         User user = getUser(loginName);
         LocalDateTime expirationDate = generateLocalDateTime().plusDays(1);
 
+        String userdata = user.id.hashCode() + "" +
+                user.email.hashCode() + "" +
+                user.nickname.hashCode() + "" +
+                user.lastLoginDate.hashCode() + "" +
+                user.lastUpdatedDate.hashCode() + "";
         return
-                //TODO user.id.hashCode() + "" +
-                        user.email.hashCode() + "" +
-                        user.nickname.hashCode() + "" +
+                Arrays.toString(encryptPassword(userdata)).hashCode() +
                         "!" + expirationDate;
     }
 
@@ -106,7 +110,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     public void resetPassword(String resetRequestNumber) {
         String email = resetRequests.remove(resetRequestNumber);
         User user = getUser(email);
-        String password = generatePassword(user.email, user.nickname);
+        String password = generatePassword(user);
         savePassword(user, password);
 
         sendNewPasswordEmail(user.email, password);
@@ -143,7 +147,6 @@ abstract class UserLogin implements Login, Registration, Administration {
         else if (isUserRegistered(nickname))
             throw new RegistrationException("Nickname is already taken");
 
-        if (password.isEmpty()) password = generatePassword(email, nickname);
 
         @NotNull User newUser = buildUser(email, password, nickname);
         users.add(newUser);
@@ -169,14 +172,15 @@ abstract class UserLogin implements Login, Registration, Administration {
         user.lastUpdatedDate = user.registrationDate;
         user.id = String.valueOf(userCount++);
 
+        if (password.isEmpty()) password = generatePassword(user);
         savePassword(user, password);
 
         return user;
     }
 
-    private String generatePassword(String email, String nickname) {
-        //TODO
-        return email + nickname;
+    private String generatePassword(User user) {
+        String userdata = user.id + (user.email + user.nickname).hashCode() + user.registrationDate;
+        return Arrays.toString(encryptPassword(userdata)).hashCode() + "";
     }
 
     @Override

@@ -15,8 +15,8 @@ public class UserLoginTest {
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
     private final ArrayList<String> passwordResetEmails = new ArrayList<>();
     private final ArrayList<String> newPasswordEmails = new ArrayList<>();
-    private final String TOKEN_WITHOUT_EXPIRATION_DATE = "145459181505655167!";
-    private final String GENERATED_PASSWORD = "some.one1@one.comsomeone1";
+    private final String TOKEN_WITHOUT_EXPIRATION_DATE = "1586225867!";
+    private final String GENERATED_PASSWORD = "1273852453";
     private LocalDateTime dateTime;
 
     private UserLogin test;
@@ -72,20 +72,20 @@ public class UserLoginTest {
 
     @Test(expected = Exception.class)
     public void register_GivenEmailIsTaken_ThrowException() throws Exception {
+        register(a(user(0).withEmail("e@mail.de")));
         register(a(user(1).withEmail("e@mail.de")));
-        register(a(user(2).withEmail("e@mail.de")));
     }
 
     @Test(expected = Exception.class)
     public void register_GivenNicknameIsTaken_ThrowException() throws Exception {
+        register(a(user(0).withNickname("one")));
         register(a(user(1).withNickname("one")));
-        register(a(user(2).withNickname("one")));
     }
 
     @Test
     public void register_GeneratesIndividualId() throws Exception {
+        register(a(user(0)));
         register(a(user(1)));
-        register(a(user(2)));
 
         Assert.assertNotEquals(test.getUsers().get(0).id, test.getUsers().get(1).id);
         Assert.assertEquals("0", test.getUsers().get(0).id);
@@ -172,13 +172,13 @@ public class UserLoginTest {
 
     private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {
         register(user);
-        int index = user.registrationNumber - 1;
+        int index = user.registrationNumber;
         test.confirm(index + "");
         return user.cloneAttributes(test.getUsers().get(index));
     }
 
     private UserBuilder user() {
-        return new UserBuilder(dateTime, 1);
+        return new UserBuilder(dateTime, 0);
     }
 
     private UserBuilder user(int number) {
@@ -341,10 +341,10 @@ public class UserLoginTest {
     }
     @Test
     public void autoUpdateRegistrations_GivenRegister_DeleteExpiredRegistration() throws Exception {
-        register(a(user(1)));
+        register(a(user(0)));
 
         dateTime = dateTime.plusDays(7);
-        register(a(user(2)));
+        register(a(user(1)));
 
         Assert.assertEquals(1, test.getUsers().size());
 
