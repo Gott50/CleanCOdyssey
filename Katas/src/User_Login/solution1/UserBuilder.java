@@ -7,10 +7,8 @@ import java.time.LocalDateTime;
 class UserBuilder {
 
     private final TestUser user;
-    private final LocalDateTime date;
 
     UserBuilder(LocalDateTime date, int number) {
-        this.date = date;
         this.user = new TestUser();
 
         String[] userData = getUserData(number);
@@ -19,7 +17,7 @@ class UserBuilder {
         user.nickname = userData[1];
         user.password = userData[2];
         user.confirmed = false;
-        user.registrationDate = this.date;
+        user.registrationDate = date;
         user.registrationNumber = number;
     }
 

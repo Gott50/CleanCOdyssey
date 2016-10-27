@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +15,7 @@ public class UserLoginTest {
 
     private final ArrayList<Integer> registrationEmails = new ArrayList<>();
     private final ArrayList<String> passwordResetEmails = new ArrayList<>();
-    private final ArrayList<String> newPasswordEmails = new ArrayList<>();
+    private final HashMap<String, String> newPasswordEmails = new HashMap<>();
     private final String TOKEN_WITHOUT_EXPIRATION_DATE = "1586225867!";
     private final String GENERATED_PASSWORD = "1273852453";
     private LocalDateTime dateTime;
@@ -28,7 +29,8 @@ public class UserLoginTest {
         test = new UserLogin() {
             @Override
             protected void sendNewPasswordEmail(String email, String password) {
-                newPasswordEmails.add(password);
+
+                newPasswordEmails.put(email, password);
             }
 
             @Override
@@ -67,7 +69,7 @@ public class UserLoginTest {
     public void register_GivenAllInformation_SavesRegistration() throws Exception {
         UserBuilder.TestUser user = a(user().withPassword("password4321"));
         register(user);
-        assertUser(a(user().withPassword("password4321")), test.getUsers().get(0));
+        assertUser(a(user().withPassword("password4321").withConform(false)), test.getUsers().get(0));
     }
 
     @Test(expected = Exception.class)
@@ -131,6 +133,18 @@ public class UserLoginTest {
         assertLogin(TOKEN_WITHOUT_EXPIRATION_DATE + dateTime.plusDays(1), user);
     }
 
+    @Test
+    public void loginWithEmail_givenMultipleConfirmedUser_ReturnsToken() throws Exception {
+        UserBuilder.TestUser user = a(user());
+        makeConfirmedUser(user);
+
+        makeConfirmedUser(a(user(1)));
+        makeConfirmedUser(a(user(2)));
+        makeConfirmedUser(a(user(3)));
+
+        assertLogin(TOKEN_WITHOUT_EXPIRATION_DATE + dateTime.plusDays(1), user);
+    }
+
     @Test(expected = Exception.class)
     public void loginWithWrongPassword_givenConfirmedUser_ReturnsException() throws Exception {
         UserBuilder.TestUser user = a(user());
@@ -167,7 +181,7 @@ public class UserLoginTest {
         String resetRequestNumber = passwordResetEmails.get(0);
         test.resetPassword(resetRequestNumber);
 
-        Assert.assertEquals(GENERATED_PASSWORD, newPasswordEmails.get(0));
+        Assert.assertEquals(GENERATED_PASSWORD, newPasswordEmails.get(user.email));
     }
 
     private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {

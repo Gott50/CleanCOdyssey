@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Objects;
 
 abstract class UserLogin implements Login, Registration, Administration {
+    private final Login loginImpl = new LoginImpl(this);
+    
     private final ArrayList<User> users = new ArrayList<>();
     private final HashMap<String, String> resetRequests = new HashMap<>();
     private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
@@ -20,34 +22,21 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public String login(String loginName, String password) throws Exception {
-        if (!isUserRegistered(loginName))
-            throw new UnregisteredUserException("New users need to register first");
-        if (!isConfirmedUser(loginName))
-            throw new UnconfirmedUserException("User is not yet confirmed");
-        if (!isPasswordValid(loginName, password))
-            throw new PasswordInvalidException("Password is not Valid!");
-
-        User user = getUser(loginName);
-        user.lastLoginDate = generateLocalDateTime();
-
-        @NotNull String token = generateToken(loginName);
-        tokenMap.put(token, user);
 
 
-        return token;
+        return loginImpl.login(loginName, password);
     }
 
-    private boolean isConfirmedUser(String loginName) {
+    boolean isConfirmedUser(String loginName) {
         return getUser(loginName).confirmed;
     }
 
-    private boolean isPasswordValid(String loginName, String password) {
+    boolean isInvalidPassword(String loginName, String password) {
         byte[] pw = getPassword(getUser(loginName).id);
-        return (Arrays.equals(pw, encryptPassword(password)));
+        return (!Arrays.equals(pw, encryptPassword(password)));
     }
 
-    @NotNull
-    private String generateToken(String loginName) {
+    @NotNull String generateToken(String loginName) {
         User user = getUser(loginName);
         LocalDateTime expirationDate = generateLocalDateTime().plusDays(1);
 
@@ -66,7 +55,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         return LocalDateTime.now();
     }
 
-    private boolean isUserRegistered(String loginName) {
+    boolean isUserRegistered(String loginName) {
         for (User user : users)
             if ((Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName)))//&& user.confirmed)
                 return true;
@@ -76,28 +65,20 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public boolean isLoginValid(String token) {
-        LocalDateTime expirationDate = extractDateTime(token);
-        @NotNull LocalDateTime now = generateLocalDateTime();
-        if (now.isAfter(expirationDate)) {
-            tokenMap.remove(token);
-            return false;
-        }
-        return tokenMap.containsKey(token);
+        return loginImpl.isLoginValid(token);
     }
 
-    private LocalDateTime extractDateTime(String token) {
+    LocalDateTime extractDateTime(String token) {
         return LocalDateTime.parse(token.split("!")[1]);
     }
 
     @Override
     public void requestPasswordReset(String email) {
-        String key = generateResetRequestNumber(email);
-        resetRequests.put(key, email);
 
-        sendPasswordResetEmail(key);
+        loginImpl.requestPasswordReset(email);
     }
 
-    private String generateResetRequestNumber(String email) {
+    String generateResetRequestNumber(String email) {
         return email;
     }
 
@@ -108,20 +89,16 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public void resetPassword(String resetRequestNumber) {
-        String email = resetRequests.remove(resetRequestNumber);
-        User user = getUser(email);
-        String password = generatePassword(user);
-        savePassword(user, password);
 
-        sendNewPasswordEmail(user.email, password);
+        loginImpl.resetPassword(resetRequestNumber);
     }
 
-    private User getUser(String loginName) {
+    User getUser(String loginName) {
         int userIndex = getUserIndex(loginName);
         return users.get(userIndex);
     }
 
-    private void savePassword(User user, String password) {
+    void savePassword(User user, String password) {
 
         idPasswordMap.put(user.id, encryptPassword(password));
     }
@@ -178,7 +155,7 @@ abstract class UserLogin implements Login, Registration, Administration {
         return user;
     }
 
-    private String generatePassword(User user) {
+    String generatePassword(User user) {
         String userdata = user.id + (user.email + user.nickname).hashCode() + user.registrationDate;
         return Arrays.toString(encryptPassword(userdata)).hashCode() + "";
     }
@@ -204,7 +181,7 @@ abstract class UserLogin implements Login, Registration, Administration {
 
     @Override
     public User currentUser(String token) {
-        if (!isLoginValid(token)) return null;
+        if (!loginImpl.isLoginValid(token)) return null;
         return tokenMap.get(token);
     }
 
@@ -232,7 +209,7 @@ abstract class UserLogin implements Login, Registration, Administration {
     @Override
     public void delete(String userId, String password) throws Exception {
         User user = getUser(userId);
-        if (!isPasswordValid(user.email, password))
+        if (isInvalidPassword(user.email, password))
             throw new Exception("If you want to delete your Account you need to tip in the correct Password");
         else
             users.remove(user);
@@ -246,5 +223,13 @@ abstract class UserLogin implements Login, Registration, Administration {
         users.removeIf(user -> !user.confirmed &&
                 generateLocalDateTime().isAfter(
                         user.registrationDate.plusDays(daysTillRegistrationExpires)));
+    }
+
+    HashMap<String, User> getTokenMap() {
+        return tokenMap;
+    }
+
+    HashMap<String, String> getResetRequests() {
+        return resetRequests;
     }
 }
