@@ -53,7 +53,7 @@ public class UserLoginTest {
 
     @Test(expected = UnregisteredUserException.class)
     public void login_GivenNewUser_ReturnsException() throws Exception {
-        test.login("NewUser", null);
+        test.login.login("NewUser", null);
     }
 
     @Test(expected = Exception.class)
@@ -62,7 +62,9 @@ public class UserLoginTest {
     }
 
     private void register(UserBuilder.TestUser user, String password) throws Exception {
-        test.register(user.email, password, user.nickname);
+
+
+        test.registration.register(user.email, password, user.nickname);
     }
 
     @Test
@@ -153,15 +155,15 @@ public class UserLoginTest {
     }
 
     private void assertLogin(String expected, UserBuilder.TestUser user) throws Exception {
-        Assert.assertEquals(expected, test.login(user.email, user.password));
-        Assert.assertEquals(expected, test.login(user.nickname, user.password));
+        Assert.assertEquals(expected, test.login.login(user.email, user.password));
+        Assert.assertEquals(expected, test.login.login(user.nickname, user.password));
     }
 
     @Test(expected = UnconfirmedUserException.class)
     public void login_GivenUnconfirmedUser_ThrowsException() throws Exception {
         UserBuilder.TestUser user = a(user());
         register(user);
-        test.login(user.email, user.password);
+        test.login.login(user.email, user.password);
 
     }
 
@@ -169,7 +171,8 @@ public class UserLoginTest {
     public void requestPasswordReset_ThenSendEmailWithLink() throws Exception {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
-        test.requestPasswordReset(user.email);
+
+        test.login.requestPasswordReset(user.email);
         Assert.assertEquals(user.email, passwordResetEmails.get(0));
     }
 
@@ -177,9 +180,11 @@ public class UserLoginTest {
     public void requestPasswordReset_GivenClickedLink_SendsNewPasswordEmail() throws Exception {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
-        test.requestPasswordReset(user.email);
+
+        test.login.requestPasswordReset(user.email);
         String resetRequestNumber = passwordResetEmails.get(0);
-        test.resetPassword(resetRequestNumber);
+
+        test.login.resetPassword(resetRequestNumber);
 
         Assert.assertEquals(GENERATED_PASSWORD, newPasswordEmails.get(user.email));
     }
@@ -187,7 +192,7 @@ public class UserLoginTest {
     private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {
         register(user);
         int index = user.registrationNumber;
-        test.confirm(index + "");
+        test.registration.confirm(index + "");
         return user.cloneAttributes(test.getUsers().get(index));
     }
 
@@ -205,7 +210,7 @@ public class UserLoginTest {
 
     @Test
     public void currentUser_GivenToken_ReturnsUser() throws Exception {
-        assertUser(a(user().withConform(true)), test.currentUser(makeLoginToken()));
+        assertUser(a(user().withConform(true)), test.administration.currentUser(makeLoginToken()));
     }
 
     @Test
@@ -213,62 +218,62 @@ public class UserLoginTest {
         String token = makeLoginToken();
         dateTime = dateTime.plusDays(2);
 
-        Assert.assertEquals(null, test.currentUser(token));
+        Assert.assertEquals(null, test.administration.currentUser(token));
     }
 
     @Test(expected = Exception.class)
     public void rename_GivenEmptyStrings_ReturnsException() throws Exception {
-        test.rename("UserID", "", "");
+        test.administration.rename("UserID", "", "");
     }
 
     @Test
     public void rename_GivenNewEmail_ChangesEmailAddress() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.rename(user.id, "newMail@ress.de", "");
+        User user = test.administration.currentUser(makeLoginToken());
+        test.administration.rename(user.id, "newMail@ress.de", "");
         assertUser(a(user().withConform(true).withEmail("newMail@ress.de")), user);
     }
 
     @Test
     public void rename_GivenNewNickname_ChangesNickname() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.rename(user.id, "", "newNick'sName");
+        User user = test.administration.currentUser(makeLoginToken());
+        test.administration.rename(user.id, "", "newNick'sName");
         assertUser(a(user().withConform(true).withNickname("newNick'sName")), user);
     }
 
     private String makeLoginToken() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user()));
-        return test.login(user.email, user.password);
+        return test.login.login(user.email, user.password);
     }
 
     @Test(expected = Exception.class)
     public void changePassword_GivenEmptyString_ReturnsException() throws Exception {
-        test.changePassword("UserID", "");
+        test.administration.changePassword("UserID", "");
     }
 
     @Test
     public void changePassword_GivenNewPassword_ChangesPassword() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.changePassword(user.id, "NewPassword123");
+        User user = test.administration.currentUser(makeLoginToken());
+        test.administration.changePassword(user.id, "NewPassword123");
 
         assertUser(a(user().withConform(true).withPassword("NewPassword123")), user);
     }
 
     @Test(expected = Exception.class)
     public void delete_GivenEmptyString_ThrowsException() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.delete(user.id, "");
+        User user = test.administration.currentUser(makeLoginToken());
+        test.administration.delete(user.id, "");
     }
 
     @Test(expected = Exception.class)
     public void delete_GivenFalsePassword_ThrowsException() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.delete(user.id, "FalsePassword");
+        User user = test.administration.currentUser(makeLoginToken());
+        test.administration.delete(user.id, "FalsePassword");
     }
 
     @Test
     public void delete_GivenCorrectPassword_deletesUser() throws Exception {
-        User user = test.currentUser(makeLoginToken());
-        test.delete(user.id, a(user()).password);
+        User user = test.administration.currentUser(makeLoginToken());
+        test.administration.delete(user.id, a(user()).password);
 
         Assert.assertEquals(0, test.getUsers().size());
     }
@@ -302,7 +307,7 @@ public class UserLoginTest {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
 
-        test.login(user.email, user.password);
+        test.login.login(user.email, user.password);
 
         assertLastLoginDate(this.dateTime);
     }
@@ -329,7 +334,7 @@ public class UserLoginTest {
         makeConfirmedUser(user);
         dateTime = dateTime.plusDays(7);
 
-        test.changePassword(user.email, "1newPassword!");
+        test.administration.changePassword(user.email, "1newPassword!");
 
         assertLastUpdatedDate(dateTime);
     }
