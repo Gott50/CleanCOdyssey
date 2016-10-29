@@ -8,8 +8,4 @@ interface Login {
     void requestPasswordReset(String email);
 
     void resetPassword(String resetRequestNumber);
-
-    boolean isInvalidPassword(String email, String password, UserLogin userLogin);
-
-    boolean isUserRegistered(String email);
 }

@@ -11,16 +11,27 @@ import java.util.HashMap;
 import java.util.Objects;
 
 abstract class UserLogin {
-
-    final Administration administration = new AdministrationImpl(this);
     final Registration registration = new RegistrationImpl(this);
     private final ArrayList<User> users = new ArrayList<>();
-    final Login login = new LoginImpl(users, this);
-    private final HashMap<String, String> resetRequests = new HashMap<>();
+    final Administration administration = new AdministrationImpl(users, this);
+    final LoginImpl login = new LoginImpl(users, this);
+
     private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
     private final HashMap<String, User> tokenMap = new HashMap<>();
     private final int daysTillRegistrationExpires = 1;
     private int userCount = 0;
+
+    static byte[] encryptPassword(String password) {
+        String salt = "42";
+        MessageDigest sha256;
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return new byte[0];
+        }
+        return sha256.digest((password + salt).getBytes());
+    }
 
     @NotNull String generateToken(String loginName) {
         User user = getUser(loginName);
@@ -49,7 +60,6 @@ abstract class UserLogin {
         return email;
     }
 
-
     protected abstract void sendNewPasswordEmail(String email, String password);
 
     protected abstract void sendPasswordResetEmail(String resetRequestNumber);
@@ -60,20 +70,7 @@ abstract class UserLogin {
     }
 
     void savePassword(User user, String password) {
-
         idPasswordMap.put(user.id, encryptPassword(password));
-    }
-
-    byte[] encryptPassword(String password) {
-        String salt = "42";
-        MessageDigest sha256;
-        try {
-            sha256 = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return new byte[0];
-        }
-        return sha256.digest((password + salt).getBytes());
     }
 
     abstract void sendRegistrationEmail(int registrationNumber);
@@ -99,7 +96,7 @@ abstract class UserLogin {
 
     String generatePassword(User user) {
         String userdata = user.id + (user.email + user.nickname).hashCode() + user.registrationDate;
-        return Arrays.toString(encryptPassword(userdata)).hashCode() + "";
+        return Arrays.toString(UserLogin.encryptPassword(userdata)).hashCode() + "";
     }
 
     ArrayList<User> getUsers() {
@@ -129,11 +126,13 @@ abstract class UserLogin {
         return tokenMap;
     }
 
-    HashMap<String, String> getResetRequests() {
-        return resetRequests;
-    }
-
     Login getLogin() {
         return login;
+    }
+
+
+    boolean isInvalidPassword(String loginName, String password, UserLogin userLogin) {
+        byte[] pw = userLogin.getPassword(userLogin.getUser(loginName).id);
+        return (!Arrays.equals(pw, encryptPassword(password)));
     }
 }

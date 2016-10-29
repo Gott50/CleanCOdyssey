@@ -4,12 +4,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 class LoginImpl implements Login {
     private final UserLogin userLogin;
     private final ArrayList<User> users;
+
+    private final HashMap<String, String> resetRequests = new HashMap<>();
 
     LoginImpl(ArrayList<User> users, UserLogin userLogin) {
         this.userLogin = userLogin;
@@ -22,7 +24,7 @@ class LoginImpl implements Login {
             throw new UnregisteredUserException();
         if (!isConfirmedUser(loginName, userLogin))
             throw new UnconfirmedUserException();
-        if (isInvalidPassword(loginName, password, userLogin))
+        if (userLogin.isInvalidPassword(loginName, password, userLogin))
             throw new PasswordInvalidException();
 
         User user = userLogin.getUser(loginName);
@@ -48,14 +50,14 @@ class LoginImpl implements Login {
     @Override
     public void requestPasswordReset(String email) {
         String key = userLogin.generateResetRequestNumber(email);
-        userLogin.getResetRequests().put(key, email);
+        resetRequests.put(key, email);
 
         userLogin.sendPasswordResetEmail(key);
     }
 
     @Override
     public void resetPassword(String resetRequestNumber) {
-        String email = userLogin.getResetRequests().remove(resetRequestNumber);
+        String email = resetRequests.remove(resetRequestNumber);
         User user = userLogin.getUser(email);
         String password = userLogin.generatePassword(user);
         userLogin.savePassword(user, password);
@@ -63,7 +65,7 @@ class LoginImpl implements Login {
         userLogin.sendNewPasswordEmail(user.email, password);
     }
 
-    public boolean isUserRegistered(String loginName) {
+    boolean isUserRegistered(String loginName) {
         for (User user : users)
             if ((Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName)))
                 return true;
@@ -74,8 +76,4 @@ class LoginImpl implements Login {
         return userLogin.getUser(loginName).confirmed;
     }
 
-    public boolean isInvalidPassword(String loginName, String password, UserLogin userLogin) {
-        byte[] pw = userLogin.getPassword(userLogin.getUser(loginName).id);
-        return (!Arrays.equals(pw, userLogin.encryptPassword(password)));
-    }
 }

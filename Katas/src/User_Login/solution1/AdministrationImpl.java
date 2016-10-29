@@ -1,10 +1,14 @@
 package User_Login.solution1;
 
+import java.util.ArrayList;
+
 class AdministrationImpl implements Administration {
     private final UserLogin userLogin;
+    private final ArrayList<User> users;
 
-    AdministrationImpl(UserLogin userLogin) {
+    AdministrationImpl(ArrayList<User> users, UserLogin userLogin) {
         this.userLogin = userLogin;
+        this.users = users;
     }
 
     @Override
@@ -37,9 +41,9 @@ class AdministrationImpl implements Administration {
     @Override
     public void delete(String userId, String password) throws Exception {
         User user = userLogin.getUser(userId);
-        if (userLogin.login.isInvalidPassword(user.email, password, userLogin))
+        if (userLogin.isInvalidPassword(user.email, password, userLogin))
             throw new Exception("If you want to delete your Account you need to tip in the correct Password");
         else
-            userLogin.getUsers().remove(user);
+            users.remove(user);
     }
 }
