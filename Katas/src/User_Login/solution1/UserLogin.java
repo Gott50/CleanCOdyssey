@@ -11,15 +11,14 @@ import java.util.HashMap;
 import java.util.Objects;
 
 abstract class UserLogin {
-    final Registration registration = new RegistrationImpl(this);
     private final ArrayList<User> users = new ArrayList<>();
-    final Administration administration = new AdministrationImpl(users, this);
-    final LoginImpl login = new LoginImpl(users, this);
+    final RegistrationImpl registration = new RegistrationImpl(users, this);
+    private final HashMap<String, User> tokenMap = new HashMap<>();
+    final AdministrationImpl administration = new AdministrationImpl(users, tokenMap, this);
+    final LoginImpl login = new LoginImpl(users, tokenMap, this);
 
     private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
-    private final HashMap<String, User> tokenMap = new HashMap<>();
-    private final int daysTillRegistrationExpires = 1;
-    private int userCount = 0;
+
 
     static byte[] encryptPassword(String password) {
         String salt = "42";
@@ -33,65 +32,33 @@ abstract class UserLogin {
         return sha256.digest((password + salt).getBytes());
     }
 
-    @NotNull String generateToken(String loginName) {
-        User user = getUser(loginName);
-        LocalDateTime expirationDate = generateLocalDateTime().plusDays(1);
-
-        String userdata = user.id.hashCode() + "" +
-                user.email.hashCode() + "" +
-                user.nickname.hashCode() + "" +
-                user.lastLoginDate.hashCode() + "" +
-                user.lastUpdatedDate.hashCode() + "";
-        return
-                Arrays.toString(encryptPassword(userdata)).hashCode() +
-                        "!" + expirationDate;
-    }
 
     @NotNull
-    LocalDateTime generateLocalDateTime() {
+    protected LocalDateTime generateLocalDateTime() {
         return LocalDateTime.now();
-    }
-
-    LocalDateTime extractDateTime(String token) {
-        return LocalDateTime.parse(token.split("!")[1]);
-    }
-
-    String generateResetRequestNumber(String email) {
-        return email;
     }
 
     protected abstract void sendNewPasswordEmail(String email, String password);
 
     protected abstract void sendPasswordResetEmail(String resetRequestNumber);
 
+    protected abstract void sendRegistrationEmail(int registrationNumber);
+
     User getUser(String loginName) {
         int userIndex = getUserIndex(loginName);
         return users.get(userIndex);
     }
 
+    private int getUserIndex(String loginName) {
+        for (int i = 0; i < users.size(); i++) {
+            if (Objects.equals(users.get(i).id, loginName) || Objects.equals(users.get(i).email, loginName) || Objects.equals(users.get(i).nickname, loginName))
+                return i;
+        }
+        return -1;
+    }
+
     void savePassword(User user, String password) {
         idPasswordMap.put(user.id, encryptPassword(password));
-    }
-
-    abstract void sendRegistrationEmail(int registrationNumber);
-
-    int getRegistrationNumber(@NotNull User newUser) {
-        return users.indexOf(newUser);
-    }
-
-    @NotNull User buildUser(String email, String password, String nickname) {
-        User user = new User();
-        user.email = email;
-        user.nickname = nickname;
-        user.confirmed = false;
-        user.registrationDate = generateLocalDateTime();
-        user.lastUpdatedDate = user.registrationDate;
-        user.id = String.valueOf(userCount++);
-
-        if (password.isEmpty()) password = generatePassword(user);
-        savePassword(user, password);
-
-        return user;
     }
 
     String generatePassword(User user) {
@@ -104,35 +71,20 @@ abstract class UserLogin {
 
     }
 
-    private int getUserIndex(String loginName) {
-        for (int i = 0; i < users.size(); i++) {
-            if (Objects.equals(users.get(i).id, loginName) || Objects.equals(users.get(i).email, loginName) || Objects.equals(users.get(i).nickname, loginName))
-                return i;
-        }
-        return -1;
-    }
-
     byte[] getPassword(String id) {
         return idPasswordMap.get(id);
-    }
-
-    void updateRegistrations() {
-        users.removeIf(user -> !user.confirmed &&
-                generateLocalDateTime().isAfter(
-                        user.registrationDate.plusDays(daysTillRegistrationExpires)));
-    }
-
-    HashMap<String, User> getTokenMap() {
-        return tokenMap;
-    }
-
-    Login getLogin() {
-        return login;
     }
 
 
     boolean isInvalidPassword(String loginName, String password, UserLogin userLogin) {
         byte[] pw = userLogin.getPassword(userLogin.getUser(loginName).id);
         return (!Arrays.equals(pw, encryptPassword(password)));
+    }
+
+    boolean isUserRegistered(String loginName) {
+        for (User user : users)
+            if ((Objects.equals(user.email, loginName) || Objects.equals(user.nickname, loginName)))
+                return true;
+        return false;
     }
 }

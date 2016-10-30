@@ -1,20 +1,23 @@
 package User_Login.solution1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class AdministrationImpl implements Administration {
     private final UserLogin userLogin;
     private final ArrayList<User> users;
+    private final HashMap<String, User> tokenMap;
 
-    AdministrationImpl(ArrayList<User> users, UserLogin userLogin) {
+    AdministrationImpl(ArrayList<User> users, HashMap<String, User> tokenMap, UserLogin userLogin) {
+        this.tokenMap = tokenMap;
         this.userLogin = userLogin;
         this.users = users;
     }
 
     @Override
     public User currentUser(String token) {
-        if (!userLogin.getLogin().isLoginValid(token)) return null;
-        return userLogin.getTokenMap().get(token);
+        if (!userLogin.login.isLoginValid(token)) return null;
+        return tokenMap.get(token);
     }
 
     @Override

@@ -39,13 +39,14 @@ public class UserLoginTest {
             }
 
             @Override
-            void sendRegistrationEmail(int registrationNumber) {
+            protected void sendRegistrationEmail(int registrationNumber) {
 
                 registrationEmails.add(registrationNumber);
             }
 
             @Override
-            @NotNull LocalDateTime generateLocalDateTime() {
+            @NotNull
+            protected LocalDateTime generateLocalDateTime() {
                 return dateTime;
             }
         };
@@ -102,7 +103,7 @@ public class UserLoginTest {
 
     private void assertUser(UserBuilder.TestUser expected, User user) {
         Assert.assertEquals(expected.email, user.email);
-        Assert.assertArrayEquals(test.encryptPassword(expected.password), test.getPassword(user.id));
+        Assert.assertArrayEquals(UserLogin.encryptPassword(expected.password), test.getPassword(user.id));
         Assert.assertEquals(expected.nickname, user.nickname);
         Assert.assertEquals(expected.confirmed, user.confirmed);
         Assert.assertEquals(expected.registrationDate, user.registrationDate);
@@ -345,7 +346,7 @@ public class UserLoginTest {
         register(user);
 
         dateTime = dateTime.plusDays(7);
-        test.updateRegistrations();
+        test.registration.updateRegistrations(test);
 
         Assert.assertEquals(0, test.getUsers().size());
     }
@@ -354,7 +355,7 @@ public class UserLoginTest {
         UserBuilder.TestUser user = a(user());
         register(user);
 
-        test.updateRegistrations();
+        test.registration.updateRegistrations(test);
 
         Assert.assertEquals(1, test.getUsers().size());
     }
