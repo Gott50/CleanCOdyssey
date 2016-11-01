@@ -25,7 +25,7 @@ class AdministrationImpl implements Administration {
         if (email.isEmpty() && nickname.isEmpty())
             throw new Exception("The new Name must not be Empty");
 
-        User user = userLogin.getUser(userId);
+        User user = userLogin.userManager.getUser(userId);
         if (!email.isEmpty()) user.email = email;
         if (!nickname.isEmpty()) user.nickname = nickname;
 
@@ -36,15 +36,15 @@ class AdministrationImpl implements Administration {
         if (password.isEmpty())
             throw new Exception("The new Password must not be Empty");
 
-        User user = userLogin.getUser(userId);
+        User user = userLogin.userManager.getUser(userId);
         user.lastUpdatedDate = userLogin.generateLocalDateTime();
-        userLogin.savePassword(user, password);
+        userLogin.passwordManager.savePassword(user, password);
     }
 
     @Override
     public void delete(String userId, String password) throws Exception {
-        User user = userLogin.getUser(userId);
-        if (userLogin.isInvalidPassword(user.email, password, userLogin))
+        User user = userLogin.userManager.getUser(userId);
+        if (userLogin.passwordManager.isInvalidPassword(user.email, password, userLogin))
             throw new Exception("If you want to delete your Account you need to tip in the correct Password");
         else
             users.remove(user);

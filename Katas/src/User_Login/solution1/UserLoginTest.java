@@ -72,7 +72,7 @@ public class UserLoginTest {
     public void register_GivenAllInformation_SavesRegistration() throws Exception {
         UserBuilder.TestUser user = a(user().withPassword("password4321"));
         register(user);
-        assertUser(a(user().withPassword("password4321").withConform(false)), test.getUsers().get(0));
+        assertUser(a(user().withPassword("password4321").withConform(false)), test.userManager.getUsers().get(0));
     }
 
     @Test(expected = Exception.class)
@@ -92,9 +92,9 @@ public class UserLoginTest {
         register(a(user(0)));
         register(a(user(1)));
 
-        Assert.assertNotEquals(test.getUsers().get(0).id, test.getUsers().get(1).id);
-        Assert.assertEquals("0", test.getUsers().get(0).id);
-        Assert.assertEquals("1", test.getUsers().get(1).id);
+        Assert.assertNotEquals(test.userManager.getUsers().get(0).id, test.userManager.getUsers().get(1).id);
+        Assert.assertEquals("0", test.userManager.getUsers().get(0).id);
+        Assert.assertEquals("1", test.userManager.getUsers().get(1).id);
     }
 
     private void register(UserBuilder.TestUser user) throws Exception {
@@ -103,7 +103,7 @@ public class UserLoginTest {
 
     private void assertUser(UserBuilder.TestUser expected, User user) {
         Assert.assertEquals(expected.email, user.email);
-        Assert.assertArrayEquals(UserLogin.encryptPassword(expected.password), test.getPassword(user.id));
+        Assert.assertArrayEquals(Encryption.encryptPassword(expected.password), test.passwordManager.getPassword(user.id));
         Assert.assertEquals(expected.nickname, user.nickname);
         Assert.assertEquals(expected.confirmed, user.confirmed);
         Assert.assertEquals(expected.registrationDate, user.registrationDate);
@@ -113,7 +113,7 @@ public class UserLoginTest {
     public void register_GivenNoPassword_GeneratesOne() throws Exception {
         UserBuilder.TestUser user = a(user());
         register(user, "");
-        assertUser(a(user().withPassword(GENERATED_PASSWORD)), test.getUsers().get(0));
+        assertUser(a(user().withPassword(GENERATED_PASSWORD)), test.userManager.getUsers().get(0));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class UserLoginTest {
     @Test
     public void giveConformRegistration_UserConfirmedIsTrue() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user()));
-        assertUser(a(user().withConform(true)), test.getUsers().get(0));
+        assertUser(a(user().withConform(true)), test.userManager.getUsers().get(0));
         assertTrue(user.confirmed);
     }
 
@@ -194,7 +194,7 @@ public class UserLoginTest {
         register(user);
         int index = user.registrationNumber;
         test.registration.confirm(index + "");
-        return user.cloneAttributes(test.getUsers().get(index));
+        return user.cloneAttributes(test.userManager.getUsers().get(index));
     }
 
     private UserBuilder user() {
@@ -276,7 +276,7 @@ public class UserLoginTest {
         User user = test.administration.currentUser(makeLoginToken());
         test.administration.delete(user.id, a(user()).password);
 
-        Assert.assertEquals(0, test.getUsers().size());
+        Assert.assertEquals(0, test.userManager.getUsers().size());
     }
 
     @Test
@@ -284,14 +284,14 @@ public class UserLoginTest {
         UserBuilder.TestUser user = makeConfirmedUser(a(user().withPassword("PW1234")));
         byte[] expected = {125, 95, 100, 103, -84, 107, 38, 69, -21, -29, 23, -6, -128, 78, -84, 94, -111, -50, -46, 116, 56, -82, 118, -13, -31, 126, 84, 16, -54, -8, -52, -107};
 
-        Assert.assertArrayEquals(expected, test.getPassword(user.id));
+        Assert.assertArrayEquals(expected, test.passwordManager.getPassword(user.id));
     }
 
     @Test
     public void register_GivenAllData_UserId() throws Exception {
         UserBuilder.TestUser user = makeConfirmedUser(a(user()));
 
-        Assert.assertEquals("0", test.getUsers().get(0).id);
+        Assert.assertEquals("0", test.userManager.getUsers().get(0).id);
         Assert.assertEquals("0", user.id);
     }
 
@@ -314,7 +314,7 @@ public class UserLoginTest {
     }
 
     private void assertLastLoginDate(LocalDateTime expected) {
-        Assert.assertEquals(expected, test.getUsers().get(0).lastLoginDate);
+        Assert.assertEquals(expected, test.userManager.getUsers().get(0).lastLoginDate);
     }
 
     @Test
@@ -326,7 +326,7 @@ public class UserLoginTest {
     }
 
     private void assertLastUpdatedDate(LocalDateTime expected) {
-        Assert.assertEquals(expected, test.getUsers().get(0).lastUpdatedDate);
+        Assert.assertEquals(expected, test.userManager.getUsers().get(0).lastUpdatedDate);
     }
 
     @Test
@@ -348,7 +348,7 @@ public class UserLoginTest {
         dateTime = dateTime.plusDays(7);
         test.registration.updateRegistrations(test);
 
-        Assert.assertEquals(0, test.getUsers().size());
+        Assert.assertEquals(0, test.userManager.getUsers().size());
     }
     @Test
     public void updateRegistrations_GivenRegistrationIsExpired_DoNothing() throws Exception {
@@ -357,7 +357,7 @@ public class UserLoginTest {
 
         test.registration.updateRegistrations(test);
 
-        Assert.assertEquals(1, test.getUsers().size());
+        Assert.assertEquals(1, test.userManager.getUsers().size());
     }
     @Test
     public void autoUpdateRegistrations_GivenRegister_DeleteExpiredRegistration() throws Exception {
@@ -366,7 +366,7 @@ public class UserLoginTest {
         dateTime = dateTime.plusDays(7);
         register(a(user(1)));
 
-        Assert.assertEquals(1, test.getUsers().size());
+        Assert.assertEquals(1, test.userManager.getUsers().size());
 
     }
 

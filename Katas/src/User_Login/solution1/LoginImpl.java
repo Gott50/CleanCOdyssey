@@ -22,14 +22,14 @@ class LoginImpl implements Login {
 
     @Override
     public String login(String loginName, String password) throws Exception {
-        if (!userLogin.isUserRegistered(loginName))
+        if (!userLogin.userManager.isUserRegistered(loginName))
             throw new UnregisteredUserException();
         if (!isConfirmedUser(loginName, userLogin))
             throw new UnconfirmedUserException();
-        if (userLogin.isInvalidPassword(loginName, password, userLogin))
+        if (userLogin.passwordManager.isInvalidPassword(loginName, password, userLogin))
             throw new PasswordInvalidException();
 
-        User user = userLogin.getUser(loginName);
+        User user = userLogin.userManager.getUser(loginName);
         user.lastLoginDate = userLogin.generateLocalDateTime();
 
         @NotNull String token = generateToken(loginName);
@@ -60,21 +60,21 @@ class LoginImpl implements Login {
     @Override
     public void resetPassword(String resetRequestNumber) {
         String email = resetRequests.remove(resetRequestNumber);
-        User user = userLogin.getUser(email);
-        String password = userLogin.generatePassword(user);
-        userLogin.savePassword(user, password);
+        User user = userLogin.userManager.getUser(email);
+        String password = userLogin.passwordManager.generatePassword(user);
+        userLogin.passwordManager.savePassword(user, password);
 
         userLogin.sendNewPasswordEmail(user.email, password);
     }
 
 
     private boolean isConfirmedUser(String loginName, UserLogin userLogin) {
-        return userLogin.getUser(loginName).confirmed;
+        return userLogin.userManager.getUser(loginName).confirmed;
     }
 
     @NotNull
     private String generateToken(String loginName) {
-        User user = userLogin.getUser(loginName);
+        User user = userLogin.userManager.getUser(loginName);
         LocalDateTime expirationDate = userLogin.generateLocalDateTime().plusDays(1);
 
         String userdata = user.id.hashCode() + "" +
@@ -83,7 +83,7 @@ class LoginImpl implements Login {
                 user.lastLoginDate.hashCode() + "" +
                 user.lastUpdatedDate.hashCode() + "";
         return
-                Arrays.toString(UserLogin.encryptPassword(userdata)).hashCode() +
+                Arrays.toString(Encryption.encryptPassword(userdata)).hashCode() +
                         "!" + expirationDate;
     }
 

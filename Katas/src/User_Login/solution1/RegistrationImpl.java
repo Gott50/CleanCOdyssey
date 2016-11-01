@@ -5,12 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 class RegistrationImpl implements Registration {
+    private final UserManager userManager;
     private final UserLogin userLogin;
     private final ArrayList<User> users;
     private final int daysTillRegistrationExpires = 1;
     private int userCount = 0;
 
-    RegistrationImpl(ArrayList<User> users, UserLogin userLogin) {
+    RegistrationImpl(UserManager userManager, ArrayList<User> users, UserLogin userLogin) {
+        this.userManager = userManager;
         this.userLogin = userLogin;
         this.users = users;
     }
@@ -19,9 +21,9 @@ class RegistrationImpl implements Registration {
     public void register(String email, String password, String nickname) throws Exception {
         if (email.isEmpty())
             throw new RegistrationException("At least you need to give an EmailAddress");
-        else if (userLogin.isUserRegistered(email))
+        else if (userManager.isUserRegistered(email))
             throw new RegistrationException("EmailAddress is already taken");
-        else if (userLogin.isUserRegistered(nickname))
+        else if (userManager.isUserRegistered(nickname))
             throw new RegistrationException("Nickname is already taken");
 
 
@@ -49,8 +51,8 @@ class RegistrationImpl implements Registration {
         user.lastUpdatedDate = user.registrationDate;
         user.id = String.valueOf(userCount++);
 
-        if (password.isEmpty()) password = userLogin.generatePassword(user);
-        userLogin.savePassword(user, password);
+        if (password.isEmpty()) password = userLogin.passwordManager.generatePassword(user);
+        userLogin.passwordManager.savePassword(user, password);
 
         return user;
     }
