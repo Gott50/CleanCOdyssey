@@ -65,7 +65,7 @@ public class UserLoginTest {
     private void register(UserBuilder.TestUser user, String password) throws Exception {
 
 
-        test.registration.register(user.email, password, user.nickname);
+        test.getRegistration().register(user.email, password, user.nickname);
     }
 
     @Test
@@ -193,7 +193,7 @@ public class UserLoginTest {
     private UserBuilder.TestUser makeConfirmedUser(UserBuilder.TestUser user) throws Exception {
         register(user);
         int index = user.registrationNumber;
-        test.registration.confirm(index + "");
+        test.getRegistration().confirm(index + "");
         return user.cloneAttributes(test.userManager.getUsers().get(index));
     }
 
@@ -346,7 +346,7 @@ public class UserLoginTest {
         register(user);
 
         dateTime = dateTime.plusDays(7);
-        test.registration.updateRegistrations(test);
+        test.updateRegistrations();
 
         Assert.assertEquals(0, test.userManager.getUsers().size());
     }
@@ -355,7 +355,7 @@ public class UserLoginTest {
         UserBuilder.TestUser user = a(user());
         register(user);
 
-        test.registration.updateRegistrations(test);
+        test.updateRegistrations();
 
         Assert.assertEquals(1, test.userManager.getUsers().size());
     }

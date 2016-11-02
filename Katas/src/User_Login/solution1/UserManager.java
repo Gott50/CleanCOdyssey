@@ -35,4 +35,8 @@ class UserManager {
                 return true;
         return false;
     }
+
+    public void remove(User user) {
+        users.remove(user);
+    }
 }

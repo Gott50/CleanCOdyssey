@@ -10,11 +10,10 @@ abstract class UserLogin {
     final PasswordManager passwordManager = new PasswordManager();
     private final ArrayList<User> users = new ArrayList<>();
     final UserManager userManager = new UserManager(users);
-    final RegistrationImpl registration = new RegistrationImpl(userManager, users, this);
     private final HashMap<String, User> tokenMap = new HashMap<>();
-    final Administration administration = new AdministrationImpl(users, tokenMap, this);
-    final Login login = new LoginImpl(users, tokenMap, this);
-
+    final Administration administration = new AdministrationImpl(userManager, tokenMap, this, passwordManager);
+    final Login login = new LoginImpl(userManager, tokenMap, this);
+    private final Registration registration = new RegistrationImpl(userManager, passwordManager, this);
 
     @NotNull
     protected LocalDateTime generateLocalDateTime() {
@@ -28,4 +27,15 @@ abstract class UserLogin {
     protected abstract void sendRegistrationEmail(int registrationNumber);
 
 
+    void updateRegistrations() {
+        final int daysTillRegistrationExpires = 1;
+        userManager.getUsers().removeIf(user -> !user.confirmed &&
+                generateLocalDateTime().isAfter(
+                        user.registrationDate.plusDays(daysTillRegistrationExpires)));
+    }
+
+    Registration getRegistration() {
+        updateRegistrations();
+        return registration;
+    }
 }

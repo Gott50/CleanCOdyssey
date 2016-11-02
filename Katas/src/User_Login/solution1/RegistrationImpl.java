@@ -2,19 +2,16 @@ package User_Login.solution1;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 class RegistrationImpl implements Registration {
     private final UserManager userManager;
     private final UserLogin userLogin;
-    private final ArrayList<User> users;
-    private final int daysTillRegistrationExpires = 1;
     private int userCount = 0;
+    private PasswordManager passwordManager;
 
-    RegistrationImpl(UserManager userManager, ArrayList<User> users, UserLogin userLogin) {
+    RegistrationImpl(UserManager userManager, PasswordManager passwordManager, UserLogin userLogin) {
         this.userManager = userManager;
+        this.passwordManager = passwordManager;
         this.userLogin = userLogin;
-        this.users = users;
     }
 
     @Override
@@ -28,9 +25,8 @@ class RegistrationImpl implements Registration {
 
 
         @NotNull User newUser = buildUser(email, password, nickname, userLogin);
-        users.add(newUser);
+        userManager.getUsers().add(newUser);
 
-        userLogin.registration.updateRegistrations(userLogin);
         userLogin.sendRegistrationEmail(getRegistrationNumber(newUser));
 
     }
@@ -38,7 +34,7 @@ class RegistrationImpl implements Registration {
     @Override
     public void confirm(String registrationNumber) {
         int index = Integer.parseInt(registrationNumber);
-        users.get(index).confirmed = true;
+        userManager.getUsers().get(index).confirmed = true;
     }
 
     @NotNull
@@ -52,18 +48,13 @@ class RegistrationImpl implements Registration {
         user.id = String.valueOf(userCount++);
 
         if (password.isEmpty()) password = userLogin.passwordManager.generatePassword(user);
-        userLogin.passwordManager.savePassword(user, password);
+        passwordManager.savePassword(user, password);
 
         return user;
     }
 
     private int getRegistrationNumber(@NotNull User newUser) {
-        return users.indexOf(newUser);
+        return userManager.getUsers().indexOf(newUser);
     }
 
-    void updateRegistrations(UserLogin userLogin) {
-        users.removeIf(user -> !user.confirmed &&
-                userLogin.generateLocalDateTime().isAfter(
-                        user.registrationDate.plusDays(daysTillRegistrationExpires)));
-    }
 }
