@@ -28,8 +28,12 @@ public class UserLoginTest {
 
         test = new UserLogin() {
             @Override
-            protected void sendNewPasswordEmail(String email, String password) {
+            protected @NotNull LocalDateTime generateLocalDateTime() {
+                return dateTime;
+            }
 
+            @Override
+            protected void sendNewPasswordEmail(String email, String password) {
                 newPasswordEmails.put(email, password);
             }
 
@@ -44,11 +48,6 @@ public class UserLoginTest {
                 registrationEmails.add(registrationNumber);
             }
 
-            @Override
-            @NotNull
-            protected LocalDateTime generateLocalDateTime() {
-                return dateTime;
-            }
         };
     }
 
@@ -218,6 +217,7 @@ public class UserLoginTest {
     public void currentUser_GivenExpiredToken_ReturnNull() throws Exception {
         String token = makeLoginToken();
         dateTime = dateTime.plusDays(2);
+        test.setDateTime(dateTime);
 
         Assert.assertEquals(null, test.administration.currentUser(token));
     }
@@ -334,6 +334,7 @@ public class UserLoginTest {
         UserBuilder.TestUser user = a(user());
         makeConfirmedUser(user);
         dateTime = dateTime.plusDays(7);
+        test.setDateTime(dateTime);
 
         test.administration.changePassword(user.email, "1newPassword!");
 
@@ -346,6 +347,8 @@ public class UserLoginTest {
         register(user);
 
         dateTime = dateTime.plusDays(7);
+        test.setDateTime(dateTime);
+
         test.updateRegistrations();
 
         Assert.assertEquals(0, test.userManager.getUsers().size());
@@ -364,6 +367,8 @@ public class UserLoginTest {
         register(a(user(0)));
 
         dateTime = dateTime.plusDays(7);
+        test.setDateTime(dateTime);
+
         register(a(user(1)));
 
         Assert.assertEquals(1, test.userManager.getUsers().size());

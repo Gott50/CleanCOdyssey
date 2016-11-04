@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 class UserManager {
-    private final ArrayList<User> users;
-
-    UserManager(ArrayList<User> users) {
-        this.users = users;
-    }
+    private final ArrayList<User> users = new ArrayList<>();
 
     User getUser(String loginName) {
         int userIndex = getUserIndex(loginName);

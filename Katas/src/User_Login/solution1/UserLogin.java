@@ -3,22 +3,26 @@ package User_Login.solution1;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 abstract class UserLogin {
-    final PasswordManager passwordManager = new PasswordManager();
-    private final ArrayList<User> users = new ArrayList<>();
-    final UserManager userManager = new UserManager(users);
+    final UserManager userManager = new UserManager();
+    final PasswordManager passwordManager = new PasswordManager(userManager);
     private final HashMap<String, User> tokenMap = new HashMap<>();
-    final Administration administration = new AdministrationImpl(userManager, tokenMap, this, passwordManager);
-    final Login login = new LoginImpl(userManager, tokenMap, this);
-    private final Registration registration = new RegistrationImpl(userManager, passwordManager, this);
+    private LocalDateTime localDateTime = generateLocalDateTime();
+    final Login login = new LoginImpl(userManager, tokenMap, this, localDateTime, passwordManager);
+    final Administration administration = new AdministrationImpl(tokenMap, userManager, passwordManager, login, localDateTime);
+    private final Registration registration = new RegistrationImpl(userManager, passwordManager, this, localDateTime);
 
     @NotNull
     protected LocalDateTime generateLocalDateTime() {
         return LocalDateTime.now();
     }
+
+    void setDateTime(LocalDateTime dateTime) {
+        localDateTime = dateTime;
+    }
+
 
     protected abstract void sendNewPasswordEmail(String email, String password);
 
@@ -30,7 +34,7 @@ abstract class UserLogin {
     void updateRegistrations() {
         final int daysTillRegistrationExpires = 1;
         userManager.getUsers().removeIf(user -> !user.confirmed &&
-                generateLocalDateTime().isAfter(
+                localDateTime.isAfter(
                         user.registrationDate.plusDays(daysTillRegistrationExpires)));
     }
 

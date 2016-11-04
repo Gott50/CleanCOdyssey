@@ -12,11 +12,15 @@ class LoginImpl implements Login {
     private final HashMap<String, User> tokenMap;
 
     private final HashMap<String, String> resetRequests = new HashMap<>();
+    private LocalDateTime localDateTime;
+    private PasswordManager passwordManager;
 
-    LoginImpl(UserManager userManager, HashMap<String, User> tokenMap, UserLogin userLogin) {
+    LoginImpl(UserManager userManager, HashMap<String, User> tokenMap, UserLogin userLogin, LocalDateTime localDateTime, PasswordManager passwordManager) {
         this.tokenMap = tokenMap;
         this.userLogin = userLogin;
         this.userManager = userManager;
+        this.localDateTime = localDateTime;
+        this.passwordManager = passwordManager;
     }
 
     @Override
@@ -25,11 +29,11 @@ class LoginImpl implements Login {
             throw new UnregisteredUserException();
         if (!isConfirmedUser(loginName))
             throw new UnconfirmedUserException();
-        if (userLogin.passwordManager.isInvalidPassword(loginName, password, userLogin))
+        if (passwordManager.isInvalidPassword(loginName, password))
             throw new PasswordInvalidException();
 
         User user = userManager.getUser(loginName);
-        user.lastLoginDate = userLogin.generateLocalDateTime();
+        user.lastLoginDate = localDateTime;
 
         @NotNull String token = generateToken(loginName);
         tokenMap.put(token, user);
@@ -40,7 +44,7 @@ class LoginImpl implements Login {
     @Override
     public boolean isLoginValid(String token) {
         LocalDateTime expirationDate = extractDateTime(token);
-        @NotNull LocalDateTime now = userLogin.generateLocalDateTime();
+        @NotNull LocalDateTime now = localDateTime;
         if (now.isAfter(expirationDate)) {
             tokenMap.remove(token);
             return false;
@@ -74,7 +78,7 @@ class LoginImpl implements Login {
     @NotNull
     private String generateToken(String loginName) {
         User user = userManager.getUser(loginName);
-        LocalDateTime expirationDate = userLogin.generateLocalDateTime().plusDays(1);
+        LocalDateTime expirationDate = localDateTime.plusDays(1);
 
         String userdata = user.id.hashCode() + "" +
                 user.email.hashCode() + "" +

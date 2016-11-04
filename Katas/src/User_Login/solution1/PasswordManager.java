@@ -5,6 +5,11 @@ import java.util.HashMap;
 
 class PasswordManager {
     private final HashMap<String, byte[]> idPasswordMap = new HashMap<>();
+    private UserManager userManager;
+
+    PasswordManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
 
     String generatePassword(User user) {
         String userdata = user.id + (user.email + user.nickname).hashCode() + user.registrationDate;
@@ -19,8 +24,8 @@ class PasswordManager {
         return idPasswordMap.get(id);
     }
 
-    boolean isInvalidPassword(String loginName, String password, UserLogin userLogin) {
-        byte[] pw = getPassword(userLogin.userManager.getUser(loginName).id);
+    boolean isInvalidPassword(String loginName, String password) {
+        byte[] pw = getPassword(this.userManager.getUser(loginName).id);
         return (!Arrays.equals(pw, Encryption.encryptPassword(password)));
     }
 }

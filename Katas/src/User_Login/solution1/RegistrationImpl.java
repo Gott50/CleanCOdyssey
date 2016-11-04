@@ -2,16 +2,20 @@ package User_Login.solution1;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
+
 class RegistrationImpl implements Registration {
     private final UserManager userManager;
     private final UserLogin userLogin;
     private int userCount = 0;
     private PasswordManager passwordManager;
+    private LocalDateTime localDateTime;
 
-    RegistrationImpl(UserManager userManager, PasswordManager passwordManager, UserLogin userLogin) {
+    RegistrationImpl(UserManager userManager, PasswordManager passwordManager, UserLogin userLogin, LocalDateTime localDateTime) {
         this.userManager = userManager;
         this.passwordManager = passwordManager;
         this.userLogin = userLogin;
+        this.localDateTime = localDateTime;
     }
 
     @Override
@@ -43,7 +47,7 @@ class RegistrationImpl implements Registration {
         user.email = email;
         user.nickname = nickname;
         user.confirmed = false;
-        user.registrationDate = userLogin.generateLocalDateTime();
+        user.registrationDate = localDateTime;
         user.lastUpdatedDate = user.registrationDate;
         user.id = String.valueOf(userCount++);
 
