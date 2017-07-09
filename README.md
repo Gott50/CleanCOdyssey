@@ -1,7 +1,7 @@
-#A Kata a day keeps the mud away
+# A Kata a day keeps the mud away
 therefor this is my <b>Clean Code Odyssey</b> to become better programmer.
 
-###My Goal
+### My Goal
 Spend everyday at least 25 min (1 Pomodoro) to work on a Kata using TDD and other Clean Code Pinciples.
 
 
