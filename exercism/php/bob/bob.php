@@ -12,12 +12,14 @@ class Bob
 
     public function respondTo($string)
     {
-        if (preg_match("/[A-Z]+/", $string)
-            && $this->sameAsUpperCase($string))
+        $character_mask = array('\n', '\r', ' ', '\t', '\u000b', '\u00a0', '\u2002');
+        $trimmed = trim($string);
+        if (preg_match("/[A-Z]+/", $trimmed)
+            && $this->sameAsUpperCase($trimmed))
             return "Whoa, chill out!";
-        if (preg_match("/\?\s*$/", $string))
+        if (preg_match("/\?\s*$/", $trimmed))
             return "Sure.";
-        if (preg_match("/^\s*$/", $string))
+        if (preg_match("/^\s*$/", $trimmed))
             return "Fine. Be that way!";
         return "Whatever.";
     }

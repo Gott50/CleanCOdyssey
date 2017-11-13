@@ -136,24 +136,22 @@ class BobTest extends PHPUnit\Framework\TestCase
         $this->assertEquals("Whatever.", $this->bob->respondTo("This is a statement ending with whitespace      "));
     }
 
-//    public function testOtherWhitespace()
-//    {
-//        $this->markTestSkipped();
-//
-//        $this->assertEquals("Fine. Be that way!", $this->bob->respondTo("\n\r \t\u000b\u00a0\u2002"));
-//    }
-//
-//    public function testShoutingWithUmlauts()
-//    {
-//        $this->markTestSkipped();
-//
-//        $this->assertEquals("Whoa, chill out!", $this->bob->respondTo("ÜMLÄÜTS!"));
-//    }
-//
-//    public function testCalmlySpeakingWithUmlauts()
-//    {
-//        $this->markTestSkipped();
-//
-//        $this->assertEquals("Whatever.", $this->bob->respondTo("ÜMLäÜTS!"));
-//    }
+    public function testOtherWhitespace()
+    {
+        $this->assertEquals("Fine. Be that way!", $this->bob->respondTo("\n\r \t\u000b\u00a0\u2002"));
+    }
+
+    public function testShoutingWithUmlauts()
+    {
+        $this->markTestSkipped();
+
+        $this->assertEquals("Whoa, chill out!", $this->bob->respondTo("ÜMLÄÜTS!"));
+    }
+
+    public function testCalmlySpeakingWithUmlauts()
+    {
+        $this->markTestSkipped();
+
+        $this->assertEquals("Whatever.", $this->bob->respondTo("ÜMLäÜTS!"));
+    }
 }
