@@ -3,33 +3,22 @@
 class Bob
 {
 
-    /**
-     * Bob constructor.
-     */
-    public function __construct()
-    {
-    }
-
     public function respondTo($string)
     {
-        $character_mask = array('\n', '\r', ' ', '\t', '\u000b', '\u00a0', '\u2002');
-        $trimmed = trim($string);
-        if (preg_match("/[A-Z]+/", $trimmed)
-            && $this->sameAsUpperCase($trimmed))
+        $cleaned = str_replace(array('\n', '\r', '\t', '\u000b', '\u00a0', '\u2002'),
+            '', $string);
+        if (preg_match("/[A-Z]+/", $cleaned)
+            && $this->sameAsUpperCase($cleaned))
             return "Whoa, chill out!";
-        if (preg_match("/\?\s*$/", $trimmed))
+        if (preg_match("/\?\s*$/", $cleaned))
             return "Sure.";
-        if (preg_match("/^\s*$/", $trimmed))
+        if (preg_match("/^\s*$/", $cleaned))
             return "Fine. Be that way!";
         return "Whatever.";
     }
 
-    /**
-     * @param $string
-     * @return int
-     */
-    public function sameAsUpperCase($string): int
+    private function sameAsUpperCase($string): bool
     {
-        return strtoupper($string)==$string;
+        return mb_strtoupper($string, 'UTF-8') == $string;
     }
 }

@@ -143,15 +143,11 @@ class BobTest extends PHPUnit\Framework\TestCase
 
     public function testShoutingWithUmlauts()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("Whoa, chill out!", $this->bob->respondTo("ÜMLÄÜTS!"));
     }
 
     public function testCalmlySpeakingWithUmlauts()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("Whatever.", $this->bob->respondTo("ÜMLäÜTS!"));
     }
 }
