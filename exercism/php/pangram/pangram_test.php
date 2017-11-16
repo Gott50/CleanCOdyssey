@@ -41,13 +41,11 @@ class PangramTest extends PHPUnit\Framework\TestCase
 
     public function testPangramWithMixedCaseAndPunctuation()
     {
-        $this->markTestSkipped();
         $this->assertTrue(isPangram('\Five quacking Zephyrs jolt my wax bed.\\'));
     }
 
     public function testPangramWithNonAsciiCharacters()
     {
-        $this->markTestSkipped();
         $this->assertTrue(isPangram('Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.'));
     }
 }
