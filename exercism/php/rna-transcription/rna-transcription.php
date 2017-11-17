@@ -13,9 +13,5 @@ function toRna($dna)
  */
 function charToRna($dna)
 {
-    if ($dna == 'G') return 'C';
-    if ($dna == 'C') return 'G';
-    if ($dna == 'T') return 'A';
-    if ($dna == 'A') return 'U';
-    return false;
+    return array('G' => 'C', 'C' => 'G', 'T' => 'A', 'A' => 'U')[$dna];
 }
