@@ -9,7 +9,7 @@ function toRna($dna)
 
 /**
  * @param $dna
- * @return bool|string
+ * @return string
  */
 function charToRna($dna)
 {
