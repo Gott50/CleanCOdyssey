@@ -11,7 +11,7 @@ function encode($input)
     for ($i = 0; $i < strlen($input); $i++){
         $lastChar = array_pop($pairs);
         if ($lastChar == null)
-            array_push($pairs,$input[$i]);
+            array_push($pairs,1,$input[$i]);
         else {
             $lastCount = array_pop($pairs);
             if ($lastCount == null)
@@ -22,7 +22,11 @@ function encode($input)
                 array_push($pairs,$lastCount,$lastChar,1, $input[$i]);
         }
     }
-    return str_replace("1","",implode('',$pairs));
+    return implode('',array_filter($pairs, "filter_1"));
+}
+
+function filter_1($value){
+    return $value != 1;
 }
 
 function decode($input)
