@@ -31,12 +31,16 @@ function filter_1($value){
 
 function decode($input)
 {
-    $chars = preg_split("/[0-9]+/",$input);
-    $count = preg_split("/[A-Z]+/",$input);
     $out = "";
-    for ($i = 0; $i < sizeof($count); $i++)
-    for ($c = 0; $c < $count[$i]; $c++)
-        $out .= ($chars[$i]."")[0];
-
+    for($i = 0; $i < strlen($input); $i++){
+        $times = 1;
+        while (intval($input[$i])> 0){
+            $times = intval($input[$i]);
+            $i++;
+        }
+        for ($t = 0; $t < $times; $t++){
+            $out .= $input[$i];
+        }
+    }
     return $out;
 }
