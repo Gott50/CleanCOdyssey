@@ -44,9 +44,8 @@ function decode($input)
             $times .= $input[$i];
             $i++;
         }
-        for ($t = 0; $t < intval($times); $t++) {
+        for ($t = 0; $t < intval($times); $t++)
             $out .= $input[$i];
-        }
     }
     return $out;
 }
