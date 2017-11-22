@@ -37,15 +37,15 @@ function decode($input)
         if (intval($input[$i]) == 0) {
             $out .= $input[$i];
             continue;
-        } else {
-            $times = "";
-            while (intval($input[$i]) > 0) {
-                $times .= $input[$i];
-                $i++;
-            }
-            for ($t = 0; $t < intval($times); $t++) {
-                $out .= $input[$i];
-            }
+        }
+
+        $times = "";
+        while (intval($input[$i]) > 0) {
+            $times .= $input[$i];
+            $i++;
+        }
+        for ($t = 0; $t < intval($times); $t++) {
+            $out .= $input[$i];
         }
     }
     return $out;
