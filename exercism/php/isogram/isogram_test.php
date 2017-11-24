@@ -11,31 +11,26 @@ class IsogramTest extends PHPUnit\Framework\TestCase
 
     public function testNotIsogram()
     {
-        $this->markTestSkipped();
         $this->assertFalse(isIsogram('eleven'));
     }
 
     public function testMediumLongIsogram()
     {
-        $this->markTestSkipped();
         $this->assertTrue(isIsogram('subdermatoglyphic'));
     }
 
     public function testCaseInsensitive()
     {
-        $this->markTestSkipped();
         $this->assertFalse(isIsogram('Alphabet'));
     }
 
     public function testIsogramWithHyphen()
     {
-        $this->markTestSkipped();
         $this->assertTrue(isIsogram('thumbscrew-japingly'));
     }
 
     public function testIgnoresMultipleHyphens()
     {
-        $this->markTestSkipped();
         $this->assertTrue(isIsogram('Hjelmqvist-Gryb-Zock-Pfund-Wax'));
     }
 
