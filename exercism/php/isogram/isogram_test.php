@@ -36,7 +36,6 @@ class IsogramTest extends PHPUnit\Framework\TestCase
 
     public function testWorksWithGermanLetters()
     {
-        $this->markTestSkipped();
         $this->assertTrue(isIsogram('Heizölrückstoßabdämpfung'));
     }
 
