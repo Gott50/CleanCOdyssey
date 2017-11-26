@@ -2,6 +2,7 @@
 function isIsogram($in){
     $in = strtolower($in);
     $in = preg_replace("/-/","",$in);
+    $in = preg_replace("/\s/","",$in);
 
     $containing = [];
     for ($i = 0; $i < strlen($in); $i++){
