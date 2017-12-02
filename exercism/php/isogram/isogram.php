@@ -6,12 +6,10 @@ function isIsogram($in){
 
     $spec = preg_split("/\w+/", $in);
     $spec = array_filter($spec,function ($s) {return $s !== "";});
-    if(sizeof($spec) !== sizeof(array_unique($spec))) return false;
 
     $in = preg_replace("/\W/","",$in);
     $chars =  str_split($in);
 
-    if(sizeof($chars) !== sizeof(array_unique($chars))) return false;
-
-    return true;
+    return !(sizeof($spec) !== sizeof(array_unique($spec)))&&
+    !(sizeof($chars) !== sizeof(array_unique($chars)));
 }
