@@ -9,13 +9,9 @@ function isIsogram($in){
     if(sizeof($spec) !== sizeof(array_unique($spec))) return false;
 
     $in = preg_replace("/\W/","",$in);
-    $containing = [];
-    for ($i = 0; $i < strlen($in); $i++){
-        $char = substr($in,$i,1);
-        if (in_array($char,$containing)){
-            return false;
-        }
-        array_push($containing,$in[$i]);
-    }
+    $chars =  str_split($in);
+
+    if(sizeof($chars) !== sizeof(array_unique($chars))) return false;
+
     return true;
 }
