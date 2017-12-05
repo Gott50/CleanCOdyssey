@@ -51,7 +51,8 @@ class Series
      */
     private function isValid($int): bool
     {
-        return true;
+        return strlen($this->string) >= $int  && $int >= 0
+            && preg_match("/^\d*$/", $this->string);
     }
 
 }

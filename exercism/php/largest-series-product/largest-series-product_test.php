@@ -88,8 +88,6 @@ class SeriesTest extends PHPUnit\Framework\TestCase
      */
     public function testRejectsSpanLongerThanStringLength()
     {
-        $this->markTestSkipped();
-
         $series = new Series(123);
         $series->largestProduct(4);
     }
@@ -130,8 +128,6 @@ class SeriesTest extends PHPUnit\Framework\TestCase
      */
     public function testRejectsEmptyStringAndNonzeroSpan()
     {
-        $this->markTestSkipped();
-
         $series = new Series("");
         $series->largestProduct(1);
     }
@@ -141,8 +137,6 @@ class SeriesTest extends PHPUnit\Framework\TestCase
      */
     public function testRejectsInvalidCharacterInDigits()
     {
-        $this->markTestSkipped();
-
         $series = new Series("1234a5");
         $series->largestProduct(2);
     }
@@ -152,8 +146,6 @@ class SeriesTest extends PHPUnit\Framework\TestCase
      */
     public function testRejectsNegativeSpan()
     {
-        $this->markTestSkipped();
-
         $series = new Series("12345");
         $series->largestProduct(-1);
     }
