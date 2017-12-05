@@ -24,11 +24,11 @@ class Series
     {
         if (!$this->isValid($int)) throw new InvalidArgumentException;
 
-        $string = $this->string;
         $out = 0;
-        for ($i = 0; $i <= strlen($string) - $int; $i++)
-            $out = $out < $this->productOfSeries(substr($string, $i, $int)) ?
-                $this->productOfSeries(substr($string, $i, $int)) : $out;
+        for ($i = 0; $i <= strlen($this->string) - $int; $i++) {
+            $productOfSeries = $this->productOfSeries(substr($this->string, $i, $int));
+            $out = $out < $productOfSeries ? $productOfSeries : $out;
+        }
         return $out;
     }
 
@@ -39,9 +39,8 @@ class Series
     private function productOfSeries($string): int
     {
         $out = 1;
-        for ($i = 0; $i < strlen($string); $i++) {
+        for ($i = 0; $i < strlen($string); $i++)
             $out *= intval($string[$i]);
-        }
         return $out;
     }
 
