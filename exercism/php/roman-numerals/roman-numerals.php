@@ -22,20 +22,10 @@ function toRoman($int)
  */
 function r2($int, $out, $roman, $index, $factor): array
 {
-    return r($int, $out, $factor, $roman[$index++], $roman[$index++], $roman[$index++]);
-}
+    $small = $roman[$index++];
+    $big = $roman[$index++];
+    $bigger = $roman[$index++];
 
-/**
- * @param $int
- * @param $out
- * @param $factor
- * @param $small
- * @param $bigger
- * @param $big
- * @return mixed
- */
-function r($int, $out, $factor, $small, $big, $bigger)
-{
     list($out, $int) = loop($int, $out, 9 * $factor, $small . $bigger);
     list($out, $int) = loop($int, $out, 6 * $factor, $big . $small);
     list($out, $int) = loop($int, $out, 5 * $factor, $big);
