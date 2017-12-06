@@ -1,14 +1,10 @@
 <?php
 function toRoman($int)
 {
-    $out ="";
-
-    $roman = array("I","V","X","L","C","D","M");
-    list($out, $int) = loop($int, $out, 1000, "M");
-
-    list($out, $int) = r2($int, $out, $roman, 4, 100);
-    list($out, $int) = r2($int, $out, $roman, 2, 10);
-    list($out, $int) = r2($int, $out, $roman, 0, 1);
+    $roman = array("I", "V", "X", "L", "C", "D", "M");
+    list($out, $int) = loop($int, "", 1000, "M");
+    for ($i = 4, $f = 100; $i >= 0; $i -= 2, $f /= 10)
+        list($out, $int) = r2($int, $out, $roman, $i, $f);
     return $out;
 }
 
