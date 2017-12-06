@@ -19,8 +19,8 @@ function toRoman($int)
 function r2($int, $out, $roman, $index, $factor): array
 {
     $small = $roman[$index];
-    $big = $roman[$index+1];
-    $bigger = $roman[$index+2];
+    $big = $roman[$index + 1];
+    $bigger = $roman[$index + 2];
 
     list($out, $int) = loop($int, $out, 9 * $factor, $small . $bigger);
     list($out, $int) = loop($int, $out, 6 * $factor, $big . $small);
@@ -41,7 +41,5 @@ function loop($int, $out, $q, $char): array
 {
     for ($i = 1; $i <= $int / $q; $i++)
         $out .= $char;
-
-    $int %= $q;
-    return array($out, $int);
+    return array($out, $int % $q);
 }
