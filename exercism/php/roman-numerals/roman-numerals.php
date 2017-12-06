@@ -3,13 +3,26 @@ function toRoman($int)
 {
     $out ="";
 
-
+    $roman = array("I","V","X","L","C","D","M");
     list($out, $int) = l($int, $out, 1000, "M");
 
-    list($out, $int) = r($int, $out, 100, "C", "D", "M");
-    list($out, $int) = r($int, $out, 10, "X", "L", "C");
-    list($out, $int) = r($int, $out, 1, "I", "V", "X");
+    list($out, $int) = r2($int, $out, $roman, 4, 100);
+    list($out, $int) = r2($int, $out, $roman, 2, 10);
+    list($out, $int) = r2($int, $out, $roman, 0, 1);
     return $out;
+}
+
+/**
+ * @param $int
+ * @param $out
+ * @param $roman
+ * @param $index
+ * @param $factor
+ * @return array
+ */
+function r2($int, $out, $roman, $index, $factor): array
+{
+    return r($int, $out, $factor, $roman[$index++], $roman[$index++], $roman[$index++]);
 }
 
 /**
