@@ -10,87 +10,63 @@ class PigLatinTest extends PHPUnit\Framework\TestCase
 
     public function testWordBeginningWithK()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("oalakay", translate("koala"));
     }
 
     public function testWordBeginningWithY()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("ellowyay", translate("yellow"));
     }
 
     public function testWordBeginningWithX()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("enonxay", translate("xenon"));
     }
 
     public function testWordBeginningWithA()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("appleay", translate("apple"));
     }
 
     public function testWordBeginningWithE()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("earay", translate("ear"));
     }
 
     public function testWordBeginningWithI()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("iglooay", translate("igloo"));
     }
 
     public function testWordBeginningWithO()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("objectay", translate("object"));
     }
 
     public function testWordBeginningWithU()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("underay", translate("under"));
     }
 
     public function testWordBeginningVowelFollowedByQu()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("equalay", translate("equal"));
     }
 
 
     public function testWordBeginningWithQWithoutAFollowingU()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("atqay", translate("qat"));
     }
 
 
     public function testWordBeginningWithCh()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("airchay", translate("chair"));
     }
 
     public function testWordBeginningWithQu()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("eenquay", translate("queen"));
     }
 
