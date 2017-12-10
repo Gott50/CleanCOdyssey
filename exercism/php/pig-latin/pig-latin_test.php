@@ -72,50 +72,36 @@ class PigLatinTest extends PHPUnit\Framework\TestCase
 
     public function testWordBeginningWithQuAndAPrecedingConsonant()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("aresquay", translate("square"));
     }
 
     public function testWordBeginningWithTh()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("erapythay", translate("therapy"));
     }
 
     public function testWordBeginningWithThr()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("ushthray", translate("thrush"));
     }
 
     public function testWordBeginningWithSch()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("oolschay", translate("school"));
     }
 
     public function testWordBeginningWithYt()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("yttriaay", translate("yttria"));
     }
 
     public function testWordBeginningWithXr()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("xrayay", translate("xray"));
     }
 
     public function testAWholePhrase()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals("ickquay astfay unray", translate("quick fast run"));
     }
 }
