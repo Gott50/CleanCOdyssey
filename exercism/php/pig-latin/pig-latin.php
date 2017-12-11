@@ -76,7 +76,17 @@ function beginsWithPair($english): bool
  */
 function beginsWithVowel($word): bool
 {
-    $start = $word[0];
-    return $start == "a" || $start == "e" || $start == "i"
-        || $start == "o" || $start == "u";
+    return startsWith($word, array("a","e","i","o","u"));
+}
+
+/**
+ * @param $word
+ * @return bool
+ */
+function startsWith($word, $with): bool
+{
+    for ($i = 0; $i < sizeof($with); $i++)
+        if(substr($word, 0, sizeof($with[$i]))== $with[$i]) return true;
+
+    return false;
 }
