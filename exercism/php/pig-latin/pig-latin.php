@@ -56,8 +56,7 @@ function edgeCase($english): bool
  */
 function beginsWithTriple($english): bool
 {
-    $start = $english[0] . $english[1] . $english[2];
-    return $start == "squ" || $start == "thr" || $start == "sch";
+    return startsWith($english, array("squ","thr","sch"));
 }
 
 /**
