@@ -8,7 +8,7 @@ function translate($english)
     $split = preg_split("/ /", $english);
     $map = array_map("translateWord", $split);
 
-    return join(" ",$map);
+    return join(" ", $map);
 }
 
 /**
@@ -46,7 +46,7 @@ function translateWord($english): string
 function edgeCase($english): bool
 {
     $start = $english[0] . $english[1];
-    return $start == "yt" || $start =="xr";
+    return $start == "yt" || $start == "xr";
 }
 
 /**
@@ -56,7 +56,7 @@ function edgeCase($english): bool
 function beginsWithTriple($english): bool
 {
     $start = $english[0] . $english[1] . $english[2];
-    return $start == "squ"||$start == "thr"||$start == "sch";
+    return $start == "squ" || $start == "thr" || $start == "sch";
 }
 
 /**
@@ -73,9 +73,9 @@ function beginsWithPair($english): bool
  * @param $word
  * @return bool
  */
-function beginsWithVowel($word) :bool
+function beginsWithVowel($word): bool
 {
     $start = $word[0];
     return $start == "a" || $start == "e" || $start == "i"
-        || $start == "o"|| $start == "u";
+        || $start == "o" || $start == "u";
 }
