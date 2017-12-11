@@ -23,17 +23,17 @@ function translateWord($english): string
         $end = "";
     } else {
         $start = substr($english, 1);
-        $end = $english[0];
+        $end = substr($english, 0,1);
     }
 
     if (beginsWithPair($english)) {
         $start = substr($english, 2);
-        $end = $english[0] . $english[1];
+        $end = substr($english, 0,2);
     }
 
     if (beginsWithTriple($english)) {
         $start = substr($english, 3);
-        $end = $english[0] . $english[1] . $english[2];
+        $end = substr($english, 0,3);
     }
 
 
