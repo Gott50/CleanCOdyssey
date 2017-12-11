@@ -19,25 +19,33 @@ function translateWord($english): string
 {
 
     if (beginsWithVowel($english) || edgeCase($english)) {
-        $start = $english;
-        $end = "";
+        list($start, $end) = split($english, 0);
     } else {
-        $start = substr($english, 1);
-        $end = substr($english, 0,1);
+        list($start, $end) = split($english, 1);
     }
 
     if (beginsWithPair($english)) {
-        $start = substr($english, 2);
-        $end = substr($english, 0,2);
+        list($start, $end) = split($english, 2);
     }
 
     if (beginsWithTriple($english)) {
-        $start = substr($english, 3);
-        $end = substr($english, 0,3);
+        list($start, $end) = split($english, 3);
     }
 
 
     return $start . $end . "ay";
+}
+
+/**
+ * @param $english
+ * @param $at
+ * @return array
+ */
+function split($english, $at): array
+{
+    $start = substr($english, $at);
+    $end = substr($english, 0, $at);
+    return array($start, $end);
 }
 
 /**
