@@ -82,12 +82,12 @@ function beginsWithVowel($word): bool
 /**
  * @param $word
  * @param $with
- * @return bool
+ * @return int
  */
-function startsWith($word, $with)
+function startsWith($word, $with): int
 {
     for ($i = 0; $i < sizeof($with); $i++)
         if(substr($word, 0, sizeof($with[$i]))== $with[$i]) return sizeof($with[$i]);
 
-    return false;
+    return 0;
 }
