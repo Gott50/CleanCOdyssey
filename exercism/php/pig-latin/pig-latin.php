@@ -17,21 +17,14 @@ function translate($english)
  */
 function translateWord($english): string
 {
-
-    if (beginsWithVowel($english) || edgeCase($english)) {
+    if (beginsWithVowel($english) || edgeCase($english))
         list($start, $end) = split($english, 0);
-    } else {
+    else
         list($start, $end) = split($english, 1);
-    }
-
-    if (beginsWithPair($english)) {
+    if (beginsWithPair($english))
         list($start, $end) = split($english, 2);
-    }
-
-    if (beginsWithTriple($english)) {
+    if (beginsWithTriple($english))
         list($start, $end) = split($english, 3);
-    }
-
 
     return $start . $end . "ay";
 }
