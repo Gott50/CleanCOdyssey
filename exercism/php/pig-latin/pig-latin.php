@@ -17,12 +17,13 @@ function translate($english)
  */
 function translateWord($english): string
 {
-    $start = substr($english, 1);
-    $end = $english[0];
 
     if (beginsWithVowel($english) || edgeCase($english)) {
         $start = $english;
         $end = "";
+    } else {
+        $start = substr($english, 1);
+        $end = $english[0];
     }
 
     if (beginsWithPair($english)) {
