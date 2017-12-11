@@ -17,14 +17,14 @@ function translate($english)
  */
 function translateWord($english): string
 {
-    if (startsWith($english, array("a","e","i","o","u"))
-        || startsWith($english, array("yt","xr")))
+    if (startsWith($english, array("a", "e", "i", "o", "u"))
+        || startsWith($english, array("yt", "xr")))
         list($start, $end) = split($english, 0);
     else
         list($start, $end) = split($english, 1);
-    if (startsWith($english, array("ch","qu","th")))
+    if (startsWith($english, array("ch", "qu", "th")))
         list($start, $end) = split($english, 2);
-    if (startsWith($english, array("squ","thr","sch")))
+    if (startsWith($english, array("squ", "thr", "sch")))
         list($start, $end) = split($english, 3);
 
     return $start . $end . "ay";
@@ -49,7 +49,7 @@ function split($english, $at): array
 function startsWith($word, $with): int
 {
     for ($i = 0; $i < sizeof($with); $i++)
-        if(substr($word, 0, strlen($with[$i]))== $with[$i])
+        if (substr($word, 0, strlen($with[$i])) == $with[$i])
             return strlen($with[$i]);
 
     return 0;
