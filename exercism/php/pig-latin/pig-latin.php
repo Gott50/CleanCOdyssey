@@ -24,10 +24,8 @@ function translateWord($english): string
         list($start, $end) = split($english, 1);
 
 
-    if (startsWith($english, array("ch", "qu", "th")))
-        list($start, $end) = split($english, startsWith($english, array("ch", "qu", "th")));
-    if (startsWith($english, array("squ", "thr", "sch")))
-        list($start, $end) = split($english,startsWith($english, array("squ", "thr", "sch")));
+    if (startsWith($english, array("squ", "thr", "sch","ch", "qu", "th")))
+        list($start, $end) = split($english, startsWith($english, array("squ", "thr", "sch","ch", "qu", "th")));
 
     return $start . $end . "ay";
 }
