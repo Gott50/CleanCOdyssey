@@ -46,8 +46,7 @@ function split($english, $at): array
  */
 function edgeCase($english): bool
 {
-    $start = $english[0] . $english[1];
-    return $start == "yt" || $start == "xr";
+    return startsWith($english, array("yt","xr"));
 }
 
 /**
