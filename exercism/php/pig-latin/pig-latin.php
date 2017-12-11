@@ -66,8 +66,7 @@ function beginsWithTriple($english): bool
  */
 function beginsWithPair($english): bool
 {
-    $start = $english[0] . $english[1];
-    return $start == "ch" || $start == "qu" || $start == "th";
+    return startsWith($english, array("ch","qu","th"));
 }
 
 /**
@@ -87,7 +86,8 @@ function beginsWithVowel($word): bool
 function startsWith($word, $with): int
 {
     for ($i = 0; $i < sizeof($with); $i++)
-        if(substr($word, 0, sizeof($with[$i]))== $with[$i]) return sizeof($with[$i]);
+        if(substr($word, 0, strlen($with[$i]))== $with[$i])
+            return strlen($with[$i]);
 
     return 0;
 }
