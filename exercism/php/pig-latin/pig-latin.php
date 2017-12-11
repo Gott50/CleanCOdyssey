@@ -22,10 +22,12 @@ function translateWord($english): string
         list($start, $end) = split($english, 0);
     else
         list($start, $end) = split($english, 1);
+
+
     if (startsWith($english, array("ch", "qu", "th")))
-        list($start, $end) = split($english, 2);
+        list($start, $end) = split($english, startsWith($english, array("ch", "qu", "th")));
     if (startsWith($english, array("squ", "thr", "sch")))
-        list($start, $end) = split($english, 3);
+        list($start, $end) = split($english,startsWith($english, array("squ", "thr", "sch")));
 
     return $start . $end . "ay";
 }
