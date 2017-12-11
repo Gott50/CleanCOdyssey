@@ -23,10 +23,9 @@ function translateWord($english): string
     else
         list($start, $end) = split($english, 1);
 
-
-    $starts = array("squ", "thr", "sch", "ch", "qu", "th");
-    if (startsWith($english, $starts))
-        list($start, $end) = split($english, startsWith($english, $starts));
+    $edgeCases = array("squ", "thr", "sch", "ch", "qu", "th");
+    if (startsWith($english, $edgeCases))
+        list($start, $end) = split($english, startsWith($english, $edgeCases));
 
     return $start . $end . "ay";
 }
@@ -38,8 +37,7 @@ function translateWord($english): string
  */
 function split($english, $at): array
 {
-    return array(substr($english, $at),
-        substr($english, 0, $at));
+    return array(substr($english, $at), substr($english, 0, $at));
 }
 
 /**
@@ -52,6 +50,5 @@ function startsWith($word, $with): int
     for ($i = 0; $i < sizeof($with); $i++)
         if (substr($word, 0, strlen($with[$i])) == $with[$i])
             return strlen($with[$i]);
-
     return 0;
 }
