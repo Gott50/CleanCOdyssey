@@ -36,9 +36,8 @@ function translateWord($english): string
  */
 function split($english, $at): array
 {
-    $start = substr($english, $at);
-    $end = substr($english, 0, $at);
-    return array($start, $end);
+    return array(substr($english, $at),
+        substr($english, 0, $at));
 }
 
 /**
