@@ -17,13 +17,14 @@ function translate($english)
  */
 function translateWord($english): string
 {
-    if (beginsWithVowel($english) || edgeCase($english))
+    if (startsWith($english, array("a","e","i","o","u"))
+        || startsWith($english, array("yt","xr")))
         list($start, $end) = split($english, 0);
     else
         list($start, $end) = split($english, 1);
-    if (beginsWithPair($english))
+    if (startsWith($english, array("ch","qu","th")))
         list($start, $end) = split($english, 2);
-    if (beginsWithTriple($english))
+    if (startsWith($english, array("squ","thr","sch")))
         list($start, $end) = split($english, 3);
 
     return $start . $end . "ay";
@@ -38,42 +39,6 @@ function split($english, $at): array
 {
     return array(substr($english, $at),
         substr($english, 0, $at));
-}
-
-/**
- * @param $english
- * @return bool
- */
-function edgeCase($english): bool
-{
-    return startsWith($english, array("yt","xr"));
-}
-
-/**
- * @param $english
- * @return bool
- */
-function beginsWithTriple($english): bool
-{
-    return startsWith($english, array("squ","thr","sch"));
-}
-
-/**
- * @param $english
- * @return bool
- */
-function beginsWithPair($english): bool
-{
-    return startsWith($english, array("ch","qu","th"));
-}
-
-/**
- * @param $word
- * @return bool
- */
-function beginsWithVowel($word): bool
-{
-    return startsWith($word, array("a","e","i","o","u"));
 }
 
 /**
