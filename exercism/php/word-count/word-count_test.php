@@ -32,19 +32,16 @@ class WordCountTest extends PHPUnit\Framework\TestCase
 
     public function testIncludeNumbers()
     {
-        $this->markTestSkipped();
         $this->assertEquals(['1' => 1, '2' => 1, 'testing' => 2], wordCount('testing, 1, 2 testing'));
     }
 
     public function testNormalizeCase()
     {
-        $this->markTestSkipped();
         $this->assertEquals(['go' => 3, 'stop' => 2], wordCount('go Go GO Stop stop'));
     }
 
     public function testCountsMultiline()
     {
-        $this->markTestSkipped();
         $this->assertEquals(['hello' => 1, 'world' => 1], wordCount("hello\nworld"));
     }
 

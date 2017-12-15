@@ -1,15 +1,18 @@
 <?php
 function wordCount($sentence)
 {
+	$sentence = strtolower( $sentence );
+//	$sentence = preg_filter( "/\s/", " ", $sentence);
+	$sentence = preg_filter( "/[^a-z\d ]/", "", "!".$sentence);
     $words = preg_split("/ +/", $sentence);
 
+//    echo var_dump($words);
     $unique = array();
     for ($i = 0; $i < sizeof($words); $i++)
         if (array_key_exists($words[$i], $unique))
             $unique[$words[$i]]++;
         else
-            $unique = array_merge($unique, array($words[$i] => 1));
+	        $unique[ $words[ $i ] ] = 1;
 
-//    echo var_dump($unique);
     return $unique;
 }
