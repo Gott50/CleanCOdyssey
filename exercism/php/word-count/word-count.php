@@ -1,11 +1,6 @@
 <?php
 function wordCount( $sentence ) {
-	$sentence = cleanup( $sentence );
-	$words = extractWords( $sentence );
-
-	$unique = countOccurrences( $words );
-
-	return $unique;
+	return countOccurrences( extractWords( cleanup( $sentence ) ) );
 }
 
 /**
