@@ -3,6 +3,17 @@ function wordCount( $sentence ) {
 	$sentence = cleanup( $sentence );
 	$words = extractWords( $sentence );
 
+	$unique = countOccurrences( $words );
+
+	return $unique;
+}
+
+/**
+ * @param $words
+ *
+ * @return array
+ */
+function countOccurrences( $words ): array {
 	$unique = array();
 	for ( $i = 0; $i < sizeof( $words ); $i ++ ) {
 		if ( array_key_exists( $words[ $i ], $unique ) ) {
