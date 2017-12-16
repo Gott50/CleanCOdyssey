@@ -47,19 +47,16 @@ class WordCountTest extends PHPUnit\Framework\TestCase
 
     public function testCountsTabs()
     {
-        $this->markTestSkipped();
         $this->assertEquals(['hello' => 1, 'world' => 1], wordCount("hello\tworld"));
     }
 
     public function testCountsMultipleSpacesAsOne()
     {
-        $this->markTestSkipped();
         $this->assertEquals(['hello' => 1, 'world' => 1], wordCount('hello  world'));
     }
 
     public function testDoesNotCountLeadingOrTrailingWhitespace()
     {
-        $this->markTestSkipped();
         $this->assertEquals(['introductory' => 1, 'course' => 1], wordCount("\t\tIntroductory Course      "));
     }
 }
