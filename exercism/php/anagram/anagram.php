@@ -8,9 +8,7 @@ function detectAnagrams( $word, $list ) {
 		}
 
 		$difference = array_reduce( str_split( $word ), function ( $carry, $item ) {
-			$index = array_search( $item, $carry );
-			unset( $carry[ $index ] );
-
+			unset( $carry[ array_search( $item, $carry ) ] );
 			return $carry;
 		}, str_split( $e ) );
 
