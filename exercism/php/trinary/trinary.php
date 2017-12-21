@@ -4,9 +4,11 @@ function toDecimal( $string ) {
 		return 0;
 	}
 
+
 	$out = 0;
 	for ( $i = 0; $i < strlen( $string ); $i ++ ) {
-		$out += intval( $string[ $i ] ) * pow( 3, ( strlen( $string ) - $i - 1 ) );
+		$out += intval( $string[ $i ] )
+		        * pow( 3, ( strlen( $string ) - $i - 1 ) );
 	}
 
 	return $out;
