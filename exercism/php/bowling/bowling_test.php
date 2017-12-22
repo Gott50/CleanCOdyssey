@@ -25,7 +25,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testShouldBeAbleToScoreAGameWithNoStrikesOrSpares()
     {
-        $this->markTestSkipped();
         $this->game->roll(3);
         $this->game->roll(6);
         $this->game->roll(3);
@@ -52,7 +51,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testASpareFollowedByZerosIsWorthTenPoints()
     {
-        $this->markTestSkipped();
         $this->game->roll(6);
         $this->game->roll(4);
         $this->rollMany(18, 0);
@@ -62,7 +60,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testPointsScoredInTheRollAfterASpareAreCountedTwice()
     {
-        $this->markTestSkipped();
         $this->game->roll(6);
         $this->game->roll(4);
         $this->game->roll(3);
@@ -73,7 +70,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testConsecutiveSparesEachGetAOneRollBonus()
     {
-        $this->markTestSkipped();
         $this->game->roll(5);
         $this->game->roll(5);
         $this->game->roll(3);
@@ -86,7 +82,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testASpareInTheLastFrameGetsAOneRollBonusThatIsCountedOnce()
     {
-        $this->markTestSkipped();
         $this->rollMany(18, 0);
         $this->game->roll(7);
         $this->game->roll(3);
@@ -97,7 +92,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAStrikeEarnsTenPointsInFrameWithASingleRoll()
     {
-        $this->markTestSkipped();
         $this->game->roll(10);
         $this->rollMany(18, 0);
 
@@ -106,7 +100,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testPointsScoredInTheTwoRollsAfterAStrikeAreCountedTwiceAsABonus()
     {
-        $this->markTestSkipped();
         $this->game->roll(10);
         $this->game->roll(5);
         $this->game->roll(3);
@@ -117,7 +110,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testConsecutiveStrikesEachGetTheTwoRollBonus()
     {
-        $this->markTestSkipped();
         $this->game->roll(10);
         $this->game->roll(10);
         $this->game->roll(10);
@@ -130,7 +122,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAStrikeInTheLastFrameGetsATwoRollBonusThatIsCountedOnce()
     {
-        $this->markTestSkipped();
         $this->rollMany(18, 0);
         $this->game->roll(10);
         $this->game->roll(7);
