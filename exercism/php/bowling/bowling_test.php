@@ -132,7 +132,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testRollingASpareWithTheTwoRollBonusDoesNotGetABonusRoll()
     {
-        $this->markTestSkipped();
         $this->rollMany(18, 0);
         $this->game->roll(10);
         $this->game->roll(10);
@@ -143,7 +142,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAStrikeWithTheOneRollBonusAfterASpareInTheLastFrameDoesNotGetABonus()
     {
-        $this->markTestSkipped();
         $this->rollMany(18, 0);
         $this->game->roll(7);
         $this->game->roll(3);
@@ -154,7 +152,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testStrikesWithTheTwoRollBonusDoNotGetBonusRolls()
     {
-        $this->markTestSkipped();
         $this->rollMany(18, 0);
         $this->game->roll(10);
         $this->game->roll(7);
@@ -165,7 +162,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAllStrikesIsAPerfectGame()
     {
-        $this->markTestSkipped();
         $this->rollMany(12, 10);
 
         $this->assertEquals(300, $this->game->score());
@@ -173,7 +169,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testRollsCanNotScoreNegativePoints()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
 
         $this->game->roll(-1);
@@ -181,7 +176,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testARollCanNotScoreMoreThan10Points()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
         $this->game->roll(11);
         $this->rollMany(19, 0);
@@ -191,8 +185,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testTwoRollsInAFrameCanNotScoreMoreThan10Points()
     {
-        $this->markTestSkipped();
-
         $this->expectException(Exception::class);
         $this->game->roll(5);
         $this->game->roll(6);
@@ -203,7 +195,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testTwoBonusRollsAfterAStrikeInTheLastFrameCanNotScoreMoreThan10Points()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
 
         $this->rollMany(18, 0);
@@ -216,8 +207,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAnUnstartedGameCanNotBeScored()
     {
-        $this->markTestSkipped();
-
         $this->expectException(Exception::class);
 
         $this->game->score();
@@ -225,7 +214,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAnIncompleteGameCanNotBeScored()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
         $this->game->roll(0);
         $this->game->roll(0);
