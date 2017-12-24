@@ -223,7 +223,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testAGameWithMoreThanTenFramesCanNotBeScored()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
         $this->rollMany(21, 0);
 
@@ -232,7 +231,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testBonusRollsForAStrikeInTheLastFrameMustBeRolledBeforeScoreCanBeCalculated()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
         $this->rollMany(18, 0);
         $this->game->roll(10);
