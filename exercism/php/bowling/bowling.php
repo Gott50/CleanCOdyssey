@@ -4,7 +4,7 @@ class Game {
 	private $rolls = array();
 
 	public function score() {
-		if ( sizeof( $this->rolls ) <= 2 ) {
+		if ( sizeof( $this->rolls ) < 12 ) {
 			throw new Exception();
 		}
 
