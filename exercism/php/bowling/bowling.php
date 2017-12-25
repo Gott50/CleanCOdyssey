@@ -26,15 +26,18 @@ class Game {
 						if ( $i + 2 >= sizeof( $this->rolls ) ) {
 							throw new Exception();
 						}
-							$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
-						echo sizeof( $frames ).": ".$i.PHP_EOL;
+						$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
+						echo sizeof( $frames ) . ": " . $i . PHP_EOL;
 						$next = ! $next;
 
-						if($this->rolls[ $i + 1 ] != 10
-						   && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10)
+						if ( $this->rolls[ $i + 1 ] != 10
+						     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
 							throw new Exception();
+						}
 
-						if(sizeof( $frames)==10) break;
+						if ( sizeof( $frames ) == 10 ) {
+							break;
+						}
 					}
 				}
 			} else {
