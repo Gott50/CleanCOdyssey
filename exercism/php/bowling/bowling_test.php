@@ -240,7 +240,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testBothBonusRollsForAStrikeInTheLastFrameMustBeRolledBeforeScoreCanBeCalculated()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
         $this->rollMany(18, 0);
         $this->game->roll(10);
@@ -251,7 +250,6 @@ class GameTest extends PHPUnit\Framework\TestCase
 
     public function testBonusRollForASpareInTheLastFrameMustBeRolledBeforeScoreCanBeCalculated()
     {
-        $this->markTestSkipped();
         $this->expectException(Exception::class);
         $this->rollMany(18, 0);
         $this->game->roll(7);
