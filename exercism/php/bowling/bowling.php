@@ -68,23 +68,15 @@ class Game {
 		return $frames;
 	}
 
-	public function roll( $int ) {
-		if ( $int < 0 || $int > 10 ) {
-			throw new Exception();
-		}
-
-		array_push( $this->rolls, $int );
-	}
-
 	/**
 	 * @param $frames
 	 * @param $roll
 	 * @param $i
 	 *
-	 * @return mixed
+	 * @return array
 	 * @throws Exception
 	 */
-	public function updateFrame( $frames, $roll, $i ) {
+	public function updateFrame( $frames, $roll, $i ): array {
 		if ( $frames[ sizeof( $frames ) - 1 ] < 10
 		     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
 			throw new Exception();
@@ -100,5 +92,13 @@ class Game {
 		}
 
 		return $frames;
+	}
+
+	public function roll( $int ) {
+		if ( $int < 0 || $int > 10 ) {
+			throw new Exception();
+		}
+
+		array_push( $this->rolls, $int );
 	}
 }
