@@ -8,6 +8,34 @@ class Game {
 			throw new Exception();
 		}
 
+		$frames = $this->calculateFrames();
+
+		if ( sizeof( $frames ) == 11 && $frames[9] < 10 ) {
+			throw new Exception();
+		}
+
+		if ( sizeof( $frames ) == 11 ) {
+			unset( $frames[10] );
+		}
+
+		return array_reduce( $frames, function ( $carry, $item ) {
+			return $carry + $item;
+		}, 0 );
+	}
+
+	public function roll( $int ) {
+		if ( $int < 0 || $int > 10 ) {
+			throw new Exception();
+		}
+
+		array_push( $this->rolls, $int );
+	}
+
+	/**
+	 * @return array
+	 * @throws Exception
+	 */
+	public function calculateFrames(): array {
 		$frames = [];
 		$next   = true;
 		for ( $i = 0; $i < sizeof( $this->rolls ); $i ++ ) {
@@ -58,26 +86,6 @@ class Game {
 			$next = ! $next;
 		}
 
-		echo var_dump( $frames );
-		if ( sizeof( $frames ) == 11 && $frames[9] < 10 ) {
-			throw new Exception();
-		}
-
-
-		if ( sizeof( $frames ) == 11 ) {
-			unset( $frames[10] );
-		}
-
-		return array_reduce( $frames, function ( $carry, $item ) {
-			return $carry + $item;
-		}, 0 );
-	}
-
-	public function roll( $int ) {
-		if ( $int < 0 || $int > 10 ) {
-			throw new Exception();
-		}
-
-		array_push( $this->rolls, $int );
+		return $frames;
 	}
 }
