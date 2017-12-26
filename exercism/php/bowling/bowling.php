@@ -23,14 +23,6 @@ class Game {
 		}, 0 );
 	}
 
-	public function roll( $int ) {
-		if ( $int < 0 || $int > 10 ) {
-			throw new Exception();
-		}
-
-		array_push( $this->rolls, $int );
-	}
-
 	/**
 	 * @return array
 	 * @throws Exception
@@ -55,7 +47,7 @@ class Game {
 							throw new Exception();
 						}
 						$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
-						$next = ! $next;
+						$next                            = ! $next;
 
 						if ( $this->rolls[ $i + 1 ] != 10
 						     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
@@ -63,9 +55,9 @@ class Game {
 						}
 
 					}
-						if ( sizeof( $frames ) == 10 ) {
-							break;
-						}
+					if ( sizeof( $frames ) == 10 ) {
+						break;
+					}
 				}
 			} else {
 				if ( $frames[ sizeof( $frames ) - 1 ] < 10
@@ -86,5 +78,13 @@ class Game {
 		}
 
 		return $frames;
+	}
+
+	public function roll( $int ) {
+		if ( $int < 0 || $int > 10 ) {
+			throw new Exception();
+		}
+
+		array_push( $this->rolls, $int );
 	}
 }
