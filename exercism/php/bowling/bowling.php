@@ -60,19 +60,7 @@ class Game {
 					}
 				}
 			} else {
-				if ( $frames[ sizeof( $frames ) - 1 ] < 10
-				     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
-					throw new Exception();
-				}
-				$frames[ sizeof( $frames ) - 1 ] += $roll;
-
-				if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
-					if ( $i + 1 < sizeof( $this->rolls ) ) {
-						$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
-					} else {
-						throw new Exception();
-					}
-				}
+				$frames = $this->updateFrame( $frames, $roll, $i );
 			}
 			$next = ! $next;
 		}
@@ -86,5 +74,31 @@ class Game {
 		}
 
 		array_push( $this->rolls, $int );
+	}
+
+	/**
+	 * @param $frames
+	 * @param $roll
+	 * @param $i
+	 *
+	 * @return mixed
+	 * @throws Exception
+	 */
+	public function updateFrame( $frames, $roll, $i ) {
+		if ( $frames[ sizeof( $frames ) - 1 ] < 10
+		     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
+			throw new Exception();
+		}
+		$frames[ sizeof( $frames ) - 1 ] += $roll;
+
+		if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
+			if ( $i + 1 < sizeof( $this->rolls ) ) {
+				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
+			} else {
+				throw new Exception();
+			}
+		}
+
+		return $frames;
 	}
 }
