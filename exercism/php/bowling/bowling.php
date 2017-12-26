@@ -55,7 +55,6 @@ class Game {
 							throw new Exception();
 						}
 						$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
-						echo sizeof( $frames ) . ": " . $i . PHP_EOL;
 						$next = ! $next;
 
 						if ( $this->rolls[ $i + 1 ] != 10
@@ -63,10 +62,10 @@ class Game {
 							throw new Exception();
 						}
 
+					}
 						if ( sizeof( $frames ) == 10 ) {
 							break;
 						}
-					}
 				}
 			} else {
 				if ( $frames[ sizeof( $frames ) - 1 ] < 10
