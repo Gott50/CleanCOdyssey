@@ -37,7 +37,7 @@ class Game {
 				array_push( $frames, $roll );
 				if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
 
-					if ( sizeof( $frames ) <= 10 ) {
+					if ( sizeof( $frames ) < 10 ) {
 						if ( $i + 1 < sizeof( $this->rolls ) ) {
 							$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
 						} else {
@@ -55,7 +55,23 @@ class Game {
 						}
 
 					}
-					if ( sizeof( $frames ) == 10 ) {
+					elseif (sizeof( $frames ) == 10){
+						if ( $i + 1 < sizeof( $this->rolls ) ) {
+							$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
+						} else {
+							throw new Exception();
+						}
+						if ( $i + 2 >= sizeof( $this->rolls ) ) {
+							throw new Exception();
+						}
+						$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
+						$next                            = ! $next;
+
+						if ( $this->rolls[ $i + 1 ] != 10
+						     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
+							throw new Exception();
+						}
+
 						break;
 					}
 				}
