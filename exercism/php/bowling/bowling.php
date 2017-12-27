@@ -115,7 +115,7 @@ class Game {
 		}
 		$frames[ sizeof( $frames ) - 1 ] += $roll;
 
-		if ( $this->are_all_Pinns_hit( $frames ) ) {
+		if ( $this->areAllPinsHit( $frames ) ) {
 			if ( $i + 1 < sizeof( $this->rolls ) ) {
 				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
 			} else {
@@ -144,7 +144,7 @@ class Game {
 	 *
 	 * @return bool
 	 */
-	public function are_all_Pinns_hit( $frames ): bool {
+	public function areAllPinsHit( $frames ): bool {
 		return $frames[ sizeof( $frames ) - 1 ] == 10;
 	}
 }
