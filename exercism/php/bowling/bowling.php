@@ -61,31 +61,43 @@ class Game {
 
 		array_push( $frames, $roll );
 		if ( $roll == 10 ) {
-
-			if ( sizeof( $frames ) <= 10 ) {
-				if ( $i + 1 < sizeof( $this->rolls ) ) {
-					$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
-				} else {
-					throw new Exception();
-				}
-				if ( $i + 2 >= sizeof( $this->rolls ) ) {
-					throw new Exception();
-				}
-				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
-				$next                            = false;
-
-				if ( $this->rolls[ $i + 1 ] != 10
-				     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
-					throw new Exception();
-				}
-
-				if ( sizeof( $frames ) == 10 ) {
-					$go_on = false;
-				}
+			list( $frames, $next ) = $this->calculateStrike( $frames, $i );
+			if ( sizeof( $frames ) == 10 ) {
+				$go_on = false;
 			}
 		}
 
 		return array( $frames, $next, $go_on );
+	}
+
+	/**
+	 * @param $frames
+	 * @param $i
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function calculateStrike( $frames, $i ): array {
+		$next = true;
+		if ( sizeof( $frames ) <= 10 ) {
+			if ( $i + 1 < sizeof( $this->rolls ) ) {
+				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
+			} else {
+				throw new Exception();
+			}
+			if ( $i + 2 >= sizeof( $this->rolls ) ) {
+				throw new Exception();
+			}
+			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
+			$next                            = false;
+
+			if ( $this->rolls[ $i + 1 ] != 10
+			     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
+				throw new Exception();
+			}
+		}
+
+		return array( $frames, $next );
 	}
 
 	/**
