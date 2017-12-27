@@ -60,7 +60,7 @@ class Game {
 		$next  = true;
 
 		array_push( $frames, $roll );
-		if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
+		if ( $roll == 10 ) {
 
 			if ( sizeof( $frames ) <= 10 ) {
 				if ( $i + 1 < sizeof( $this->rolls ) ) {
