@@ -60,7 +60,7 @@ class Game {
 		$next  = true;
 
 		array_push( $frames, $roll );
-		if ( $roll == 10 ) {
+		if ( $this->are_all_Pinns_hit( $frames ) ) {
 			list( $frames, $next ) = $this->calculateStrike( $frames, $i );
 			if ( sizeof( $frames ) == 10 ) {
 				$go_on = false;
@@ -115,7 +115,7 @@ class Game {
 		}
 		$frames[ sizeof( $frames ) - 1 ] += $roll;
 
-		if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
+		if ( $this->are_all_Pinns_hit( $frames ) ) {
 			if ( $i + 1 < sizeof( $this->rolls ) ) {
 				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
 			} else {
@@ -137,5 +137,14 @@ class Game {
 		}
 
 		array_push( $this->rolls, $int );
+	}
+
+	/**
+	 * @param $frames
+	 *
+	 * @return bool
+	 */
+	public function are_all_Pinns_hit( $frames ): bool {
+		return $frames[ sizeof( $frames ) - 1 ] == 10;
 	}
 }
