@@ -3,7 +3,11 @@
 class Game {
 	private $rolls = array();
 
-	public function score() {
+	/**
+	 * @return int
+	 * @throws Exception
+	 */
+	public function score(): int {
 		if ( sizeof( $this->rolls ) < 12 ) {
 			throw new Exception();
 		}
@@ -125,6 +129,11 @@ class Game {
 		return $frames;
 	}
 
+	/**
+	 * @param $int
+	 *
+	 * @throws Exception
+	 */
 	public function roll( $int ) {
 		if ( $int < 0 || $int > 10 ) {
 			throw new Exception();
