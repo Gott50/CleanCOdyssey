@@ -32,12 +32,10 @@ class Game {
 		$is_in_new_Frame = true;
 		$go_on           = true;
 		for ( $i = 0; $i < sizeof( $this->rolls ) && $go_on; $i ++ ) {
-			$roll = $this->rolls[ $i ];
-
 			if ( $is_in_new_Frame ) {
-				list( $frames, $is_in_new_Frame, $go_on ) = $this->newFrame( $roll, $frames, $i, $is_in_new_Frame );
+				list( $frames, $is_in_new_Frame, $go_on ) = $this->newFrame( $frames, $i );
 			} else {
-				$frames = $this->updateFrame( $frames, $roll, $i );
+				$frames = $this->updateFrame( $frames, $i );
 			}
 			$is_in_new_Frame = ! $is_in_new_Frame;
 		}
@@ -46,16 +44,16 @@ class Game {
 	}
 
 	/**
-	 * @param $roll
 	 * @param $frames
 	 * @param $i
-	 * @param $next
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public function newFrame( $roll, $frames, $i, $next ): array {
+	public function newFrame( $frames, $i ): array {
+		$roll = $this->rolls[ $i ];
 		$go_on = true;
+		$next  = true;
 
 		array_push( $frames, $roll );
 		if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
@@ -70,7 +68,7 @@ class Game {
 					throw new Exception();
 				}
 				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
-				$next                            = ! $next;
+				$next                            = false;
 
 				if ( $this->rolls[ $i + 1 ] != 10
 				     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
@@ -87,7 +85,7 @@ class Game {
 					throw new Exception();
 				}
 				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
-				$next                            = ! $next;
+				$next                            = false;
 
 				if ( $this->rolls[ $i + 1 ] != 10
 				     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
@@ -103,13 +101,13 @@ class Game {
 
 	/**
 	 * @param $frames
-	 * @param $roll
 	 * @param $i
 	 *
 	 * @return array
 	 * @throws Exception
 	 */
-	public function updateFrame( $frames, $roll, $i ): array {
+	public function updateFrame( $frames, $i ): array {
+		$roll = $this->rolls[ $i ];
 		if ( $frames[ sizeof( $frames ) - 1 ] < 10
 		     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
 			throw new Exception();
