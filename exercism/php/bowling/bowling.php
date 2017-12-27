@@ -28,55 +28,21 @@ class Game {
 	 * @throws Exception
 	 */
 	public function calculateFrames(): array {
-		$frames = [];
-		$next   = true;
-		$go_on  = true;
+		$frames          = [];
+		$is_in_new_Frame = true;
+		$go_on           = true;
 		for ( $i = 0; $i < sizeof( $this->rolls ) && $go_on; $i ++ ) {
 			$roll = $this->rolls[ $i ];
 
-			if ( $next ) {
-				list( $frames, $next, $go_on ) = $this->newFrame( $roll, $frames, $i, $next );
+			if ( $is_in_new_Frame ) {
+				list( $frames, $is_in_new_Frame, $go_on ) = $this->newFrame( $roll, $frames, $i, $is_in_new_Frame );
 			} else {
 				$frames = $this->updateFrame( $frames, $roll, $i );
 			}
-			$next = ! $next;
+			$is_in_new_Frame = ! $is_in_new_Frame;
 		}
 
 		return $frames;
-	}
-
-	/**
-	 * @param $frames
-	 * @param $roll
-	 * @param $i
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public function updateFrame( $frames, $roll, $i ): array {
-		if ( $frames[ sizeof( $frames ) - 1 ] < 10
-		     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
-			throw new Exception();
-		}
-		$frames[ sizeof( $frames ) - 1 ] += $roll;
-
-		if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
-			if ( $i + 1 < sizeof( $this->rolls ) ) {
-				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
-			} else {
-				throw new Exception();
-			}
-		}
-
-		return $frames;
-	}
-
-	public function roll( $int ) {
-		if ( $int < 0 || $int > 10 ) {
-			throw new Exception();
-		}
-
-		array_push( $this->rolls, $int );
 	}
 
 	/**
@@ -133,5 +99,39 @@ class Game {
 		}
 
 		return array( $frames, $next, $go_on );
+	}
+
+	/**
+	 * @param $frames
+	 * @param $roll
+	 * @param $i
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function updateFrame( $frames, $roll, $i ): array {
+		if ( $frames[ sizeof( $frames ) - 1 ] < 10
+		     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
+			throw new Exception();
+		}
+		$frames[ sizeof( $frames ) - 1 ] += $roll;
+
+		if ( $frames[ sizeof( $frames ) - 1 ] == 10 ) {
+			if ( $i + 1 < sizeof( $this->rolls ) ) {
+				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
+			} else {
+				throw new Exception();
+			}
+		}
+
+		return $frames;
+	}
+
+	public function roll( $int ) {
+		if ( $int < 0 || $int > 10 ) {
+			throw new Exception();
+		}
+
+		array_push( $this->rolls, $int );
 	}
 }
