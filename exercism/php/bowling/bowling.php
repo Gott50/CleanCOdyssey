@@ -51,7 +51,7 @@ class Game {
 	 * @throws Exception
 	 */
 	public function newFrame( $frames, $i ): array {
-		$roll = $this->rolls[ $i ];
+		$roll  = $this->rolls[ $i ];
 		$go_on = true;
 		$next  = true;
 
