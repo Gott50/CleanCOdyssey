@@ -35,7 +35,7 @@ class Game {
 			$roll = $this->rolls[ $i ];
 
 			if ( $next ) {
-				list( $frames, $roll, $next, $go_on ) = $this->newFrame( $roll, $frames, $i, $next );
+				list( $frames, $next, $go_on ) = $this->newFrame( $roll, $frames, $i, $next );
 			} else {
 				$frames = $this->updateFrame( $frames, $roll, $i );
 			}
@@ -132,6 +132,6 @@ class Game {
 			}
 		}
 
-		return array( $frames, $roll, $next, $go_on );
+		return array( $frames, $next, $go_on );
 	}
 }
