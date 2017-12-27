@@ -60,7 +60,7 @@ class Game {
 		$next  = true;
 
 		array_push( $frames, $roll );
-		if ( $this->are_all_Pinns_hit( $frames ) ) {
+		if ( $this->areAllPinsHit( $frames ) ) {
 			list( $frames, $next ) = $this->calculateStrike( $frames, $i );
 			if ( sizeof( $frames ) == 10 ) {
 				$go_on = false;
