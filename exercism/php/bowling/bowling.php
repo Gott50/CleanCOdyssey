@@ -14,11 +14,7 @@ class Game {
 			throw new Exception();
 		}
 
-		if ( sizeof( $frames ) == 11 ) {
-			unset( $frames[10] );
-		}
-
-		return array_sum( $frames );
+		return array_sum( array_slice($frames,0,10) );
 	}
 
 	/**
