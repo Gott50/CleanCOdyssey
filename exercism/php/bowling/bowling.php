@@ -70,11 +70,7 @@ class Game {
 	public function calculateStrike( $frames, $i ): array {
 		$next = true;
 		if ( sizeof( $frames ) <= 10 ) {
-			if ( $i + 1 < sizeof( $this->rolls ) ) {
-				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
-			} else {
-				throw new Exception();
-			}
+			$frames = $this->calculateSpare( $frames, $i );
 			if ( $i + 2 >= sizeof( $this->rolls ) ) {
 				throw new Exception();
 			}
@@ -106,11 +102,7 @@ class Game {
 		$frames[ sizeof( $frames ) - 1 ] += $roll;
 
 		if ( $this->areAllPinsHit( $frames ) ) {
-			if ( $i + 1 < sizeof( $this->rolls ) ) {
-				$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
-			} else {
-				throw new Exception();
-			}
+			$frames = $this->calculateSpare( $frames, $i );
 		}
 
 		return $frames;
@@ -145,5 +137,21 @@ class Game {
 	 */
 	public function isInvalid( $frames ): bool {
 		return sizeof( $this->rolls ) < 12 || sizeof( $frames ) == 11 && $frames[9] < 10;
+	}
+
+	/**
+	 * @param $frames
+	 * @param $i
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function calculateSpare( $frames, $i ):array {
+		if ( $i + 1 < sizeof( $this->rolls ) ) {
+			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
+		} else {
+			throw new Exception();
+		}
+		return $frames;
 	}
 }
