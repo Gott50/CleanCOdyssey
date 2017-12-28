@@ -70,7 +70,7 @@ class Game {
 	public function calculateStrike( $frames, $i ): array {
 		$next = true;
 		if ( sizeof( $frames ) <= 10 ) {
-			$frames = $this->calculateSpare( $frames, $i );
+			$frames = $this->addNextRoll( $frames, $i, 1 );
 			$frames = $this->addNextRoll( $frames, $i, 2 );
 
 			$next                            = false;
