@@ -75,10 +75,11 @@ class Game {
 
 			$next                            = false;
 
-			if ( $this->rolls[ $i + 1 ] != 10
-			     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
-				throw new Exception();
-			}
+		}
+
+		if ( sizeof( $this->rolls ) >= $i + 2 && $this->rolls[ $i + 1 ] != 10
+		     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
+			throw new Exception();
 		}
 
 		return array( $frames, $next );
