@@ -71,10 +71,8 @@ class Game {
 		$next = true;
 		if ( sizeof( $frames ) <= 10 ) {
 			$frames = $this->calculateSpare( $frames, $i );
-			if ( $i + 2 >= sizeof( $this->rolls ) ) {
-				throw new Exception();
-			}
-			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 2 ];
+			$frames = $this->addNextRoll( $frames, $i, 2 );
+
 			$next                            = false;
 
 			if ( $this->rolls[ $i + 1 ] != 10
@@ -149,6 +147,23 @@ class Game {
 	public function calculateSpare( $frames, $i ):array {
 		if ( $i + 1 < sizeof( $this->rolls ) ) {
 			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + 1 ];
+		} else {
+			throw new Exception();
+		}
+		return $frames;
+	}
+
+	/**
+	 * @param $frames
+	 * @param $i
+	 * @param $offset
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function addNextRoll( $frames, $i, $offset ):array {
+		if ( $i + 2 < sizeof( $this->rolls ) ) {
+			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + $offset ];
 		} else {
 			throw new Exception();
 		}
