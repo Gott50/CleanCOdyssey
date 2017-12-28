@@ -14,7 +14,7 @@ class Game {
 			throw new Exception();
 		}
 
-		return array_sum( array_slice($frames,0,10) );
+		return array_sum( array_slice( $frames, 0, 10 ) );
 	}
 
 	/**
@@ -67,6 +67,15 @@ class Game {
 
 	/**
 	 * @param $frames
+	 *
+	 * @return bool
+	 */
+	public function areAllPinsHit( $frames ): bool {
+		return $frames[ sizeof( $frames ) - 1 ] == 10;
+	}
+
+	/**
+	 * @param $frames
 	 * @param $i
 	 *
 	 * @return array
@@ -78,11 +87,29 @@ class Game {
 			$frames = $this->addNextRoll( $frames, $i, 1 );
 			$frames = $this->addNextRoll( $frames, $i, 2 );
 
-			$next                            = false;
+			$next = false;
 
 		}
 
 		return array( $frames, $next );
+	}
+
+	/**
+	 * @param $frames
+	 * @param $i
+	 * @param $offset
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function addNextRoll( $frames, $i, $offset ): array {
+		if ( $i + $offset < sizeof( $this->rolls ) ) {
+			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + $offset ];
+		} else {
+			throw new Exception();
+		}
+
+		return $frames;
 	}
 
 	/**
@@ -108,25 +135,14 @@ class Game {
 	}
 
 	/**
-	 * @param $int
+	 * @param $frames
+	 * @param $i
 	 *
+	 * @return array
 	 * @throws Exception
 	 */
-	public function roll( $int ) {
-		if ( $int < 0 || $int > 10 ) {
-			throw new Exception();
-		}
-
-		array_push( $this->rolls, $int );
-	}
-
-	/**
-	 * @param $frames
-	 *
-	 * @return bool
-	 */
-	public function areAllPinsHit( $frames ): bool {
-		return $frames[ sizeof( $frames ) - 1 ] == 10;
+	public function calculateSpare( $frames, $i ): array {
+		return $this->addNextRoll( $frames, $i, 1 );
 	}
 
 	/**
@@ -139,30 +155,15 @@ class Game {
 	}
 
 	/**
-	 * @param $frames
-	 * @param $i
+	 * @param $int
 	 *
-	 * @return array
 	 * @throws Exception
 	 */
-	public function calculateSpare( $frames, $i ):array {
-		return $this->addNextRoll($frames,$i,1);
-	}
-
-	/**
-	 * @param $frames
-	 * @param $i
-	 * @param $offset
-	 *
-	 * @return array
-	 * @throws Exception
-	 */
-	public function addNextRoll( $frames, $i, $offset ):array {
-		if ( $i + $offset < sizeof( $this->rolls ) ) {
-			$frames[ sizeof( $frames ) - 1 ] += $roll = $this->rolls[ $i + $offset ];
-		} else {
+	public function roll( $int ) {
+		if ( $int < 0 || $int > 10 ) {
 			throw new Exception();
 		}
-		return $frames;
+
+		array_push( $this->rolls, $int );
 	}
 }
