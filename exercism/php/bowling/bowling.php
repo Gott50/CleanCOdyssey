@@ -18,9 +18,7 @@ class Game {
 			unset( $frames[10] );
 		}
 
-		return array_reduce( $frames, function ( $carry, $item ) {
-			return $carry + $item;
-		}, 0 );
+		return array_sum( $frames );
 	}
 
 	/**
