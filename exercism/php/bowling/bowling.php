@@ -14,11 +14,10 @@ class Game {
 
 		$frames = $this->calculateFrames();
 
-		if ( sizeof( $frames ) == 11 && $frames[9] < 10 ) {
-			throw new Exception();
-		}
-
 		if ( sizeof( $frames ) == 11 ) {
+			if ($frames[9] < 10 ) {
+				throw new Exception();
+			}
 			unset( $frames[10] );
 		}
 
