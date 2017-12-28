@@ -8,16 +8,13 @@ class Game {
 	 * @throws Exception
 	 */
 	public function score(): int {
-		if ( sizeof( $this->rolls ) < 12 ) {
+		$frames = $this->calculateFrames();
+
+		if ( $this->isInvalid( $frames ) ) {
 			throw new Exception();
 		}
 
-		$frames = $this->calculateFrames();
-
 		if ( sizeof( $frames ) == 11 ) {
-			if ($frames[9] < 10 ) {
-				throw new Exception();
-			}
 			unset( $frames[10] );
 		}
 
@@ -145,5 +142,14 @@ class Game {
 	 */
 	public function areAllPinsHit( $frames ): bool {
 		return $frames[ sizeof( $frames ) - 1 ] == 10;
+	}
+
+	/**
+	 * @param $frames
+	 *
+	 * @return bool
+	 */
+	public function isInvalid( $frames ): bool {
+		return sizeof( $this->rolls ) < 12 || sizeof( $frames ) == 11 && $frames[9] < 10;
 	}
 }
