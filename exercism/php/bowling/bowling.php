@@ -52,6 +52,11 @@ class Game {
 		array_push( $frames, $roll );
 		if ( $this->areAllPinsHit( $frames ) ) {
 			list( $frames, $next ) = $this->calculateStrike( $frames, $i );
+
+			if ( sizeof( $this->rolls ) >= $i + 2 && $this->rolls[ $i + 1 ] != 10
+			     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
+				throw new Exception();
+			}
 			if ( sizeof( $frames ) == 10 ) {
 				$go_on = false;
 			}
@@ -75,11 +80,6 @@ class Game {
 
 			$next                            = false;
 
-		}
-
-		if ( sizeof( $this->rolls ) >= $i + 2 && $this->rolls[ $i + 1 ] != 10
-		     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
-			throw new Exception();
 		}
 
 		return array( $frames, $next );
