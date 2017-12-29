@@ -9,7 +9,6 @@ class Game {
 	 */
 	public function score(): int {
 		$frames = $this->calculateFrames();
-
 		if ( $this->isInvalid( $frames ) ) {
 			throw new Exception();
 		}
@@ -45,17 +44,13 @@ class Game {
 	 * @throws Exception
 	 */
 	public function newFrame( $frames, $i ): array {
-		$roll  = $this->rolls[ $i ];
 		$go_on = true;
 		$next  = true;
-
-		array_push( $frames, $roll );
+		array_push( $frames, $this->rolls[ $i ] );
 		if ( $this->areAllPinsHit( $frames ) ) {
 			list( $frames, $next ) = $this->calculateStrike( $frames, $i );
-
-			$i1 = $i + 1;
 			if ( sizeof( $this->rolls ) >= $i + 2 && $this->rolls[ $i + 1 ] != 10
-			     && !$this->isSumOfRollsValid( $i1 ) ) {
+			     && ! $this->isSumOfRollsValid( $i + 1 ) ) {
 				throw new Exception();
 			}
 			if ( sizeof( $frames ) == 10 ) {
@@ -87,9 +82,7 @@ class Game {
 		if ( sizeof( $frames ) <= 10 ) {
 			$frames = $this->addNextRoll( $frames, $i, 1 );
 			$frames = $this->addNextRoll( $frames, $i, 2 );
-
-			$next = false;
-
+			$next   = false;
 		}
 
 		return array( $frames, $next );
@@ -114,6 +107,15 @@ class Game {
 	}
 
 	/**
+	 * @param $i
+	 *
+	 * @return bool
+	 */
+	public function isSumOfRollsValid( $i ): bool {
+		return $this->rolls[ $i ] + $this->rolls[ $i + 1 ] <= 10;
+	}
+
+	/**
 	 * @param $frames
 	 * @param $i
 	 *
@@ -121,12 +123,10 @@ class Game {
 	 * @throws Exception
 	 */
 	public function updateFrame( $frames, $i ): array {
-		$roll = $this->rolls[ $i ];
-		if ( !$this->isSumOfRollsValid($i-1) ) {
+		if ( ! $this->isSumOfRollsValid( $i - 1 ) ) {
 			throw new Exception();
 		}
-		$frames[ sizeof( $frames ) - 1 ] += $roll;
-
+		$frames[ sizeof( $frames ) - 1 ] += $this->rolls[ $i ];
 		if ( $this->areAllPinsHit( $frames ) ) {
 			$frames = $this->calculateSpare( $frames, $i );
 		}
@@ -163,16 +163,6 @@ class Game {
 		if ( $int < 0 || $int > 10 ) {
 			throw new Exception();
 		}
-
 		array_push( $this->rolls, $int );
-	}
-
-	/**
-	 * @param $i
-	 *
-	 * @return bool
-	 */
-	public function isSumOfRollsValid( $i ): bool {
-		return $this->rolls[ $i ] + $this->rolls[ $i + 1 ] <= 10;
 	}
 }
