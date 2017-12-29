@@ -53,8 +53,9 @@ class Game {
 		if ( $this->areAllPinsHit( $frames ) ) {
 			list( $frames, $next ) = $this->calculateStrike( $frames, $i );
 
+			$i1 = $i + 1;
 			if ( sizeof( $this->rolls ) >= $i + 2 && $this->rolls[ $i + 1 ] != 10
-			     && $this->rolls[ $i + 1 ] + $this->rolls[ $i + 2 ] > 10 ) {
+			     && !$this->isSumOfRollsValid( $i1 ) ) {
 				throw new Exception();
 			}
 			if ( sizeof( $frames ) == 10 ) {
@@ -121,8 +122,7 @@ class Game {
 	 */
 	public function updateFrame( $frames, $i ): array {
 		$roll = $this->rolls[ $i ];
-		if ( $frames[ sizeof( $frames ) - 1 ] < 10
-		     && $frames[ sizeof( $frames ) - 1 ] + $roll > 10 ) {
+		if ( !$this->isSumOfRollsValid($i-1) ) {
 			throw new Exception();
 		}
 		$frames[ sizeof( $frames ) - 1 ] += $roll;
@@ -165,5 +165,14 @@ class Game {
 		}
 
 		array_push( $this->rolls, $int );
+	}
+
+	/**
+	 * @param $i
+	 *
+	 * @return bool
+	 */
+	public function isSumOfRollsValid( $i ): bool {
+		return $this->rolls[ $i ] + $this->rolls[ $i + 1 ] <= 10;
 	}
 }
