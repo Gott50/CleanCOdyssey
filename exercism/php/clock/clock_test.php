@@ -20,7 +20,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testAddingAFewMinutes()
     {
-        $this->markTestSkipped();
         $clock = new Clock(10);
 
         $clock = $clock->add(3);
@@ -30,7 +29,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testAddingZeroMinutes()
     {
-        $this->markTestSkipped();
         $clock = new Clock(6, 41);
 
         $clock = $clock->add(0);
@@ -40,7 +38,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testAddingOverAnHour()
     {
-        $this->markTestSkipped();
         $clock = new Clock(10);
 
         $clock = $clock->add(61);
@@ -50,7 +47,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testAddingMoreThanTwoHoursWithCarry()
     {
-        $this->markTestSkipped();
         $clock = new Clock(0, 45);
 
         $clock = $clock->add(160);
@@ -60,7 +56,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testAddingMoreThanTwoDays()
     {
-        $this->markTestSkipped();
         $clock = new Clock(1, 1);
 
         $clock = $clock->add(3500);
@@ -70,7 +65,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testWrapAroundAtMidnight()
     {
-        $this->markTestSkipped();
         $clock = new Clock(23, 30);
 
         $clock = $clock->add(60);
@@ -80,7 +74,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testSubtractMinutes()
     {
-        $this->markTestSkipped();
         $clock = new Clock(10);
 
         $clock = $clock->sub(90);
@@ -90,7 +83,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testSubtractMoreThanTwoHours()
     {
-        $this->markTestSkipped();
         $clock = new Clock(6, 15);
 
         $clock = $clock->sub(160);
@@ -100,7 +92,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testSubtractMoreThanTwoHoursWithNegativeAdd()
     {
-        $this->markTestSkipped();
         $clock = new Clock(6, 15);
 
         $clock = $clock->add(-160);

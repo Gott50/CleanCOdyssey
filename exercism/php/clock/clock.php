@@ -6,7 +6,7 @@ class Clock {
 	/**
 	 * Clock constructor.
 	 *
-	 * @param $hours
+	 * @param int $hours
 	 * @param int $minutes
 	 */
 	public function __construct( $hours, $minutes = 0 ) {
@@ -28,6 +28,19 @@ class Clock {
 	 */
 	public function format( $time ): string {
 		return $time < 10 ? '0' . $time : $time;
+	}
+
+	public function sub( $int ) {
+		return $this->add( - $int );
+	}
+
+	public function add( $minutes ) {
+		$m_sum   = $this->minutes + $minutes;
+		$minutes = ( $m_sum % 60 + 60 ) % 60;
+		$h_sum   = $this->hours + ( $m_sum / 60 );
+		$hours   = ( $h_sum % 24 + 24 ) % 24;
+
+		return new Clock( $hours, $minutes );
 	}
 
 }
