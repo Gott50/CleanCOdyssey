@@ -35,10 +35,12 @@ class Clock {
 	}
 
 	public function add( $minutes ) {
-		$m_sum   = $this->minutes + $minutes;
-		$h_sum   = ($this->hours + ( $minutes / 60 ));
-		$minutes = ( $m_sum % 60 + 60 ) % 60;
-		$hours   = ( $h_sum % 24 + 24 ) % 24;
+		$total_min = $this->hours * 60 + $this->minutes+$minutes;
+		$hours     = $total_min / 60;
+		while ($hours < 0)
+			$hours += 24;
+		$hours     %= 24;
+		$minutes   = ( $total_min % 60 + 60 ) % 60;
 
 		return new Clock( $hours, $minutes );
 	}

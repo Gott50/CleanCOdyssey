@@ -47,7 +47,6 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testAddingMoreThanTwoHoursWithCarry()
     {
-	    $this->markTestSkipped();
         $clock = new Clock(0, 45);
 
         $clock = $clock->add(160);
