@@ -36,8 +36,8 @@ class Clock {
 
 	public function add( $minutes ) {
 		$m_sum   = $this->minutes + $minutes;
+		$h_sum   = ($this->hours + ( $minutes / 60 ));
 		$minutes = ( $m_sum % 60 + 60 ) % 60;
-		$h_sum   = $this->hours + ( $m_sum / 60 );
 		$hours   = ( $h_sum % 24 + 24 ) % 24;
 
 		return new Clock( $hours, $minutes );
