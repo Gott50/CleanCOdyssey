@@ -10,8 +10,8 @@ class Clock {
 	 * @param int $minutes
 	 */
 	public function __construct( $hours, $minutes = 0 ) {
-		$this->hours   = $hours;
-		$this->minutes = $minutes;
+		$this->hours = $this->reduceHours( $hours + $minutes / 60 );
+		$this->minutes = $this->reduceMinutes( $minutes );
 	}
 
 	/**
@@ -37,12 +37,27 @@ class Clock {
 	public function add( $minutes ) {
 		$total_min = $this->hours * 60 + $this->minutes+$minutes;
 		$hours     = $total_min / 60;
+		return new Clock( $this->reduceHours($hours), $this->reduceMinutes( $total_min ) );
+	}
+
+	/**
+	 * @param $minutes
+	 *
+	 * @return int
+	 */
+	public function reduceMinutes( $minutes ): int {
+		return ( $minutes % 60 + 60 ) % 60;
+	}
+
+	/**
+	 * @param $hours
+	 *
+	 * @return int
+	 */
+	public function reduceHours( $hours ): int {
 		while ($hours < 0)
 			$hours += 24;
-		$hours     %= 24;
-		$minutes   = ( $total_min % 60 + 60 ) % 60;
-
-		return new Clock( $hours, $minutes );
+		return $hours     % 24;
 	}
 
 }

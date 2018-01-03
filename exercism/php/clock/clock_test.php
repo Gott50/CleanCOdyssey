@@ -142,79 +142,66 @@ class ClockTest extends PHPUnit\Framework\TestCase
 
     public function testInequivalentClocks()
     {
-        $this->markTestSkipped();
         $this->assertNotEquals(new Clock(01, 01), new Clock(18, 32));
     }
 
     public function testEquivalentClocksWithHourOverflowBySeveralDays()
     {
-        $this->markTestSkipped();
         $this->assertEquals(new Clock(3, 11), new Clock(99, 11));
     }
 
     public function testEquivalentClocksWithNegativeHour()
     {
-        $this->markTestSkipped();
         $this->assertEquals(new Clock(22, 40), new Clock(-2, 40));
     }
 
     public function testEquivalentClocksWithNegativeHourThatWraps()
     {
-        $this->markTestSkipped();
         $this->assertEquals(new Clock(17, 3), new Clock(-31, 3));
     }
 
     public function testEquivalentClocksWithMinuteOverflowBySeveralDays()
     {
-        $this->markTestSkipped();
         $this->assertEquals(new Clock(2, 2), new Clock(2, 4322));
     }
 
     public function testEquivalentClocksWithNegativeMinuteOverflow()
     {
-        $this->markTestSkipped();
         $this->assertEquals(new Clock(2, 40), new Clock(3, -20));
     }
 
     public function testEquivalentClocksWithNegativeHoursAndMinutes()
     {
-        $this->markTestSkipped();
         $this->assertEquals(new Clock(7, 32), new Clock(-12, -268));
     }
 
     public function testHoursRollOver()
     {
-        $this->markTestSkipped();
         $this->assertEquals('04:00', (new Clock(100))->__toString());
     }
 
     public function testMinutesRollOver()
     {
-        $this->markTestSkipped();
         $this->assertEquals('04:43', (new Clock(0, 1723))->__toString());
     }
 
     public function testHoursAndMinutesRollOver()
     {
-        $this->markTestSkipped();
         $this->assertEquals('00:00', (new Clock(72, 8640))->__toString());
     }
 
     public function testNegativeHoursRollOver()
     {
-        $this->markTestSkipped();
         $this->assertEquals('05:00', (new Clock(-91))->__toString());
     }
 
     public function testNegativeMinutesRollOver()
     {
-        $this->markTestSkipped();
         $this->assertEquals('16:40', (new Clock(1, -4820))->__toString());
     }
 
     public function testNegativeHoursAndMinutesRollOver()
     {
-        $this->markTestSkipped();
         $this->assertEquals('22:10', (new Clock(-121, -5810))->__toString());
     }
 }
