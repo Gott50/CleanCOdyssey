@@ -52,15 +52,25 @@ class Clock {
 		return $time < 10 ? '0' . $time : $time;
 	}
 
+	/**
+	 * @param $int
+	 *
+	 * @return Clock
+	 */
 	public function sub( $int ) {
 		return $this->add( - $int );
 	}
 
+	/**
+	 * @param $minutes
+	 *
+	 * @return Clock
+	 */
 	public function add( $minutes ) {
 		$total_min = $this->hours * 60 + $this->minutes + $minutes;
-		$hours     = $total_min / 60;
 
-		return new Clock( $this->reduceHours( $hours ), $this->reduceMinutes( $total_min ) );
+		return new Clock( $this->reduceHours( $total_min / 60 ),
+			$this->reduceMinutes( $total_min ) );
 	}
 
 }
