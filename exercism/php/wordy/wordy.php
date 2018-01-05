@@ -1,10 +1,9 @@
 <?php
 function calculate( $string ) {
 	$string = preg_filter( "/What is /", "", $string );
-	$string = preg_filter( "/by/", "", $string . "by");
+	$string = preg_filter( "/by/", "", $string . "by" );
 	$string = preg_filter( "/\?/", "", $string );
-	$split = preg_split( "/\s+/", $string );
-	echo var_dump( $split );
+	$split  = preg_split( "/\s+/", $string );
 
 	return calcAt( $split, 1 );
 
@@ -16,7 +15,7 @@ function calculate( $string ) {
  *
  * @return float|int
  */
-function calcAt( $split, $index ){
+function calcAt( $split, $index ) {
 	if ( $split[ $index ] == "plus" ) {
 		return $split[ $index - 1 ] + $split[ $index + 1 ];
 	}
@@ -29,5 +28,6 @@ function calcAt( $split, $index ){
 	if ( $split[1] == "divided" ) {
 		return $split[ $index - 1 ] / $split[ $index + 1 ];
 	}
+
 	return 0;
 }
