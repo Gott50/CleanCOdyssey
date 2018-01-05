@@ -41,7 +41,6 @@ class WordProblemTest extends PHPUnit\Framework\TestCase
 
     public function testAddTwice()
     {
-        $this->markTestSkipped();
         $this->assertEquals(3, calculate('What is 1 plus 1 plus 1?'));
     }
 

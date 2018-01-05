@@ -5,8 +5,25 @@ function calculate( $string ) {
 	$string = preg_filter( "/\?/", "", $string );
 	$split  = preg_split( "/\s+/", $string );
 
-	return calcAt( $split, 1 );
+	return calc( $split );
 
+}
+
+/**
+ * @param $split
+ *
+ * @return float|int
+ */
+function calc( $split ) {
+	if(sizeof($split) == 1)
+		return $split[0];
+
+	$ret = calcAt( $split, 1 );
+	$tmp = array_slice($split,0,sizeof($split)-3);
+	array_push( $tmp, $ret );
+	echo var_dump( $tmp );
+
+	return calc($tmp);
 }
 
 /**
