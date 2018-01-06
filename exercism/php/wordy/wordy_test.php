@@ -76,7 +76,6 @@ class WordProblemTest extends PHPUnit\Framework\TestCase
 
     public function testTooAdvanced()
     {
-        $this->markTestSkipped();
         $this->expectException('InvalidArgumentException');
 
         calculate('What is 53 cubed?');

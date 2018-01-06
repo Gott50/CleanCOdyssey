@@ -18,34 +18,28 @@ function calc( $split ) {
 	if(sizeof($split) == 1)
 		return $split[0];
 
-	$ret = calcAt( $split[0] ,$split[1], $split[2] );
-	$split[0] = $ret;
+	$split[0] = calcAt( $split);
 	unset( $split[1] , $split[2] );
 
 	return calc( array_values( $split ) );
 }
 
 /**
- * @param $num1
- * @param $op
- * @param $num2
+ * @param $split
  *
  * @return float|int
  */
-function calcAt( $num1,$op,$num2) {
-	echo $num1, PHP_EOL;
-	echo $op, PHP_EOL;
-	echo $num2, PHP_EOL;
-	switch ( $op ) {
+function calcAt( $split) {
+	switch ( $split[1] ) {
 		case "plus":
-			return $num1 + $num2;
+			return $split[0] + $split[2];
 		case "minus":
-			return $num1 - $num2;
+			return $split[0] - $split[2];
 		case "multiplied":
-			return $num1 * $num2;
+			return $split[0] * $split[2];
 		case "divided":
-			return $num1 / $num2;
+			return $split[0] / $split[2];
 	}
 
-	return 0;
+	throw new InvalidArgumentException();
 }
