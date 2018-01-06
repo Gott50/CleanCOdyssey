@@ -26,6 +26,13 @@ function calc( $split ) {
 	return calc($tmp);
 }
 
+/**
+ * @param $num1
+ * @param $op
+ * @param $num2
+ *
+ * @return float|int
+ */
 function calcAt( $num1,$op,$num2) {
 	switch ( $op ) {
 		case "plus":
