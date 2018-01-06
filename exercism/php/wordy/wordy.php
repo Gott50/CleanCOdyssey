@@ -16,7 +16,10 @@ function calculate( $string ) {
  */
 function calc( $split ) {
 	if ( sizeof( $split ) == 1 ) {
-		return $split[0];
+		if ( is_numeric( $split[0] ) ) {
+			return $split[0];
+		}
+		throw new InvalidArgumentException();
 	}
 
 	$split[0] = calcAt( $split );
