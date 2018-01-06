@@ -27,17 +27,15 @@ function calc( $split ) {
 }
 
 function calcAt( $num1,$op,$num2) {
-	if ( $op == "plus" ) {
-		return $num1 + $num2;
-	}
-	if ( $op == "minus" ) {
-		return $num1- $num2;
-	}
-	if ($op == "multiplied" ) {
-		return $num1 * $num2;
-	}
-	if ( $op == "divided" ) {
-		return $num1 / $num2;
+	switch ( $op ) {
+		case "plus":
+			return $num1 + $num2;
+		case "minus":
+			return $num1 - $num2;
+		case "multiplied":
+			return $num1 * $num2;
+		case "divided":
+			return $num1 / $num2;
 	}
 
 	return 0;
