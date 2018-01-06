@@ -83,7 +83,6 @@ class WordProblemTest extends PHPUnit\Framework\TestCase
 
     public function testIrrelevant()
     {
-        $this->markTestSkipped();
         $this->expectException('InvalidArgumentException');
 
         calculate('Who is the president of the United States?');

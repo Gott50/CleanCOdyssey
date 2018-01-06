@@ -15,11 +15,12 @@ function calculate( $string ) {
  * @return float|int
  */
 function calc( $split ) {
-	if(sizeof($split) == 1)
+	if ( sizeof( $split ) == 1 ) {
 		return $split[0];
+	}
 
-	$split[0] = calcAt( $split);
-	unset( $split[1] , $split[2] );
+	$split[0] = calcAt( $split );
+	unset( $split[1], $split[2] );
 
 	return calc( array_values( $split ) );
 }
@@ -29,7 +30,7 @@ function calc( $split ) {
  *
  * @return float|int
  */
-function calcAt( $split) {
+function calcAt( $split ) {
 	switch ( $split[1] ) {
 		case "plus":
 			return $split[0] + $split[2];
@@ -39,7 +40,7 @@ function calcAt( $split) {
 			return $split[0] * $split[2];
 		case "divided":
 			return $split[0] / $split[2];
+		default:
+			throw new InvalidArgumentException();
 	}
-
-	throw new InvalidArgumentException();
 }
