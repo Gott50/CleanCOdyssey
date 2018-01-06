@@ -6,7 +6,6 @@ function calculate( $string ) {
 	$split  = preg_split( "/\s+/", $string );
 
 	return calc( $split );
-
 }
 
 /**
@@ -21,7 +20,6 @@ function calc( $split ) {
 		}
 		throw new InvalidArgumentException();
 	}
-
 	$split[0] = calcAt( $split );
 	unset( $split[1], $split[2] );
 
