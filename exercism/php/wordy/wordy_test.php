@@ -46,37 +46,31 @@ class WordProblemTest extends PHPUnit\Framework\TestCase
 
     public function testAddThenSubtract()
     {
-        $this->markTestSkipped();
         $this->assertEquals(8, calculate('What is 1 plus 5 minus -2?'));
     }
 
     public function testSubtractTwice()
     {
-        $this->markTestSkipped();
         $this->assertEquals(3, calculate('What is 20 minus 4 minus 13?'));
     }
 
     public function testSubtractThenAdd()
     {
-        $this->markTestSkipped();
         $this->assertEquals(14, calculate('What is 17 minus 6 plus 3?'));
     }
 
     public function testMultiplyTwice()
     {
-        $this->markTestSkipped();
         $this->assertEquals(-12, calculate('What is 2 multiplied by -2 multiplied by 3?'));
     }
 
     public function testAddThenMultiply()
     {
-        $this->markTestSkipped();
         $this->assertEquals(-8, calculate('What is -3 plus 7 multiplied by -2?'));
     }
 
     public function testDivideTwice()
     {
-        $this->markTestSkipped();
         $this->assertEquals(2, calculate('What is -12 divided by 2 divided by -3?'));
     }
 

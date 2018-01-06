@@ -19,11 +19,10 @@ function calc( $split ) {
 		return $split[0];
 
 	$ret = calcAt( $split[0] ,$split[1], $split[2] );
-	$tmp = array_slice($split,0,sizeof($split)-3);
-	array_push( $tmp, $ret );
-	echo var_dump( $tmp );
+	$split[0] = $ret;
+	unset( $split[1] , $split[2] );
 
-	return calc($tmp);
+	return calc( array_values( $split ) );
 }
 
 /**
@@ -34,6 +33,9 @@ function calc( $split ) {
  * @return float|int
  */
 function calcAt( $num1,$op,$num2) {
+	echo $num1, PHP_EOL;
+	echo $op, PHP_EOL;
+	echo $num2, PHP_EOL;
 	switch ( $op ) {
 		case "plus":
 			return $num1 + $num2;
