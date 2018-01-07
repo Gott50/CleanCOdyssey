@@ -31,7 +31,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testOneByOneBoardBlack()
     {
-        $this->markTestSkipped();
         $lines = array("X");
         $this->assertEquals("black", resultFor($this->makeBoard($lines)));
     }
@@ -41,7 +40,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testOneByOneBoardWhite()
     {
-        $this->markTestSkipped();
         $lines = array("O");
         $this->assertEquals("white", resultFor($this->makeBoard($lines)));
     }
