@@ -50,7 +50,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testConvultedPath()
     {
-        $this->markTestSkipped();
         $lines = array(
             ". X X . .",
             " X . X . X",
@@ -66,7 +65,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testRectangleWhiteWins()
     {
-        $this->markTestSkipped();
         $lines = array(
             ". O . .",
             " O X X X",
