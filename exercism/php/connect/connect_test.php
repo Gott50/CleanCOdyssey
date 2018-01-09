@@ -65,6 +65,7 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testRectangleWhiteWins()
     {
+        $this->markTestSkipped();
         $lines = array(
             ". O . .",
             " O X X X",
