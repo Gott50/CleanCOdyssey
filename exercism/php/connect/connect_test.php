@@ -65,7 +65,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testRectangleWhiteWins()
     {
-        $this->markTestSkipped();
         $lines = array(
             ". O . .",
             " O X X X",
@@ -81,7 +80,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testRectangleBlackWins()
     {
-        $this->markTestSkipped();
         $lines = array(
             ". O . .",
             " O X X X",
@@ -98,7 +96,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testSpiralBlackWins()
     {
-        $this->markTestSkipped();
         $lines = array(
             "OXXXXXXXX",
             "OXOOOOOOO",
