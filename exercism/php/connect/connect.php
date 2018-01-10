@@ -2,17 +2,17 @@
 function resultFor( $field ) {
 	echo var_dump( $field );
 
-	for ( $y = 0; $y< sizeof( $field ); $y ++ ) {
-			$winner = fromXPosition( $field, 0, $y );
-			if ( $winner != null ) {
-				return $winner;
-			}
+	for ( $y = 0; $y < sizeof( $field ); $y ++ ) {
+		$winner = fromXPosition( $field, 0, $y );
+		if ( $winner != null ) {
+			return $winner;
+		}
 	}
 	for ( $x = 0; $x < strlen( $field[0] ); $x ++ ) {
-			$winner = fromYPosition( $field, $x, 0 );
-			if ( $winner != null ) {
-				return $winner;
-			}
+		$winner = fromYPosition( $field, $x, 0 );
+		if ( $winner != null ) {
+			return $winner;
+		}
 	}
 }
 
@@ -20,33 +20,32 @@ function resultFor( $field ) {
  * @param $field
  * @param $x
  * @param $y
- *
  * @param array $tested
  *
  * @return null|string
  */
-function fromXPosition( $field, $x, $y,$tested = []) {
-	if ( $x+1 >= strlen( $field[ $y ] ) ) {
+function fromXPosition( $field, $x, $y, $tested = [] ) {
+	if ( $x + 1 >= strlen( $field[ $y ] ) ) {
 		return winner( $field[ $y ][ $x ] );
 	}
 
 	return tryNext( $field, $x, $y, $tested );
 }
+
 /**
  * @param $field
  * @param $x
  * @param $y
- *
  * @param array $tested
  *
  * @return null|string
  */
-function fromYPosition( $field, $x, $y,$tested = []) {
-	if ( $y+1 >= sizeof( $field ) ) {
+function fromYPosition( $field, $x, $y, $tested = [] ) {
+	if ( $y + 1 >= sizeof( $field ) ) {
 		return winner( $field[ $y ][ $x ] );
 	}
 
-	return tryNext( $field, $x, $y, $tested ,0);
+	return tryNext( $field, $x, $y, $tested, 0 );
 }
 
 /**
@@ -54,27 +53,28 @@ function fromYPosition( $field, $x, $y,$tested = []) {
  * @param $x
  * @param $y
  * @param $tested
+ * @param int $nextX
  *
  * @return null|string
  */
-function tryNext( $field, $x, $y, $tested ,$next=1) {
+function tryNext( $field, $x, $y, $tested, $nextX = 1 ) {
 	if ( $field[ $y ][ $x ] == "." ) {
 		return null;
 	}
 
-	$out = tryPosition( $field, $x + 1, $y, $x, $y, $tested,$next );
+	$out = tryPosition( $field[ $y ][ $x ], $field, $x + 1, $y, $tested, $nextX );
 	if ( $out != null ) {
 		return $out;
 	}
-	$out = tryPosition( $field, $x + 1, $y - 1, $x, $y, $tested ,$next);
+	$out = tryPosition( $field[ $y ][ $x ], $field, $x + 1, $y - 1, $tested, $nextX );
 	if ( $out != null ) {
 		return $out;
 	}
-	$out = tryPosition( $field, $x, $y + 1, $x, $y, $tested ,$next);
+	$out = tryPosition( $field[ $y ][ $x ], $field, $x, $y + 1, $tested, $nextX );
 	if ( $out != null ) {
 		return $out;
 	}
-	$out = tryPosition( $field, $x - 1, $y + 1, $x, $y, $tested,$next );
+	$out = tryPosition( $field[ $y ][ $x ], $field, $x - 1, $y + 1, $tested, $nextX );
 	if ( $out != null ) {
 		return $out;
 	}
@@ -83,22 +83,23 @@ function tryNext( $field, $x, $y, $tested ,$next=1) {
 }
 
 /**
+ * @param $color
  * @param $field
  * @param $x
  * @param $y
- * @param $fx
- * @param $fy
- * @param $tested
+ * @param array $tested
+ * @param int $nextX
  *
  * @return null|string
  */
-function tryPosition( $field, $x, $y ,$fx ,$fy,$tested,$next=1) {
-	if ( $field[ $fy ][ $fx ] != "." && $y >= 0 && $x >= 0
+function tryPosition( $color, $field, $x, $y, $tested = [], $nextX = 1 ) {
+	if ( $color != "." && $y >= 0 && $x >= 0
 	     && $y < sizeof( $field ) && $x < strlen( $field[ $y ] ) ) {
-		if ( $field[ $fy ][ $fx ] == $field[ $y ][ $x ] && ! array_search([$y,$x],$tested) ) {
-			array_push($tested,[$y,$x]);
-			return $next? fromXPosition( $field, $x, $y ,$tested):
-				fromyPosition( $field, $x, $y ,$tested);
+		if ( $color == $field[ $y ][ $x ] && ! array_search( [ $y, $x ], $tested ) ) {
+			array_push( $tested, [ $y, $x ] );
+
+			return $nextX ? fromXPosition( $field, $x, $y, $tested ) :
+				fromyPosition( $field, $x, $y, $tested );
 		}
 	}
 
