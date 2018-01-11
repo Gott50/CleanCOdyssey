@@ -116,7 +116,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testSpiralNobodyWins()
     {
-        $this->markTestSkipped();
         $lines = array(
             "OXXXXXXXX",
             "OXOOOOOOO",
@@ -137,7 +136,6 @@ class ConnectTest extends PHPUnit\Framework\TestCase
      */
     public function testIllegalDiagonalNobodyWins()
     {
-        $this->markTestSkipped();
         $lines = array(
             "X O . .",
             " O X X X",

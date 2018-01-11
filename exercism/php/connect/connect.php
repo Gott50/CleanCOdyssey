@@ -1,7 +1,5 @@
 <?php
 function resultFor( $field ) {
-	echo var_dump( $field );
-
 	for ( $y = 0; $y < sizeof( $field ); $y ++ ) {
 		$winner = fromXPosition( $field, 0, $y );
 		if ( $winner != null ) {
@@ -70,11 +68,19 @@ function tryNext( $field, $x, $y, $tested, $nextX = 1 ) {
 	if ( $out != null ) {
 		return $out;
 	}
+	$out = tryPosition( $field[ $y ][ $x ], $field, $x, $y - 1, $tested, $nextX );
+	if ( $out != null ) {
+		return $out;
+	}
 	$out = tryPosition( $field[ $y ][ $x ], $field, $x, $y + 1, $tested, $nextX );
 	if ( $out != null ) {
 		return $out;
 	}
 	$out = tryPosition( $field[ $y ][ $x ], $field, $x - 1, $y + 1, $tested, $nextX );
+	if ( $out != null ) {
+		return $out;
+	}
+	$out = tryPosition( $field[ $y ][ $x ], $field, $x - 1, $y, $tested, $nextX );
 	if ( $out != null ) {
 		return $out;
 	}
