@@ -12,6 +12,8 @@ function resultFor( $field ) {
 			return $winner;
 		}
 	}
+
+	return null;
 }
 
 /**
@@ -27,7 +29,7 @@ function fromXPosition( $field, $x, $y, $tested = [] ) {
 		return winner( $field[ $y ][ $x ] );
 	}
 
-	return tryNext( $field, $x, $y, $tested );
+	return tryNext( $field, $x, $y, $tested, true );
 }
 
 /**
@@ -43,7 +45,7 @@ function fromYPosition( $field, $x, $y, $tested = [] ) {
 		return winner( $field[ $y ][ $x ] );
 	}
 
-	return tryNext( $field, $x, $y, $tested, 0 );
+	return tryNext( $field, $x, $y, $tested, false );
 }
 
 /**
@@ -51,11 +53,11 @@ function fromYPosition( $field, $x, $y, $tested = [] ) {
  * @param $x
  * @param $y
  * @param $tested
- * @param int $nextX
+ * @param bool $nextX
  *
  * @return null|string
  */
-function tryNext( $field, $x, $y, $tested, $nextX = 1 ) {
+function tryNext( $field, $x, $y, $tested, $nextX = true ) {
 	if ( $field[ $y ][ $x ] == "." ) {
 		return null;
 	}
@@ -81,11 +83,8 @@ function tryNext( $field, $x, $y, $tested, $nextX = 1 ) {
 		return $out;
 	}
 	$out = tryPosition( $field[ $y ][ $x ], $field, $x - 1, $y, $tested, $nextX );
-	if ( $out != null ) {
-		return $out;
-	}
 
-	return null;
+	return $out;
 }
 
 /**
@@ -100,13 +99,12 @@ function tryNext( $field, $x, $y, $tested, $nextX = 1 ) {
  */
 function tryPosition( $color, $field, $x, $y, $tested = [], $nextX = 1 ) {
 	if ( $color != "." && $y >= 0 && $x >= 0
-	     && $y < sizeof( $field ) && $x < strlen( $field[ $y ] ) ) {
-		if ( $color == $field[ $y ][ $x ] && ! array_search( [ $y, $x ], $tested ) ) {
-			array_push( $tested, [ $y, $x ] );
+	     && $y < sizeof( $field ) && $x < strlen( $field[ $y ] )
+	     && $color == $field[ $y ][ $x ] && ! array_search( [ $y, $x ], $tested ) ) {
+		array_push( $tested, [ $y, $x ] );
 
-			return $nextX ? fromXPosition( $field, $x, $y, $tested ) :
-				fromyPosition( $field, $x, $y, $tested );
-		}
+		return $nextX ? fromXPosition( $field, $x, $y, $tested ) :
+			fromyPosition( $field, $x, $y, $tested );
 	}
 
 	return null;
@@ -122,7 +120,7 @@ function winner( $color ) {
 		return "black";
 	} else if ( $color == "O" ) {
 		return "white";
-	} else {
-		return null;
 	}
+
+	return null;
 }
