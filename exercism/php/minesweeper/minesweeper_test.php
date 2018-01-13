@@ -93,7 +93,6 @@ class MinesweeperTest extends PHPUnit\Framework\TestCase
 
     public function testBoardWithOneMineToLeft()
     {
-        $this->markTestSkipped();
         $oneMine = '
 +--+
 |* |

@@ -7,7 +7,38 @@ function solve( $board ) {
 		throw new InvalidArgumentException();
 	}
 
+	for ( $y = 1; $y < sizeof( $field ) - 1; $y ++ ) {
+		for ( $x = 1; $x < strlen( $field[ $y ] ) - 1; $x ++ ) {
+			if ( $field[ $y ][ $x ] != "*" ) {
+				$field[ $y ][ $x ] = countMines( $field, $y, $x );
+			}
+		}
+	}
+
 	return "\n" . implode( "\n", $field ) . "\n";
+}
+
+/**
+ * @param $field
+ * @param $y
+ * @param $x
+ *
+ * @return int|string
+ */
+function countMines( $field, $y, $x ) {
+	$count = 0;
+	for ( $dy = - 1; $dy <= 1; $dy ++ ) {
+		for ( $dx = - 1; $dx <= 1; $dx ++ ) {
+			if ( $y + $dy > 0 && $y + $dy < sizeof( $field ) - 1 && $x + $dx > 0
+			     && $x + $dx < strlen( $field[ $y ] ) - 1 ) {
+				if ( $field[ $y + $dy ][ $x + $dx ] == "*" ) {
+					$count ++;
+				}
+			}
+		}
+	}
+
+	return $count > 0 ? $count : " ";
 }
 
 /**
@@ -24,37 +55,37 @@ function toArray( $board ): array {
 }
 
 /**
- * @param $exp
+ * @param $field
  *
  * @return bool
  */
-function isValid( $exp ): bool {
-	for ( $i = 1; $i < sizeof( $exp ) - 1; $i ++ ) {
-		if ( $exp[ $i ][0] != "|" ) {
+function isValid( $field ): bool {
+	for ( $i = 1; $i < sizeof( $field ) - 1; $i ++ ) {
+		if ( $field[ $i ][0] != "|" ) {
 			return false;
 		}
 	}
-	for ( $i = 1; $i < strlen( $exp[0] ) - 1; $i ++ ) {
-		if ( $exp[0][ $i ] != "-" || $exp[ sizeof( $exp ) - 1 ][ $i ] != "-" ) {
+	for ( $i = 1; $i < strlen( $field[0] ) - 1; $i ++ ) {
+		if ( $field[0][ $i ] != "-" || $field[ sizeof( $field ) - 1 ][ $i ] != "-" ) {
 			return false;
 		}
 	}
-	if ( $exp[0][0] != "+" || $exp[ sizeof( $exp ) - 1 ][0] != "+" ||
-	     $exp[0][ strlen( $exp[0] ) - 1 ] != "+" ||
-	     $exp[ sizeof( $exp ) - 1 ][ strlen( $exp[0] ) - 1 ] != "+" ) {
+	if ( $field[0][0] != "+" || $field[ sizeof( $field ) - 1 ][0] != "+" ||
+	     $field[0][ strlen( $field[0] ) - 1 ] != "+" ||
+	     $field[ sizeof( $field ) - 1 ][ strlen( $field[0] ) - 1 ] != "+" ) {
 		return false;
 	}
-	if ( ( sizeof( $exp ) - 2 ) * ( strlen( $exp[0] ) - 2 ) < 2 ) {
+	if ( ( sizeof( $field ) - 2 ) * ( strlen( $field[0] ) - 2 ) < 2 ) {
 		return false;
 	}
-	for ( $i = 1; $i < sizeof( $exp ); $i ++ ) {
-		if ( strlen( $exp[ $i ] ) != strlen( $exp[0] ) ) {
+	for ( $i = 1; $i < sizeof( $field ); $i ++ ) {
+		if ( strlen( $field[ $i ] ) != strlen( $field[0] ) ) {
 			return false;
 		}
 	}
-	for ( $y = 1; $y < sizeof( $exp ) - 1; $y ++ ) {
-		for ( $x = 1; $x < strlen( $exp[0] ) - 1; $x ++ ) {
-			if ( $exp[ $y ][ $x ] != " " && $exp[ $y ][ $x ] != "*" ) {
+	for ( $y = 1; $y < sizeof( $field ) - 1; $y ++ ) {
+		for ( $x = 1; $x < strlen( $field[0] ) - 1; $x ++ ) {
+			if ( $field[ $y ][ $x ] != " " && $field[ $y ][ $x ] != "*" ) {
 				return false;
 			}
 		}
