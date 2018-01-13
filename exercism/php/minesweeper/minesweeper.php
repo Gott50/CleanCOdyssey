@@ -1,13 +1,13 @@
 <?php
 function solve( $board ) {
-	$exp = toArray( $board );
-	echo var_dump( $exp );
+	$field = toArray( $board );
+	echo var_dump( $field );
 
-	if ( ! isValid( $exp ) ) {
+	if ( ! isValid( $field ) ) {
 		throw new InvalidArgumentException();
 	}
 
-	return $board;
+	return "\n" . implode( "\n", $field ) . "\n";
 }
 
 /**
