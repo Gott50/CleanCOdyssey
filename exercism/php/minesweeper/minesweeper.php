@@ -138,7 +138,7 @@ function isTopBorderValid( $field ): bool {
 		}
 	}
 
-	return true ;
+	return true;
 }
 
 /**
