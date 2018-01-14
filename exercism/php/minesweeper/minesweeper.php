@@ -1,35 +1,35 @@
 <?php
 function solve( $board ) {
-	$field = toArray( $board );
+	$board = toArray( $board );
 
-	if ( ! isValid( $field ) ) {
+	if ( ! isValid( $board ) ) {
 		throw new InvalidArgumentException();
 	}
 
-	for ( $y = 1; $y < sizeof( $field ) - 1; $y ++ ) {
-		for ( $x = 1; $x < strlen( $field[ $y ] ) - 1; $x ++ ) {
-			if ( $field[ $y ][ $x ] != "*" ) {
-				$field[ $y ][ $x ] = countMines( $field, $y, $x );
+	for ( $y = 1; $y < sizeof( $board ) - 1; $y ++ ) {
+		for ( $x = 1; $x < strlen( $board[ $y ] ) - 1; $x ++ ) {
+			if ( $board[ $y ][ $x ] != "*" ) {
+				$board[ $y ][ $x ] = countMines( $board, $y, $x );
 			}
 		}
 	}
 
-	return "\n" . implode( "\n", $field ) . "\n";
+	return "\n" . implode( "\n", $board ) . "\n";
 }
 
 /**
- * @param $field
+ * @param $board
  * @param $y
  * @param $x
  *
  * @return int|string
  */
-function countMines( $field, $y, $x ) {
+function countMines( $board, $y, $x ) {
 	$count = 0;
 	for ( $dy = - 1; $dy <= 1; $dy ++ ) {
 		for ( $dx = - 1; $dx <= 1; $dx ++ ) {
-			if ( isValidField( $field, $y + $dy, $x + $dx )
-			     && $field[ $y + $dy ][ $x + $dx ] == "*" ) {
+			if ( isValidField( $board, $y + $dy, $x + $dx )
+			     && $board[ $y + $dy ][ $x + $dx ] == "*" ) {
 				$count ++;
 			}
 		}
@@ -39,15 +39,15 @@ function countMines( $field, $y, $x ) {
 }
 
 /**
- * @param $field
+ * @param $board
  * @param $y
  * @param $x
  *
  * @return bool
  */
-function isValidField( $field, $y, $x ): bool {
-	return $y > 0 && $y < sizeof( $field ) - 1
-	       && $x > 0 && $x < strlen( $field[0] ) - 1;
+function isValidField( $board, $y, $x ): bool {
+	return $y > 0 && $y < sizeof( $board ) - 1
+	       && $x > 0 && $x < strlen( $board[0] ) - 1;
 }
 
 /**
@@ -64,25 +64,25 @@ function toArray( $board ): array {
 }
 
 /**
- * @param $field
+ * @param $board
  *
  * @return bool
  */
-function isValid( $field ): bool {
-	return isSideBorderValid( $field ) && isTopBorderValid( $field )
-	       && areCornersValid( $field ) && hasBoardMoreThan1Square( $field )
-	       && doseRowsOfSameLength( $field ) && doseBoardOnlyContainsMines( $field );
+function isValid( $board ): bool {
+	return isSideBorderValid( $board ) && isTopBorderValid( $board )
+	       && areCornersValid( $board ) && hasBoardMoreThan1Square( $board )
+	       && doseRowsOfSameLength( $board ) && doseBoardOnlyContainsMines( $board );
 }
 
 /**
- * @param $field
+ * @param $board
  *
  * @return bool
  */
-function doseBoardOnlyContainsMines( $field ): bool {
-	for ( $y = 1; $y < sizeof( $field ) - 1; $y ++ ) {
-		for ( $x = 1; $x < strlen( $field[0] ) - 1; $x ++ ) {
-			if ( $field[ $y ][ $x ] != " " && $field[ $y ][ $x ] != "*" ) {
+function doseBoardOnlyContainsMines( $board ): bool {
+	for ( $y = 1; $y < sizeof( $board ) - 1; $y ++ ) {
+		for ( $x = 1; $x < strlen( $board[0] ) - 1; $x ++ ) {
+			if ( $board[ $y ][ $x ] != " " && $board[ $y ][ $x ] != "*" ) {
 				return false;
 			}
 		}
@@ -92,13 +92,13 @@ function doseBoardOnlyContainsMines( $field ): bool {
 }
 
 /**
- * @param $field
+ * @param $board
  *
  * @return bool
  */
-function doseRowsOfSameLength( $field ): bool {
-	for ( $i = 1; $i < sizeof( $field ); $i ++ ) {
-		if ( strlen( $field[ $i ] ) != strlen( $field[0] ) ) {
+function doseRowsOfSameLength( $board ): bool {
+	for ( $i = 1; $i < sizeof( $board ); $i ++ ) {
+		if ( strlen( $board[ $i ] ) != strlen( $board[0] ) ) {
 			return false;
 		}
 	}
@@ -116,24 +116,24 @@ function hasBoardMoreThan1Square( $board ): bool {
 }
 
 /**
- * @param $field
+ * @param $board
  *
  * @return bool
  */
-function areCornersValid( $field ): bool {
-	return $field[0][0] == "+" && $field[ sizeof( $field ) - 1 ][0] == "+" &&
-	       $field[0][ strlen( $field[0] ) - 1 ] == "+" &&
-	       $field[ sizeof( $field ) - 1 ][ strlen( $field[0] ) - 1 ] == "+";
+function areCornersValid( $board ): bool {
+	return $board[0][0] == "+" && $board[ sizeof( $board ) - 1 ][0] == "+" &&
+	       $board[0][ strlen( $board[0] ) - 1 ] == "+" &&
+	       $board[ sizeof( $board ) - 1 ][ strlen( $board[0] ) - 1 ] == "+";
 }
 
 /**
- * @param $field
+ * @param $board
  *
  * @return bool
  */
-function isTopBorderValid( $field ): bool {
-	for ( $i = 1; $i < strlen( $field[0] ) - 1; $i ++ ) {
-		if ( $field[0][ $i ] != "-" || $field[ sizeof( $field ) - 1 ][ $i ] != "-" ) {
+function isTopBorderValid( $board ): bool {
+	for ( $i = 1; $i < strlen( $board[0] ) - 1; $i ++ ) {
+		if ( $board[0][ $i ] != "-" || $board[ sizeof( $board ) - 1 ][ $i ] != "-" ) {
 			return false;
 		}
 	}
@@ -142,13 +142,13 @@ function isTopBorderValid( $field ): bool {
 }
 
 /**
- * @param $field
+ * @param $board
  *
  * @return bool
  */
-function isSideBorderValid( $field ): bool {
-	for ( $i = 1; $i < sizeof( $field ) - 1; $i ++ ) {
-		if ( $field[ $i ][0] != "|" ) {
+function isSideBorderValid( $board ): bool {
+	for ( $i = 1; $i < sizeof( $board ) - 1; $i ++ ) {
+		if ( $board[ $i ][0] != "|" ) {
 			return false;
 		}
 	}
