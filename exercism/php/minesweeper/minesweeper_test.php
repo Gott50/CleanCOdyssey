@@ -110,7 +110,6 @@ class MinesweeperTest extends PHPUnit\Framework\TestCase
 
     public function testBoardWithOneMineToRight()
     {
-        $this->markTestSkipped();
         $oneMine = '
 +--+
 | *|
@@ -128,7 +127,6 @@ class MinesweeperTest extends PHPUnit\Framework\TestCase
 
     public function testBoardWithAMineToTopAndRight()
     {
-        $this->markTestSkipped();
         $twoMines = '
 +--+
 |* |
@@ -148,7 +146,6 @@ class MinesweeperTest extends PHPUnit\Framework\TestCase
 
     public function testBoardWithAMineToBottomAndLeftAndDiagonal()
     {
-        $this->markTestSkipped();
         $threeMines = '
 +--+
 |* |
@@ -168,7 +165,6 @@ class MinesweeperTest extends PHPUnit\Framework\TestCase
 
     public function testAComplicatedBoard()
     {
-        $this->markTestSkipped();
         $fourMines = '
 +-----+
 | * * |
