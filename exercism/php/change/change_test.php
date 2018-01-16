@@ -11,7 +11,6 @@ class ChangeTest extends PHPUnit\Framework\TestCase
 
     public function testChange()
     {
-        $this->markTestSkipped();
         $this->assertEquals(array(5, 10), findFewestCoins(array(1, 5, 10, 25, 100), 15));
     }
 
