@@ -12,7 +12,6 @@ class PhoneNumberTest extends PHPUnit\Framework\TestCase
 
     public function testCleansNumberWithDots()
     {
-        $this->markTestSkipped();
         $number = new PhoneNumber('456.123.7890');
         $this->assertEquals('4561237890', $number->number());
     }
@@ -22,7 +21,6 @@ class PhoneNumberTest extends PHPUnit\Framework\TestCase
      */
     public function testInvalidWithLettersInPlaceOfNumbers()
     {
-        $this->markTestSkipped();
         $number = new PhoneNumber('123-abc-1234');
     }
 
@@ -31,7 +29,6 @@ class PhoneNumberTest extends PHPUnit\Framework\TestCase
      */
     public function testInvalidWhen9Digits()
     {
-        $this->markTestSkipped();
         $number = new PhoneNumber('123456789');
     }
 
