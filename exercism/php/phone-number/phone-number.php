@@ -9,19 +9,15 @@ class PhoneNumber {
 	 * @param $number
 	 */
 	public function __construct( $number ) {
-		if ( ! $this->isValid( $number ) ) {
+		if ( ! ( ! preg_match( "/[a-z]/", $number ) ) ) {
 			throw new InvalidArgumentException();
 		}
-		$this->number = preg_filter( "/\D/", "", $number );
-	}
-
-	/**
-	 * @param $number
-	 *
-	 * @return false|int
-	 */
-	public function isValid( $number ) {
-		return ! preg_match( "/[a-z]/", $number ) && strlen( $number ) > 9;
+		$number = preg_filter( "/\D/", "", $number . " " );
+		if ( ! ( strlen( $number ) > 9
+		         && ( strlen( $number ) < 11 || ( $number[0] == 1 ) && strlen( $number ) < 12 ) ) ) {
+			throw new InvalidArgumentException();
+		}
+		$this->number = substr( $number, strlen( $number ) - 10, 10 );
 	}
 
 	/**
@@ -29,5 +25,14 @@ class PhoneNumber {
 	 */
 	public function number() {
 		return $this->number;
+	}
+
+	public function prettyPrint() {
+		return "(" . $this->areaCode() . ")" . " " . substr( $this->number, 3, 3 )
+		       . "-" . substr( $this->number, 6, 4 );
+	}
+
+	public function areaCode() {
+		return substr( $this->number, 0, 3 );
 	}
 }
