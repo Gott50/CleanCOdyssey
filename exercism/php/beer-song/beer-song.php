@@ -2,6 +2,13 @@
 
 class BeerSong {
 	/**
+	 * @return string
+	 */
+	public function lyrics() {
+		return $this->verses( 99, 0 );
+	}
+
+	/**
 	 * @param $from
 	 * @param int $to
 	 *
@@ -20,9 +27,10 @@ class BeerSong {
 	}
 
 	public function verse( $number ) {
-		if($number == 0)
+		if ( $number == 0 ) {
 			return "No more bottles of beer on the wall, no more bottles of beer.\n" .
 			       "Go to the store and buy some more, 99 bottles of beer on the wall.";
+		}
 
 		return $this->getBottles( $number ) . " of beer on the wall, " .
 		       $this->getBottles( $number ) . " of beer.\n" .
@@ -36,8 +44,9 @@ class BeerSong {
 	 * @return string
 	 */
 	public function getBottles( $number ): string {
-		if($number == 0)
+		if ( $number == 0 ) {
 			return "no more bottles";
+		}
 
 		return $number == 1 ? 1 . " bottle" : $number . " bottles";
 	}
@@ -49,12 +58,5 @@ class BeerSong {
 	 */
 	public function one_or_it( $number ): string {
 		return $number == 1 ? "it" : "one";
-	}
-
-	/**
-	 * @return string
-	 */
-	public function lyrics() {
-		return $this->verses( 99, 0 );
 	}
 }
