@@ -7,11 +7,15 @@ class BeerSong {
 	 * @return string
 	 */
 	public function verses( ...$numbers ) {
-		$verse = function ($n){
-			return $this->verse($n);
-		};
+		$out = $this->verse( $numbers[0] );
 
-		return implode("\n",array_map( $verse, $numbers ));
+		if ( sizeof( $numbers ) > 1 ) {
+			for ( $i = $numbers[0] - 1; $i >= $numbers[1]; $i -- ) {
+				$out .= "\n" . $this->verse( $i );
+			}
+		}
+
+		return $out;
 	}
 
 	public function verse( $number ) {
@@ -44,5 +48,12 @@ class BeerSong {
 	 */
 	public function one_or_it( $number ): string {
 		return $number == 1 ? "it" : "one";
+	}
+
+	/**
+	 * @return string
+	 */
+	public function lyrics() {
+		return $this->verses( 99, 0 );
 	}
 }
