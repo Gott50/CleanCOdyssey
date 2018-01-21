@@ -2,15 +2,16 @@
 
 class BeerSong {
 	/**
-	 * @param array ...$numbers
+	 * @param $from
+	 * @param int $to
 	 *
 	 * @return string
 	 */
-	public function verses( ...$numbers ) {
-		$out = $this->verse( $numbers[0] );
+	public function verses( $from, $to = - 1 ) {
+		$out = $this->verse( $from );
 
-		if ( sizeof( $numbers ) > 1 ) {
-			for ( $i = $numbers[0] - 1; $i >= $numbers[1]; $i -- ) {
+		if ( $to >= 0 ) {
+			for ( $i = $from - 1; $i >= $to; $i -- ) {
 				$out .= "\n" . $this->verse( $i );
 			}
 		}
