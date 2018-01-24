@@ -61,13 +61,11 @@ class BracketTest extends PHPUnit\Framework\TestCase
 
     public function testMathExpression()
     {
-        $this->markTestSkipped();
         $this->assertTrue(brackets_match('(((185 + 223.85) * 15) - 543)/2'));
     }
 
     public function testComplexLatexExpression()
     {
-        $this->markTestSkipped();
         $this->assertTrue(brackets_match(
             "\\left(\\begin{array}{cc} \\frac{1}{3} & x\\\\ "
             . "\\mathrm{e}^{x} &... x^2 \\end{array}\\right)"
