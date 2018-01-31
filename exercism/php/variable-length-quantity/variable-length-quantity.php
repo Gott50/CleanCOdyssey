@@ -1,5 +1,13 @@
 <?php
 
+function vlq_decode( $input ) {
+	$out = array_map( function ( $b ) {
+		return $b ;
+	}, $input );
+
+	return ( $out );
+}
+
 function vlq_encode( $input ) {
 	$out = array();
 	foreach ( $input as $i ) {
