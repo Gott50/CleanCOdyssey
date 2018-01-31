@@ -1,10 +1,26 @@
 <?php
 
 function vlq_encode( $input ) {
-	$out                 = array_map( function ( $b ) {
-		return ( 0b10000000 | bindec( $b ));
-	}, array_reverse(split( decbin( $input[0] ))) );
-	$out[sizeof($out)-1] &= 0b01111111;
+	$out = array();
+	foreach ( $input as $i ) {
+		foreach ( vlq_encode_byte( $i ) as $item ) {
+			array_push( $out, $item );
+		}
+	}
+
+	return $out;
+}
+
+/**
+ * @param $input
+ *
+ * @return array
+ */
+function vlq_encode_byte( $input ): array {
+	$out                       = array_map( function ( $b ) {
+		return ( 0b10000000 | bindec( $b ) );
+	}, array_reverse( split( decbin( $input ) ) ) );
+	$out[ sizeof( $out ) - 1 ] &= 0b01111111;
 
 	return ( $out );
 }

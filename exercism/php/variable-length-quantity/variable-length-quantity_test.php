@@ -35,8 +35,6 @@ class VariableLengthQuantityTest extends PHPUnit\Framework\TestCase
 
     public function testItEncodesMultipleValues()
     {
-        $this->markTestSkipped();
-
         $this->assertEquals([0x00, 0x00], vlq_encode([0x00, 0x00]));
         $this->assertEquals([0x40, 0x7f], vlq_encode([0x40, 0x7f]));
         $this->assertEquals([0x81, 0x80, 0x00, 0xc8, 0xe8, 0x56], vlq_encode([0x4000, 0x123456]));
