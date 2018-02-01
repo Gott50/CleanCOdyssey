@@ -2,8 +2,6 @@
 
 function vlq_decode( $input ) {
 	$out = array_map( function ( $b ) {
-		echo $b, PHP_EOL;
-
 		return substr( decbin( $b | 0b10000000 ), 1 );
 	}, $input );
 
