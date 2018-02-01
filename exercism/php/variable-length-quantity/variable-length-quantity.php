@@ -2,10 +2,12 @@
 
 function vlq_decode( $input ) {
 	$out = array_map( function ( $b ) {
-		return $b ;
+		echo $b, PHP_EOL;
+
+		return substr( decbin( $b | 0b10000000 ), 1 );
 	}, $input );
 
-	return ( $out );
+	return [ bindec( implode( $out ) ) ];
 }
 
 function vlq_encode( $input ) {
