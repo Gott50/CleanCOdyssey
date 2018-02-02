@@ -1,6 +1,28 @@
 <?php
 
 function vlq_decode( $input ) {
+	$split = array( array() );
+	foreach ( $input as $item ) {
+		array_push( $split[ sizeof( $split ) - 1 ], $item );
+		if ( strlen( decbin( $item ) ) < 8 ) {
+			array_push( $split, [] );
+		}
+	}
+	unset( $split[ sizeof( $split ) - 1 ] );
+
+	$vlq = function ( $item ) {
+		return vlq_decodePart( $item )[0];
+	};
+
+	return array_map( $vlq, $split );
+}
+
+/**
+ * @param $input
+ *
+ * @return array
+ */
+function vlq_decodePart( $input ): array {
 	$out = array_map( function ( $b ) {
 		return substr( decbin( $b | 0b10000000 ), 1 );
 	}, $input );
