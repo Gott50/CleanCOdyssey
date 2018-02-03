@@ -11,22 +11,17 @@ function vlq_decode( $input ) {
 	if ( sizeof( $split ) <= 1 ) {
 		throw new InvalidArgumentException();
 	}
-
 	unset( $split[ sizeof( $split ) - 1 ] );
 
-	$vlq = function ( $item ) {
-		return vlq_decodePart( $item )[0];
-	};
-
-	return array_map( $vlq, $split );
+	return array_map( "vlq_decodePart", $split );
 }
 
 /**
  * @param $input
  *
- * @return array
+ * @return int
  */
-function vlq_decodePart( $input ): array {
+function vlq_decodePart( $input ): int {
 	$out = array_map( function ( $b ) {
 		return substr( decbin( $b | 0b10000000 ), 1 );
 	}, $input );
@@ -35,7 +30,7 @@ function vlq_decodePart( $input ): array {
 		throw new OverflowException();
 	}
 
-	return [ bindec( implode( $out ) ) ];
+	return bindec( implode( $out ) );
 }
 
 function vlq_encode( $input ) {
