@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $input
+ *
+ * @return array
+ */
 function vlq_decode( $input ) {
 	return array_map( "vlq_decodePart", split_to_decode( $input ) );
 }
