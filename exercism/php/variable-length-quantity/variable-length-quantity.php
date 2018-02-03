@@ -1,6 +1,21 @@
 <?php
 
 function vlq_decode( $input ) {
+	$split = split_to_decode( $input );
+
+	if ( sizeof( $split ) <= 0 ) {
+		throw new InvalidArgumentException();
+	}
+
+	return array_map( "vlq_decodePart", $split );
+}
+
+/**
+ * @param $input
+ *
+ * @return array
+ */
+function split_to_decode( $input ): array {
 	$split = array( array() );
 	foreach ( $input as $item ) {
 		array_push( $split[ sizeof( $split ) - 1 ], $item );
@@ -8,12 +23,9 @@ function vlq_decode( $input ) {
 			array_push( $split, [] );
 		}
 	}
-	if ( sizeof( $split ) <= 1 ) {
-		throw new InvalidArgumentException();
-	}
 	unset( $split[ sizeof( $split ) - 1 ] );
 
-	return array_map( "vlq_decodePart", $split );
+	return $split;
 }
 
 /**
@@ -57,7 +69,7 @@ function vlq_encode( $input ) {
 function vlq_encode_byte( $input ): array {
 	$out                       = array_map( function ( $b ) {
 		return ( 0b10000000 | bindec( $b ) );
-	}, array_reverse( split( decbin( $input ) ) ) );
+	}, array_reverse( split_to_encode( decbin( $input ) ) ) );
 	$out[ sizeof( $out ) - 1 ] &= 0b01111111;
 
 	return ( $out );
@@ -68,7 +80,7 @@ function vlq_encode_byte( $input ): array {
  *
  * @return array
  */
-function split( $str ) {
+function split_to_encode( $str ) {
 	$out = array();
 	while ( strlen( $str ) > 0 ) {
 		array_push( $out, substr( $str, strlen( $str ) - 7 ) );
