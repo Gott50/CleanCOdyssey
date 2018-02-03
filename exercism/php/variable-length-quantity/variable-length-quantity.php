@@ -15,10 +15,6 @@ function vlq_decode( $input ) {
 	unset( $split[ sizeof( $split ) - 1 ] );
 
 	$vlq = function ( $item ) {
-		if ( gettype( vlq_decodePart( $item )[0] ) !== "integer" ) {
-			throw new OverflowException();
-		}
-
 		return vlq_decodePart( $item )[0];
 	};
 
@@ -34,6 +30,10 @@ function vlq_decodePart( $input ): array {
 	$out = array_map( function ( $b ) {
 		return substr( decbin( $b | 0b10000000 ), 1 );
 	}, $input );
+
+	if ( gettype( bindec( implode( $out ) ) ) !== "integer" ) {
+		throw new OverflowException();
+	}
 
 	return [ bindec( implode( $out ) ) ];
 }
