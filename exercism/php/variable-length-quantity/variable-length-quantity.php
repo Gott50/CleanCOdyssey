@@ -8,9 +8,17 @@ function vlq_decode( $input ) {
 			array_push( $split, [] );
 		}
 	}
+	if ( sizeof( $split ) <= 1 ) {
+		throw new InvalidArgumentException();
+	}
+
 	unset( $split[ sizeof( $split ) - 1 ] );
 
 	$vlq = function ( $item ) {
+		if ( gettype( vlq_decodePart( $item )[0] ) !== "integer" ) {
+			throw new OverflowException();
+		}
+
 		return vlq_decodePart( $item )[0];
 	};
 

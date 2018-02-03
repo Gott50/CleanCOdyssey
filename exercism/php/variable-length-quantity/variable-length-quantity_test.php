@@ -92,8 +92,6 @@ class VariableLengthQuantityTest extends PHPUnit\Framework\TestCase
 
     public function testIncompleteByteSequence()
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidArgumentException::class);
 
         vlq_decode([0xff]);
@@ -101,8 +99,6 @@ class VariableLengthQuantityTest extends PHPUnit\Framework\TestCase
 
     public function testOverflow()
     {
-        $this->markTestSkipped();
-
         $this->expectException(OverflowException::class);
 
         vlq_decode([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f]);
@@ -110,8 +106,6 @@ class VariableLengthQuantityTest extends PHPUnit\Framework\TestCase
 
     public function testChainedDecodeEncodeGivesOriginalBytes()
     {
-        $this->markTestSkipped();
-
         $bytes = [
             0xc0, 0x00, 0xc8, 0xe8, 0x56,
             0xff, 0xff, 0xff, 0x7f, 0x00,
@@ -123,8 +117,6 @@ class VariableLengthQuantityTest extends PHPUnit\Framework\TestCase
 
     public function testChainedEncodeDecodeGivesOriginalIntegers()
     {
-        $this->markTestSkipped();
-
         $integers = [0x2000, 0x123456, 0x0fffffff, 0x00, 0x3fff, 0x4000];
 
         $this->assertEquals($integers, vlq_decode(vlq_encode($integers)));
