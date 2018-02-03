@@ -33,6 +33,11 @@ function vlq_decodePart( $input ): int {
 	return bindec( implode( $out ) );
 }
 
+/**
+ * @param $input
+ *
+ * @return array
+ */
 function vlq_encode( $input ) {
 	$out = array();
 	foreach ( $input as $i ) {
@@ -58,6 +63,11 @@ function vlq_encode_byte( $input ): array {
 	return ( $out );
 }
 
+/**
+ * @param $str
+ *
+ * @return array
+ */
 function split( $str ) {
 	$out = array();
 	while ( strlen( $str ) > 0 ) {
