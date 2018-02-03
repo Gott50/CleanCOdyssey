@@ -1,13 +1,7 @@
 <?php
 
 function vlq_decode( $input ) {
-	$split = split_to_decode( $input );
-
-	if ( sizeof( $split ) <= 0 ) {
-		throw new InvalidArgumentException();
-	}
-
-	return array_map( "vlq_decodePart", $split );
+	return array_map( "vlq_decodePart", split_to_decode( $input ) );
 }
 
 /**
@@ -22,6 +16,9 @@ function split_to_decode( $input ): array {
 		if ( strlen( decbin( $item ) ) < 8 ) {
 			array_push( $split, [] );
 		}
+	}
+	if ( sizeof( $split ) <= 1 ) {
+		throw new InvalidArgumentException();
 	}
 	unset( $split[ sizeof( $split ) - 1 ] );
 
