@@ -1,15 +1,19 @@
 <?php
 
 function acronym( $input ) {
-	$out = preg_split( "/\s|-/", $input );
-	$out = array_map( function ( $i ) {
-		if ( preg_match( "/^[A-Z][a-z]+[A-Z]/", $i ) ) {
-			return preg_replace( "/[a-z]/", "", $i );
-		}
+	return implode( "", array_map( "getUpperLetters",
+		preg_split( "/\s|-/", $input ) ) );
+}
 
-		return strtoupper( $i[0] );
-	}, $out );
+/**
+ * @param $input
+ *
+ * @return string
+ */
+function getUpperLetters( $input ): string {
+	if ( preg_match( "/^[A-Z][a-z]+[A-Z]/", $input ) ) {
+		return preg_replace( "/[a-z]/", "", $input );
+	}
 
-
-	return implode( "", $out );
+	return strtoupper( $input[0] );
 }
