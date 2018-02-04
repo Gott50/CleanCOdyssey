@@ -33,15 +33,11 @@ class AcronymTest extends PHPUnit\Framework\TestCase
 
     public function testOneWordIsNotAbbreviated()
     {
-        $this->markTestSkipped();
-
         $this->assertEmpty(acronym('Word'));
     }
 
     public function testUnicode()
     {
-        $this->markTestSkipped();
-
         $phrase = 'Специализированная процессорная часть';
         $this->assertEquals('СПЧ', acronym($phrase));
     }
