@@ -34,6 +34,11 @@ class Triangle {
 			} ) ) == 3;
 	}
 
+	/**
+	 * @param $lengths
+	 *
+	 * @return bool
+	 */
 	private function sumLegal( $lengths ) {
 		return $lengths[0] + $lengths[1] >= $lengths[2]
 		       && $lengths[1] + $lengths[2] >= $lengths[0]
