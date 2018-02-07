@@ -20,7 +20,7 @@ class Triangle {
 	 * @return bool
 	 */
 	public function isLegal( $lengths ): bool {
-		return $this->areLengthsPositive( $lengths );
+		return $this->areLengthsPositive( $lengths ) && $this->sumLegal( $lengths );
 	}
 
 	/**
@@ -32,6 +32,12 @@ class Triangle {
 		return sizeof( array_filter( $lengths, function ( $e ) {
 				return $e > 0;
 			} ) ) == 3;
+	}
+
+	private function sumLegal( $lengths ) {
+		return $lengths[0] + $lengths[1] >= $lengths[2]
+		       && $lengths[1] + $lengths[2] >= $lengths[0]
+		       && $lengths[2] + $lengths[0] >= $lengths[1];
 	}
 
 	/**

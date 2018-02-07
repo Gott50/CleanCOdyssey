@@ -105,7 +105,6 @@ class TriangleTest extends PHPUnit\Framework\TestCase
      */
     public function testTrianglesViolatingTriangleInequalityAreIllegal()
     {
-        $this->markTestSkipped();
         (new Triangle(1, 1, 3))->kind();
     }
 
@@ -114,7 +113,6 @@ class TriangleTest extends PHPUnit\Framework\TestCase
      */
     public function testTrianglesViolatingTriangleInequalityAreIllegal2()
     {
-        $this->markTestSkipped();
         (new Triangle(7, 3, 2))->kind();
     }
 
@@ -123,7 +121,6 @@ class TriangleTest extends PHPUnit\Framework\TestCase
      */
     public function testTrianglesViolatingTriangleInequalityAreIllegal3()
     {
-        $this->markTestSkipped();
         (new Triangle(1, 3, 1))->kind();
     }
 }
