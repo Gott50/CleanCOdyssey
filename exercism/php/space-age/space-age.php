@@ -12,6 +12,8 @@ class SpaceAge {
 		"neptune" => 164.79132,
 	];
 
+	private $secondsEarthYear = 31557600;
+
 	public function __construct( $seconds ) {
 		$this->seconds = $seconds;
 	}
@@ -30,7 +32,7 @@ class SpaceAge {
 	}
 
 	public function earth() {
-		return $this->seconds() / 31557600;
+		return $this->seconds() / $this->secondsEarthYear;
 	}
 
 	public function seconds() {
