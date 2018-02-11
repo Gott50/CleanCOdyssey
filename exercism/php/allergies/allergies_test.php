@@ -20,7 +20,6 @@ class AllergiesTest extends PHPUnit\Framework\TestCase
      */
     public function testAllergiesToOneAllergen($allergicTo)
     {
-        $this->markTestSkipped();
         $allergies = new Allergies($allergicTo->getScore());
 
         $this->assertTrue($allergies->isAllergicTo($allergicTo));
