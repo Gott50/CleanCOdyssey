@@ -10,6 +10,17 @@ class Allergies {
 	public function isAllergicTo( $allergen ) {
 		return ($this->score & $allergen->getScore()) != 0;
 	}
+
+	public function getList() {
+		$out = [];
+		foreach ( Allergen::allergenList() as $a ) {
+			if ( $this->isAllergicTo( $a ) ) {
+				array_push( $out, $a );
+			}
+		}
+
+		return $out;
+	}
 }
 
 class Allergen{
@@ -29,7 +40,12 @@ class Allergen{
 	}
 
 	public static function allergenList() {
-		
+		$out = [];
+		for ( $i = 1; $i <= 128; $i *= 2 ) {
+			array_push( $out, new Allergen( $i ) );
+		}
+
+		return $out;
 	}
 
 	public function getScore() {
