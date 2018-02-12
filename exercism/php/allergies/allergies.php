@@ -3,12 +3,8 @@
 class Allergies {
 	private $score;
 
-	public function __construct($score) {
+	public function __construct( $score ) {
 		$this->score = $score;
-	}
-
-	public function isAllergicTo( $allergen ) {
-		return ($this->score & $allergen->getScore()) != 0;
 	}
 
 	public function getList() {
@@ -21,9 +17,13 @@ class Allergies {
 
 		return $out;
 	}
+
+	public function isAllergicTo( $allergen ) {
+		return ( $this->score & $allergen->getScore() ) != 0;
+	}
 }
 
-class Allergen{
+class Allergen {
 	const EGGS = 1;
 	const PEANUTS = 2;
 	const SHELLFISH = 4;
@@ -35,7 +35,7 @@ class Allergen{
 
 	private $score;
 
-	public function __construct($score) {
+	public function __construct( $score ) {
 		$this->score = $score;
 	}
 
