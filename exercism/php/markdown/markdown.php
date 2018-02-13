@@ -21,23 +21,14 @@ function parseMarkdown( $markdown ) {
  * @return array
  */
 function parsLine( $line, $isInList ): array {
-	if ( preg_match( '/^######(.*)/', $line, $matches ) ) {
-		$line = "<h6>" . trim( $matches[1] ) . "</h6>";
-	} elseif ( preg_match( '/^##(.*)/', $line, $matches ) ) {
-		$line = "<h2>" . trim( $matches[1] ) . "</h2>";
-	} elseif ( preg_match( '/^#(.*)/', $line, $matches ) ) {
-		$line = "<h1>" . trim( $matches[1] ) . "</h1>";
-	}
+	$line = parsHeading( $line );
 
 	if ( preg_match( '/\*(.*)/', $line, $matches ) ) {
 		if ( ! $isInList ) {
 			$isInList = true;
 			$isBold   = false;
 			$isItalic = false;
-			if ( preg_match( '/(.*)__(.*)__(.*)/', $matches[1], $matches2 ) ) {
-				$matches[1] = $matches2[1] . '<em>' . $matches2[2] . '</em>' . $matches2[3];
-				$isBold     = true;
-			}
+			list( $matches, $isBold ) = parsBold( $matches );
 
 			if ( preg_match( '/(.*)_(.*)_(.*)/', $matches[1], $matches3 ) ) {
 				$matches[1] = $matches3[1] . '<i>' . $matches3[2] . '</i>' . $matches3[3];
@@ -53,10 +44,7 @@ function parsLine( $line, $isInList ): array {
 		} else {
 			$isBold   = false;
 			$isItalic = false;
-			if ( preg_match( '/(.*)__(.*)__(.*)/', $matches[1], $matches2 ) ) {
-				$matches[1] = $matches2[1] . '<em>' . $matches2[2] . '</em>' . $matches2[3];
-				$isBold     = true;
-			}
+			list( $matches, $isBold ) = parsBold( $matches );
 
 			if ( preg_match( '/(.*)_(.*)_(.*)/', $matches[1], $matches3 ) ) {
 				$matches[1] = $matches3[1] . '<i>' . $matches3[2] . '</i>' . $matches3[3];
@@ -89,4 +77,38 @@ function parsLine( $line, $isInList ): array {
 	}
 
 	return array( $line, $isInList );
+}
+
+/**
+ * @param $matches
+ * @param $matches2
+ *
+ * @return array
+ */
+function parsBold( $matches ): array {
+	$isBold = false;
+	if ( preg_match( '/(.*)__(.*)__(.*)/', $matches[1], $matches2 ) ) {
+		$matches[1] = $matches2[1] . '<em>' . $matches2[2] . '</em>' . $matches2[3];
+		$isBold     = true;
+	}
+
+	return array( $matches, $isBold );
+}
+
+/**
+ * @param $line
+ * @param $matches
+ *
+ * @return array
+ */
+function parsHeading( $line ) {
+	if ( preg_match( '/^######(.*)/', $line, $matches ) ) {
+		$line = "<h6>" . trim( $matches[1] ) . "</h6>";
+	} elseif ( preg_match( '/^##(.*)/', $line, $matches ) ) {
+		$line = "<h2>" . trim( $matches[1] ) . "</h2>";
+	} elseif ( preg_match( '/^#(.*)/', $line, $matches ) ) {
+		$line = "<h1>" . trim( $matches[1] ) . "</h1>";
+	}
+
+	return $line;
 }
