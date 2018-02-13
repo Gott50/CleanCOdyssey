@@ -1,29 +1,26 @@
 <?php
 
-function parseMarkdown($markdown)
-{
-    $lines = explode("\n", $markdown);
+function parseMarkdown( $markdown ) {
+	$lines    = explode( "\n", $markdown );
+	$isInList = false;
+	foreach ( $lines as &$line ) {
+		list( $line, $isInList ) = parsLine( $line, $isInList );
+	}
+	$html = join( $lines );
+	if ( $isInList ) {
+		$html .= '</ul>';
+	}
 
-    $isInList = false;
-    foreach ($lines as &$line) {
-	    list( $line, $isInList ) = parsLine( $line, $isInList);
-    }
-    $html = join($lines);
-    if ($isInList) {
-        $html .= '</ul>';
-    }
-    return $html;
+	return $html;
 }
 
 /**
  * @param $line
  * @param $isInList
- * @param $matches2
- * @param $matches3
  *
  * @return array
  */
-function parsLine( $line, $isInList): array {
+function parsLine( $line, $isInList ): array {
 	if ( preg_match( '/^######(.*)/', $line, $matches ) ) {
 		$line = "<h6>" . trim( $matches[1] ) . "</h6>";
 	} elseif ( preg_match( '/^##(.*)/', $line, $matches ) ) {
