@@ -24,14 +24,14 @@ function parsLine( $line, $isInList ): array {
 	$line = parsHeading( $line );
 
 	if ( preg_match( '/\*(.*)/', $line, $matches ) ) {
-		$isBold  = parsBold( $matches );
-		$isItalic = parsItalic( $matches );
+		$isBold   = parsBold( $matches );
 		if ( ! $isInList ) {
 			$isInList = true;
-			$line     = "<ul>" . parsItalicOrBold( $isItalic, $isBold, $matches );
+			$line     = "<ul>";
 		} else {
-			$line = parsItalicOrBold( $isItalic, $isBold, $matches );
+			$line = "";
 		}
+		$line .= parsItalicOrBold( parsItalic( $matches ), $isBold, $matches );
 	} else {
 		if ( $isInList ) {
 			$line     = "</ul>" . $line;
@@ -62,6 +62,7 @@ function parsLine( $line, $isInList ): array {
 function parsItalic( &$matches ): bool {
 	if ( preg_match( '/(.*)_(.*)_(.*)/', $matches[1], $matches3 ) ) {
 		$matches[1] = $matches3[1] . '<i>' . $matches3[2] . '</i>' . $matches3[3];
+
 		return true;
 	}
 
@@ -93,6 +94,7 @@ function parsItalicOrBold( $isItalic, $isBold, $matches ): string {
 function parsBold( &$matches ): bool {
 	if ( preg_match( '/(.*)__(.*)__(.*)/', $matches[1], $matches2 ) ) {
 		$matches[1] = $matches2[1] . '<em>' . $matches2[2] . '</em>' . $matches2[3];
+
 		return true;
 	}
 
