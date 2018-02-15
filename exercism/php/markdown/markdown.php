@@ -35,11 +35,7 @@ function parsLine( $line, $isInList ): array {
 				$isItalic   = true;
 			}
 
-			if ( $isItalic || $isBold ) {
-				$line = "<ul><li>" . trim( $matches[1] ) . "</li>";
-			} else {
-				$line = "<ul><li><p>" . trim( $matches[1] ) . "</p></li>";
-			}
+			$line = "<ul>". parsItalicOrBold( $isItalic, $isBold, $matches );
 
 		} else {
 			$isBold   = false;
@@ -51,11 +47,7 @@ function parsLine( $line, $isInList ): array {
 				$isItalic   = true;
 			}
 
-			if ( $isItalic || $isBold ) {
-				$line = "<li>" . trim( $matches[1] ) . "</li>";
-			} else {
-				$line = "<li><p>" . trim( $matches[1] ) . "</p></li>";
-			}
+			$line = parsItalicOrBold( $isItalic, $isBold, $matches );
 		}
 	} else {
 		if ( $isInList ) {
@@ -80,8 +72,24 @@ function parsLine( $line, $isInList ): array {
 }
 
 /**
+ * @param $isItalic
+ * @param $isBold
  * @param $matches
- * @param $matches2
+ *
+ * @return string
+ */
+function parsItalicOrBold( $isItalic, $isBold, $matches ): string {
+	if ( $isItalic || $isBold ) {
+		$line = "<li>" . trim( $matches[1] ) . "</li>";
+	} else {
+		$line = "<li><p>" . trim( $matches[1] ) . "</p></li>";
+	}
+
+	return $line;
+}
+
+/**
+ * @param $matches
  *
  * @return array
  */
