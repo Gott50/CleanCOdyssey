@@ -30,21 +30,17 @@ function parsLine( $line, $isInList ): array {
 		} else {
 			$line = "";
 		}
-		$line .= parsItalicOrBold( parsBold( $matches[1] ) || parsItalic( $matches ), $matches );
+		$line .= parsItalicOrBold( parsBold( $matches[1] )
+		                           || parsItalic( $matches[1] ), $matches );
 	} else {
 		if ( $isInList ) {
 			$line     = "</ul>" . $line;
 			$isInList = false;
 		}
 	}
-
 	$line = parsLineWithoutTag( $line );
-
 	parsBold( $line );
-
-	if ( preg_match( '/(.*)_(.*)_(.*)/', $line, $matches ) ) {
-		$line = $matches[1] . '<i>' . $matches[2] . '</i>' . $matches[3];
-	}
+	parsItalic( $line );
 
 	return array( $line, $isInList );
 }
@@ -67,9 +63,9 @@ function parsLineWithoutTag( $line ): string {
  *
  * @return bool
  */
-function parsItalic( &$matches ): bool {
-	if ( preg_match( '/(.*)_(.*)_(.*)/', $matches[1], $matches3 ) ) {
-		$matches[1] = $matches3[1] . '<i>' . $matches3[2] . '</i>' . $matches3[3];
+function parsItalic( &$line ): bool {
+	if ( preg_match( '/(.*)_(.*)_(.*)/', $line, $matches3 ) ) {
+		$line = $matches3[1] . '<i>' . $matches3[2] . '</i>' . $matches3[3];
 
 		return true;
 	}
