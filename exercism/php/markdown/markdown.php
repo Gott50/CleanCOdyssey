@@ -38,9 +38,7 @@ function parsLine( $line, $isInList ): array {
 		}
 	}
 
-	if ( ! preg_match( '/<h|<ul|<p|<li/', $line ) ) {
-		$line = "<p>$line</p>";
-	}
+	$line = parsLineWithoutTag( $line );
 
 	if ( preg_match( '/(.*)__(.*)__(.*)/', $line, $matches ) ) {
 		$line = $matches[1] . '<em>' . $matches[2] . '</em>' . $matches[3];
@@ -51,6 +49,19 @@ function parsLine( $line, $isInList ): array {
 	}
 
 	return array( $line, $isInList );
+}
+
+/**
+ * @param $line
+ *
+ * @return string
+ */
+function parsLineWithoutTag( $line ): string {
+	if ( ! preg_match( '/<h|<ul|<p|<li/', $line ) ) {
+		$line = "<p>$line</p>";
+	}
+
+	return $line;
 }
 
 /**
