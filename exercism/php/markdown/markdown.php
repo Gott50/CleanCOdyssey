@@ -22,7 +22,21 @@ function parseMarkdown( $markdown ) {
  */
 function parsLine( $line, $isInList ): array {
 	$line = parsHeading( $line );
+	list( $isInList, $line ) = parsList( $line, $isInList );
+	$line = parsLineWithoutTag( $line );
+	parsBold( $line );
+	parsItalic( $line );
 
+	return array( $line, $isInList );
+}
+
+/**
+ * @param $line
+ * @param $isInList
+ *
+ * @return array
+ */
+function parsList( $line, $isInList ): array {
 	if ( preg_match( '/\*(.*)/', $line, $matches ) ) {
 		if ( ! $isInList ) {
 			$isInList = true;
@@ -38,11 +52,8 @@ function parsLine( $line, $isInList ): array {
 			$isInList = false;
 		}
 	}
-	$line = parsLineWithoutTag( $line );
-	parsBold( $line );
-	parsItalic( $line );
 
-	return array( $line, $isInList );
+	return array( $isInList, $line );
 }
 
 /**
