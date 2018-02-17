@@ -70,7 +70,7 @@ function parsLineWithoutTag( $line ): string {
 }
 
 /**
- * @param $matches
+ * @param $line
  *
  * @return bool
  */
@@ -101,7 +101,7 @@ function parsItalicOrBold( $isItalicOrBold, $matches ): string {
 }
 
 /**
- * @param $matches
+ * @param $line
  *
  * @return bool
  */
