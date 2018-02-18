@@ -1,6 +1,10 @@
 <?php
 
 function square( $index ) {
+	if ($index <= 0 || $index > 64) {
+		throw new InvalidArgumentException();
+	}
+
 	$out = 2 ** ( $index - 1 );
 	if ( ! is_float( $out ) ) {
 		return $out . "";
@@ -16,14 +20,22 @@ function square( $index ) {
 }
 
 function double( $number ) {
-	$out = "";
+	$out = "0";
 	for ( $i = 0; $i < strlen( $number ); $i ++ ) {
 		$d = $number[ $i ] * 2;
-		if ( $d >= 10 && strlen( $out ) >= 0 ) {
-			$out[ strlen( $out ) - 1 ] = $out[ strlen( $out ) - 1 ] + 1;
+		if ( $d >= 10 ) {
+			if (strlen( $out ) > 0 )
+				$out[ strlen( $out ) - 1 ] = $out[ strlen( $out ) - 1 ] + 1;
 		}
 		$out .= $d % 10;
 	}
+
+	return $out[0] != "0"? $out : substr($out,1);
+}
+
+function total() {
+	$out = double( square( 64 ) );
+	$out[ strlen( $out ) - 1 ] = $out[ strlen( $out ) - 1 ] - 1;
 
 	return $out;
 }
