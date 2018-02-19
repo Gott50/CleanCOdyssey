@@ -8,18 +8,30 @@ class Robot {
 	public $position;
 	public $direction;
 
+	/**
+	 * Robot constructor.
+	 *
+	 * @param $position
+	 * @param $direction
+	 */
 	public function __construct( $position, $direction ) {
 		$this->position  = $position;
 		$this->direction = $direction;
 	}
 
+	/**
+	 * @param $string
+	 */
 	public function instructions( $string ) {
 		foreach ( str_split( $string ) as $item ) {
 			$this->instruction( $item );
 		}
 	}
 
-	public function instruction( $string ) {
+	/**
+	 * @param $string
+	 */
+	private function instruction( $string ) {
 		switch ( $string ) {
 			case "L":
 				$this->turnLeft();
@@ -35,21 +47,30 @@ class Robot {
 		}
 	}
 
-	public function turnLeft() {
+	/**
+	 * @return Robot
+	 */
+	public function turnLeft():Robot {
 		$this->direction += 3;
 		$this->direction %= 4;
 
 		return $this;
 	}
 
-	public function turnRight() {
+	/**
+	 * @return Robot
+	 */
+	public function turnRight():Robot {
 		$this->direction ++;
 		$this->direction %= 4;
 
 		return $this;
 	}
 
-	public function advance() {
+	/**
+	 * @return Robot
+	 */
+	public function advance():Robot {
 		switch ( $this->direction ) {
 			case Robot::DIRECTION_NORTH:
 				$this->position[1] ++;
