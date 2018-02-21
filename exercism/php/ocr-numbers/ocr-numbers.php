@@ -7,7 +7,10 @@ function recognize( $input ) {
 
 	$out = "";
 	for ( $i = 0; $i < strlen( $input[0] ); $i += 3 ) {
-		$out .= recognize_digit( $input, $i );
+		$sub = array_map( function ( $a ) use ( $i ) {
+			return substr( $a, $i, 3 );
+		}, $input );
+		$out .= recognize_digit( $sub, $i );
 	}
 
 	return $out;
@@ -16,16 +19,13 @@ function recognize( $input ) {
 /**
  * @param $input
  *
- * @param $index
- *
  * @return string
  */
-function recognize_digit( $input, $index ): string {
-	if ( is_zero( $input, $index ) ) {
+function recognize_digit( $input ): string {
+	if ( is_zero( $input ) ) {
 		return "0";
 	}
-
-	if ( is_one( $input, $index ) ) {
+	if ( is_one( $input ) ) {
 		return "1";
 	}
 
@@ -66,33 +66,95 @@ function are_rows_valid( $input ): bool {
 /**
  * @param $input
  *
- * @param $index
  *
  * @return bool
  */
-function is_zero( $input, $index ): bool {
-	return is_seven( $input, $index ) && $input[2][ 1 + $index ] == "_"
-	       && $input[1][ 0 + $index ] == "|" && $input[2][ 0 + $index ] == "|";
+function is_zero( $input ): bool {
+	return $input == [
+			" _ ",
+			"| |",
+			"|_|",
+			"   ",
+		];
 }
 
 /**
  * @param $input
  *
- * @param $index
  *
  * @return bool
  */
-function is_one( $input, $index ): bool {
-	return $input[1][ 2 + $index ] == "|" && $input[2][ 2 + $index ] == "|";
+function is_one( $input ): bool {
+	return $input == [
+			"   ",
+			"  |",
+			"  |",
+			"   ",
+		];
+}
+/**
+ * @param $input
+ *
+ *
+ * @return bool
+ */
+function is_two( $input ): bool {
+	return $input == [
+		" _ ",
+		" _|",
+		"|_ ",
+		"   ",
+	];
+}
+/**
+ * @param $input
+ *
+ *
+ * @return bool
+ */
+function is_three( $input ): bool {
+	return $input == [
+			" _ ",
+			" _|",
+			" _|",
+			"   ",
+		];
+}
+/**
+ * @param $input
+ *
+ *
+ * @return bool
+ */
+function is_four( $input ): bool {
+	return $input == [
+			"   ",
+			"|_|",
+			"  |",
+			"   ",
+		];
+}
+/**
+ * @param $input
+ *
+ *
+ * @return bool
+ */
+function is_five( $input ): bool {
+	return $input == [
+			" _ ",
+			"|_ ",
+			" _|",
+			"   ",
+		];
 }
 
 /**
  * @param $input
  *
- * @param $index
  *
  * @return bool
  */
-function is_seven( $input, $index ): bool {
-	return is_one( $input, $index ) && $input[0][ 1 + $index ] == "_";
+function is_seven( $input ): bool {
+	return is_one( $input ) && $input[0][1] == "_";
 }
