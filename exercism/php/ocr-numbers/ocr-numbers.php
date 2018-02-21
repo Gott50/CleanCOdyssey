@@ -22,11 +22,74 @@ function recognize( $input ) {
  * @return string
  */
 function recognize_digit( $input ): string {
-	if ( is_zero( $input ) ) {
-		return "0";
-	}
-	if ( is_one( $input ) ) {
-		return "1";
+	$digits = [
+		[
+			" _ ",
+			"| |",
+			"|_|",
+			"   ",
+		],
+		[
+			"   ",
+			"  |",
+			"  |",
+			"   ",
+		],
+		[
+			" _ ",
+			" _|",
+			"|_ ",
+			"   ",
+		],
+		[
+			" _ ",
+			" _|",
+			" _|",
+			"   ",
+		],
+		[
+			"   ",
+			"|_|",
+			"  |",
+			"   ",
+		],
+		[
+			" _ ",
+			"|_ ",
+			" _|",
+			"   ",
+		],
+		[
+			" _ ",
+			"|_ ",
+			"|_|",
+			"   ",
+		],
+
+		[
+			" _ ",
+			"  |",
+			"  |",
+			"   ",
+		],
+		[
+			" _ ",
+			"|_|",
+			"|_|",
+			"   ",
+		],
+		[
+			" _ ",
+			"|_|",
+			" _|",
+			"   ",
+		]
+	];
+
+	for ( $i = 0; $i <= 9; $i ++ ) {
+		if ( $input == $digits[ $i ] ) {
+			return $i . "";
+		}
 	}
 
 	return "?";
@@ -61,92 +124,6 @@ function are_columns_valid( $input ): bool {
  */
 function are_rows_valid( $input ): bool {
 	return sizeof( $input ) == 4;
-}
-
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_zero( $input ): bool {
-	return $input == [
-			" _ ",
-			"| |",
-			"|_|",
-			"   ",
-		];
-}
-
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_one( $input ): bool {
-	return $input == [
-			"   ",
-			"  |",
-			"  |",
-			"   ",
-		];
-}
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_two( $input ): bool {
-	return $input == [
-		" _ ",
-		" _|",
-		"|_ ",
-		"   ",
-	];
-}
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_three( $input ): bool {
-	return $input == [
-			" _ ",
-			" _|",
-			" _|",
-			"   ",
-		];
-}
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_four( $input ): bool {
-	return $input == [
-			"   ",
-			"|_|",
-			"  |",
-			"   ",
-		];
-}
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_five( $input ): bool {
-	return $input == [
-			" _ ",
-			"|_ ",
-			" _|",
-			"   ",
-		];
 }
 
 /**
