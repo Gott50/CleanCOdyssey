@@ -6,6 +6,20 @@ function recognize( $input ) {
 	}
 
 	$out = "";
+	for ( $i = 0; $i < sizeof( $input ); $i += 4 ) {
+		$out .= "," . recognize_row( array_slice( $input, $i, 4 ) );
+	}
+
+	return substr( $out, 1 );
+}
+
+/**
+ * @param $input
+ *
+ * @return string
+ */
+function recognize_row( $input ): string {
+	$out = "";
 	for ( $i = 0; $i < strlen( $input[0] ); $i += 3 ) {
 		$sub = array_map( function ( $a ) use ( $i ) {
 			return substr( $a, $i, 3 );
@@ -123,15 +137,5 @@ function are_columns_valid( $input ): bool {
  * @return bool
  */
 function are_rows_valid( $input ): bool {
-	return sizeof( $input ) == 4;
-}
-
-/**
- * @param $input
- *
- *
- * @return bool
- */
-function is_seven( $input ): bool {
-	return is_one( $input ) && $input[0][1] == "_";
+	return sizeof( $input ) % 4 == 0;
 }
