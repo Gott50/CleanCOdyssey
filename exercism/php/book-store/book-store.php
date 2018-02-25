@@ -1,10 +1,29 @@
 <?php
 
 function total( $basket ) {
+	return calculate_prize( calculate_grouping( $basket ) );
+}
+
+/**
+ * @param $basket
+ *
+ * @return array|mixed
+ */
+function calculate_grouping( $basket ) {
 	$grouping = [];
 	foreach ( $basket as $book ) {
 		$grouping = group( $grouping, $book );
 	}
+
+	return $grouping;
+}
+
+/**
+ * @param $grouping
+ *
+ * @return float|int
+ */
+function calculate_prize( $grouping ) {
 	$out = 0;
 	foreach ( $grouping as $group ) {
 		$out += 8 * sizeof( $group )
