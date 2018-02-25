@@ -21,7 +21,7 @@ function total( $basket ) {
  */
 function group( $grouping, $book ) {
 	foreach ( $grouping as &$group ) {
-		if ( array_search( $book, $group ) == false ) {
+		if (! in_array( $book, $group )  ) {
 			array_push( $group, $book );
 
 			return $grouping;
@@ -41,6 +41,12 @@ function get_discount( $size ) {
 	switch ( $size ) {
 		case 2:
 			return .95;
+		case 3:
+			return .90;
+		case 4:
+			return .80;
+		case 5:
+			return .75;
 		default :
 			return 1;
 	}
