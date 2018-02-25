@@ -23,7 +23,7 @@ function group( $grouping, $book ) {
 	foreach ( $grouping as &$group ) {
 		if (! in_array( $book, $group )  ) {
 			array_push( $group, $book );
-
+			sort( $grouping );
 			return $grouping;
 		}
 	}
