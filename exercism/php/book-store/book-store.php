@@ -7,7 +7,8 @@ function total( $basket ) {
 	}
 	$out = 0;
 	foreach ( $grouping as $group ) {
-		$out += 8.0 * sizeof( $group ) * get_discount( sizeof( $group ) );
+		$out += 8 * sizeof( $group )
+		        * ( 1 - get_discount( sizeof( $group ) ) );
 	}
 
 	return $out;
@@ -21,9 +22,10 @@ function total( $basket ) {
  */
 function group( $grouping, $book ) {
 	foreach ( $grouping as &$group ) {
-		if (! in_array( $book, $group )  ) {
+		if ( ! in_array( $book, $group ) ) {
 			array_push( $group, $book );
 			sort( $grouping );
+
 			return $grouping;
 		}
 	}
@@ -40,14 +42,14 @@ function group( $grouping, $book ) {
 function get_discount( $size ) {
 	switch ( $size ) {
 		case 2:
-			return .95;
+			return .05;
 		case 3:
-			return .90;
+			return .10;
 		case 4:
-			return .80;
+			return .20;
 		case 5:
-			return .75;
+			return .25;
 		default :
-			return 1;
+			return 0;
 	}
 }
