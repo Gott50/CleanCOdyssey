@@ -27,12 +27,16 @@ class School {
 	}
 
 	function studentsByGradeAlphabetical() {
-		$out = [];
-		foreach ( $this->grades as $grade ) {
+		foreach ( $this->grades as &$grade ) {
 			if ( sizeof( $grade ) > 0 ) {
-//				sort( $grade );
-				array_push( $out, $grade );
+				sort( $grade );
+			} else {
+				unset( $grade );
 			}
 		}
+
+		return array_filter( $this->grades, function ( $g ) {
+			return sizeof( $g );
+		} );
 	}
 }
