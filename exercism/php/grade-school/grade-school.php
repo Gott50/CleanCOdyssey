@@ -15,7 +15,6 @@ class School {
 		} else {
 			$this->grades[ $grade ] = [ $name ];
 		}
-
 	}
 
 	function grade( $grade ) {
@@ -26,15 +25,9 @@ class School {
 
 	function studentsByGradeAlphabetical() {
 		foreach ( $this->grades as &$grade ) {
-			if ( sizeof( $grade ) > 0 ) {
-				sort( $grade );
-			} else {
-				unset( $grade );
-			}
+			sort( $grade );
 		}
 
-		return array_filter( $this->grades, function ( $g ) {
-			return sizeof( $g );
-		} );
+		return $this->grades;
 	}
 }
